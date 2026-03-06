@@ -41,6 +41,12 @@ public class Struttura {
     @Column(name = "immagine_copertina", columnDefinition = "text")
     private String immagineCopertina;
 
+    @Column
+    private Double latitudine;
+
+    @Column
+    private Double longitudine;
+
     @Column(nullable = false)
     private String stato;
 
@@ -54,6 +60,7 @@ public class Struttura {
 
     @Column(name = "data_aggiornamento")
     private LocalDateTime dataAggiornamento;
+    
 
     // RELAZIONI
     @OneToMany(mappedBy = "struttura")
@@ -64,6 +71,9 @@ public class Struttura {
 
     @OneToMany(mappedBy = "struttura")
     private List<StrutturaSalvata> salvateDaUtenti;
+
+    @OneToMany(mappedBy = "struttura")
+    private List<ImmagineStruttura> immagini;
 
     public Struttura(String categoria,
                      String nome,

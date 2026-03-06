@@ -7,7 +7,15 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "recensioni")
+@Table(
+        name = "recensioni",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_recensione_utente_struttura",
+                        columnNames = {"utente_id", "struttura_id"}
+                )
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor

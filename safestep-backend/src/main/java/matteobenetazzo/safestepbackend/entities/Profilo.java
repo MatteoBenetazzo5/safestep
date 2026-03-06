@@ -30,13 +30,16 @@ public class Profilo {
     @Column(columnDefinition = "text")
     private String note;
 
+    @Column(name = "colore_tema")
+    private String coloreTema;
+
     @Column(name = "data_creazione", nullable = false)
     @Setter(AccessLevel.NONE)
     private LocalDateTime dataCreazione;
 
     @Column(name = "data_aggiornamento")
     private LocalDateTime dataAggiornamento;
-
+    
     public Profilo(Utente utente, String tipoMobilita, String note) {
         this.utente = utente;
         this.tipoMobilita = tipoMobilita;

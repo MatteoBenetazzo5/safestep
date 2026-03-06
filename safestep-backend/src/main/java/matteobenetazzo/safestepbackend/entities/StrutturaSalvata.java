@@ -10,8 +10,10 @@ import java.util.UUID;
 @Table(
         name = "strutture_salvate",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uk_salvate_utente_struttura",
-                        columnNames = {"utente_id", "strutture_id"})
+                @UniqueConstraint(
+                        name = "uk_salvate_utente_struttura",
+                        columnNames = {"utente_id", "struttura_id"}
+                )
         }
 )
 @Getter
@@ -31,7 +33,7 @@ public class StrutturaSalvata {
     private Utente utente;
 
     @ManyToOne
-    @JoinColumn(name = "strutture_id", nullable = false)
+    @JoinColumn(name = "struttura_id", nullable = false)
     private Struttura struttura;
 
     @Column(name = "data_creazione", nullable = false)

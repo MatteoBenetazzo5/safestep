@@ -1,6 +1,8 @@
 package matteobenetazzo.safestepbackend.controllers;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.Utente;
+import matteobenetazzo.safestepbackend.payloads.UtenteUpdateDTO;
 import matteobenetazzo.safestepbackend.services.UtentiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +34,7 @@ public class UtentiController {
     }
 
     @PutMapping("/{id}")
-    public Utente update(@PathVariable UUID id, @RequestBody Utente body) {
+    public Utente update(@PathVariable UUID id, @RequestBody @Valid UtenteUpdateDTO body) {
         return this.utentiService.findByIdAndUpdate(id, body);
     }
 

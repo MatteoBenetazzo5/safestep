@@ -1,10 +1,11 @@
 package matteobenetazzo.safestepbackend.services;
 
-import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.ImmagineStruttura;
+import matteobenetazzo.safestepbackend.entities.Struttura;
 import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
 import matteobenetazzo.safestepbackend.payloads.ImmagineStrutturaCreateDTO;
 import matteobenetazzo.safestepbackend.repositories.ImmagineStrutturaRepository;
+import matteobenetazzo.safestepbackend.repositories.StrutturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class ImmaginiStrutturaService {
 
     @Autowired
     private ImmagineStrutturaRepository immagineStrutturaRepository;
+
+    @Autowired
+    private StrutturaRepository strutturaRepository;
 
     public List<ImmagineStruttura> findAll() {
         return this.immagineStrutturaRepository.findAll();
@@ -30,8 +34,18 @@ public class ImmaginiStrutturaService {
         return this.immagineStrutturaRepository.findByStruttura_IdStruttura(idStruttura);
     }
 
-    public ImmagineStruttura save(@Valid ImmagineStrutturaCreateDTO immagineStruttura) {
-        return this.immagineStrutturaRepository.save(immagineStruttura);
+    public ImmagineStruttura save(ImmagineStrutturaCreateDTO body) {
+        Struttura struttura = this.strutturaRepository.findById(body.strutturaId())
+                .orElseThrow(() -> new NotFoundException("Struttura non trovata"));
+
+        ImmagineStruttura nuovaImmagine = new ImmagineStruttura(
+                struttura,
+                body.url(),
+                body.ordineVisualizzazione(),
+                body.copertina()
+        );
+
+        return this.immagineStrutturaRepository.save(nuovaImmagine);
     }
 
     public ImmagineStruttura findByIdAndUpdate(UUID idImmagineStruttura, ImmagineStruttura body) {

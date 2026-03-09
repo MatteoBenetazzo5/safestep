@@ -1,10 +1,13 @@
 package matteobenetazzo.safestepbackend.services;
 
-import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.Accessibilita;
+import matteobenetazzo.safestepbackend.entities.Caratteristica;
+import matteobenetazzo.safestepbackend.entities.Struttura;
 import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
 import matteobenetazzo.safestepbackend.payloads.AccessibilitaCreateDTO;
 import matteobenetazzo.safestepbackend.repositories.AccessibilitaRepository;
+import matteobenetazzo.safestepbackend.repositories.CaratteristicaRepository;
+import matteobenetazzo.safestepbackend.repositories.StrutturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,12 @@ public class AccessibilitaService {
 
     @Autowired
     private AccessibilitaRepository accessibilitaRepository;
+
+    @Autowired
+    private StrutturaRepository strutturaRepository;
+
+    @Autowired
+    private CaratteristicaRepository caratteristicaRepository;
 
     public List<Accessibilita> findAll() {
         return this.accessibilitaRepository.findAll();
@@ -30,8 +39,31 @@ public class AccessibilitaService {
         return this.accessibilitaRepository.findByStruttura_IdStruttura(idStruttura);
     }
 
-    public Accessibilita save(@Valid AccessibilitaCreateDTO accessibilita) {
-        return this.accessibilitaRepository.save(accessibilita);
+    public Accessibilita save(AccessibilitaCreateDTO body) {
+        Struttura struttura = this.strutturaRepository.findById(body.strutturaId())
+                .orElseThrow(() -> new NotFoundException("Struttura non trovata"));
+
+        Caratteristica caratteristica = this.caratteristicaRepository.findById(body.caratteristicaId())
+                .orElseThrow(() -> new NotFoundException("Caratteristica non trovata"));
+
+        boolean esisteGia = this.accessibilitaRepository
+                .existsByStruttura_IdStrutturaAndCaratteristica_IdCaratteristiche(
+                        body.strutturaId(),
+                        body.caratteristicaId()
+                );
+
+        if (esisteGia) {
+            throw new IllegalArgumentException("Questa caratteristica esiste gia per la struttura");
+        }
+
+        Accessibilita nuovaAccessibilita = new Accessibilita(
+                struttura,
+                caratteristica,
+                body.valore(),
+                body.nota()
+        );
+
+        return this.accessibilitaRepository.save(nuovaAccessibilita);
     }
 
     public Accessibilita findByIdAndUpdate(UUID idAccessibilita, Accessibilita body) {

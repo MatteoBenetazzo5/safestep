@@ -2,6 +2,7 @@ package matteobenetazzo.safestepbackend.services;
 
 import matteobenetazzo.safestepbackend.entities.Utente;
 import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
+import matteobenetazzo.safestepbackend.payloads.UtenteUpdateDTO;
 import matteobenetazzo.safestepbackend.repositories.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,14 +34,13 @@ public class UtentiService {
         return this.utenteRepository.save(utente);
     }
 
-    public Utente findByIdAndUpdate(UUID idUtente, Utente body) {
+    public Utente findByIdAndUpdate(UUID idUtente, UtenteUpdateDTO body) {
         Utente found = this.findById(idUtente);
 
-        found.setEmail(body.getEmail());
-        found.setNomeVisualizzato(body.getNomeVisualizzato());
-        found.setTelefono(body.getTelefono());
-        found.setAvatar(body.getAvatar());
-        found.setRuolo(body.getRuolo());
+        found.setEmail(body.email());
+        found.setNomeVisualizzato(body.nomeVisualizzato());
+        found.setTelefono(body.telefono());
+        found.setAvatar(body.avatar());
 
         return this.utenteRepository.save(found);
     }

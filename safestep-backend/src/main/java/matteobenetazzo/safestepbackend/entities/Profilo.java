@@ -1,5 +1,6 @@
 package matteobenetazzo.safestepbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class Profilo {
 
     @OneToOne
     @JoinColumn(name = "utente_id", nullable = false, unique = true)
+    @JsonIgnoreProperties({"passwordHash", "profilo", "recensioni", "preferenze", "struttureSalvate", "struttureCreate"})
     private Utente utente;
 
     @Column(name = "tipo_mobilita", nullable = false)
@@ -39,7 +41,7 @@ public class Profilo {
 
     @Column(name = "data_aggiornamento")
     private LocalDateTime dataAggiornamento;
-    
+
     public Profilo(Utente utente, String tipoMobilita, String note) {
         this.utente = utente;
         this.tipoMobilita = tipoMobilita;

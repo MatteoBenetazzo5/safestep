@@ -1,5 +1,6 @@
 package matteobenetazzo.safestepbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,11 +32,12 @@ public class Caratteristica {
     @Setter(AccessLevel.NONE)
     private LocalDateTime dataCreazione;
 
-    // RELAZIONI
     @OneToMany(mappedBy = "caratteristica")
+    @JsonIgnoreProperties({"caratteristica", "struttura"})
     private List<Accessibilita> accessibilita;
 
     @OneToMany(mappedBy = "caratteristica")
+    @JsonIgnoreProperties({"caratteristica", "utente"})
     private List<Preferenza> preferenze;
 
     public Caratteristica(String codice, String etichetta) {

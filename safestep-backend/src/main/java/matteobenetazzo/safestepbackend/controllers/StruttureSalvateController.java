@@ -1,6 +1,8 @@
 package matteobenetazzo.safestepbackend.controllers;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.StrutturaSalvata;
+import matteobenetazzo.safestepbackend.payloads.StrutturaSalvataCreateDTO;
 import matteobenetazzo.safestepbackend.services.StruttureSalvateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,7 @@ public class StruttureSalvateController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public StrutturaSalvata create(@RequestBody StrutturaSalvata body) {
+    public StrutturaSalvata create(@RequestBody @Valid StrutturaSalvataCreateDTO body) {
         return this.struttureSalvateService.save(body);
     }
 

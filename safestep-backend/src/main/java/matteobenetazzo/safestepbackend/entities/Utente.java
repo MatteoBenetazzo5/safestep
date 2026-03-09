@@ -1,5 +1,7 @@
 package matteobenetazzo.safestepbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +26,7 @@ public class Utente {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
@@ -45,20 +48,24 @@ public class Utente {
     @Column(name = "data_aggiornamento")
     private LocalDateTime dataAggiornamento;
 
-    // RELAZIONI
     @OneToOne(mappedBy = "utente")
+    @JsonIgnoreProperties({"utente"})
     private Profilo profilo;
 
     @OneToMany(mappedBy = "utente")
+    @JsonIgnoreProperties({"utente", "struttura"})
     private List<Recensione> recensioni;
 
     @OneToMany(mappedBy = "utente")
+    @JsonIgnoreProperties({"utente", "caratteristica"})
     private List<Preferenza> preferenze;
 
     @OneToMany(mappedBy = "utente")
+    @JsonIgnoreProperties({"utente", "struttura"})
     private List<StrutturaSalvata> struttureSalvate;
 
     @OneToMany(mappedBy = "creataDa")
+    @JsonIgnoreProperties({"creataDa", "recensioni", "accessibilita", "salvateDaUtenti", "immagini"})
     private List<Struttura> struttureCreate;
 
     public Utente(String email,

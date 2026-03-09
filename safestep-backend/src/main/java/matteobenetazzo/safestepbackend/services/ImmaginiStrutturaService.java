@@ -1,7 +1,9 @@
 package matteobenetazzo.safestepbackend.services;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.ImmagineStruttura;
 import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
+import matteobenetazzo.safestepbackend.payloads.ImmagineStrutturaCreateDTO;
 import matteobenetazzo.safestepbackend.repositories.ImmagineStrutturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class ImmaginiStrutturaService {
         return this.immagineStrutturaRepository.findByStruttura_IdStruttura(idStruttura);
     }
 
-    public ImmagineStruttura save(ImmagineStruttura immagineStruttura) {
+    public ImmagineStruttura save(@Valid ImmagineStrutturaCreateDTO immagineStruttura) {
         return this.immagineStrutturaRepository.save(immagineStruttura);
     }
 

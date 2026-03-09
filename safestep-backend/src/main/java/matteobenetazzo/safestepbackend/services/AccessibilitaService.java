@@ -1,7 +1,9 @@
 package matteobenetazzo.safestepbackend.services;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.Accessibilita;
 import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
+import matteobenetazzo.safestepbackend.payloads.AccessibilitaCreateDTO;
 import matteobenetazzo.safestepbackend.repositories.AccessibilitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class AccessibilitaService {
         return this.accessibilitaRepository.findByStruttura_IdStruttura(idStruttura);
     }
 
-    public Accessibilita save(Accessibilita accessibilita) {
+    public Accessibilita save(@Valid AccessibilitaCreateDTO accessibilita) {
         return this.accessibilitaRepository.save(accessibilita);
     }
 

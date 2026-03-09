@@ -1,7 +1,9 @@
 package matteobenetazzo.safestepbackend.services;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.Profilo;
 import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
+import matteobenetazzo.safestepbackend.payloads.ProfiloCreateDTO;
 import matteobenetazzo.safestepbackend.repositories.ProfiloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,7 @@ public class ProfiliService {
                 .orElseThrow(() -> new NotFoundException("Profilo utente non trovato"));
     }
 
-    public Profilo save(Profilo profilo) {
+    public Profilo save(@Valid ProfiloCreateDTO profilo) {
         return this.profiloRepository.save(profilo);
     }
 

@@ -1,5 +1,6 @@
 package matteobenetazzo.safestepbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,8 +11,10 @@ import java.util.UUID;
 @Table(
         name = "preferenze",
         uniqueConstraints = {
-                @UniqueConstraint(name = "uk_preferenze_utente_caratteristica",
-                        columnNames = {"utente_id", "caratteristica_id"})
+                @UniqueConstraint(
+                        name = "uk_preferenze_utente_caratteristica",
+                        columnNames = {"utente_id", "caratteristica_id"}
+                )
         }
 )
 @Getter
@@ -28,10 +31,12 @@ public class Preferenza {
 
     @ManyToOne
     @JoinColumn(name = "utente_id", nullable = false)
+    @JsonIgnoreProperties({"passwordHash", "profilo", "recensioni", "preferenze", "struttureSalvate", "struttureCreate"})
     private Utente utente;
 
     @ManyToOne
     @JoinColumn(name = "caratteristica_id", nullable = false)
+    @JsonIgnoreProperties({"accessibilita", "preferenze"})
     private Caratteristica caratteristica;
 
     @Column(name = "livello_preferenza", nullable = false)

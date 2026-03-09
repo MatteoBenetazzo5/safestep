@@ -1,7 +1,9 @@
 package matteobenetazzo.safestepbackend.services;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.Preferenza;
 import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
+import matteobenetazzo.safestepbackend.payloads.PreferenzaCreateDTO;
 import matteobenetazzo.safestepbackend.repositories.PreferenzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class PreferenzeService {
         return this.preferenzaRepository.findByUtente_IdUtente(idUtente);
     }
 
-    public Preferenza save(Preferenza preferenza) {
+    public Preferenza save(@Valid PreferenzaCreateDTO preferenza) {
         return this.preferenzaRepository.save(preferenza);
     }
 

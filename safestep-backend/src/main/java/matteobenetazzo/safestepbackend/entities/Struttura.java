@@ -1,5 +1,6 @@
 package matteobenetazzo.safestepbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"recensioni", "accessibilita", "salvateDaUtenti", "creataDa"})
+@ToString(exclude = {"recensioni", "accessibilita", "salvateDaUtenti", "creataDa", "immagini"})
 public class Struttura {
 
     @Id
@@ -52,6 +53,7 @@ public class Struttura {
 
     @ManyToOne
     @JoinColumn(name = "creata_da", nullable = false)
+    @JsonIgnoreProperties({"passwordHash", "profilo", "recensioni", "preferenze", "struttureSalvate", "struttureCreate"})
     private Utente creataDa;
 
     @Column(name = "data_creazione", nullable = false)
@@ -60,19 +62,21 @@ public class Struttura {
 
     @Column(name = "data_aggiornamento")
     private LocalDateTime dataAggiornamento;
-    
 
-    // RELAZIONI
     @OneToMany(mappedBy = "struttura")
+    @JsonIgnoreProperties({"struttura", "utente"})
     private List<Recensione> recensioni;
 
     @OneToMany(mappedBy = "struttura")
+    @JsonIgnoreProperties({"struttura", "caratteristica"})
     private List<Accessibilita> accessibilita;
 
     @OneToMany(mappedBy = "struttura")
+    @JsonIgnoreProperties({"struttura", "utente"})
     private List<StrutturaSalvata> salvateDaUtenti;
 
     @OneToMany(mappedBy = "struttura")
+    @JsonIgnoreProperties({"struttura"})
     private List<ImmagineStruttura> immagini;
 
     public Struttura(String categoria,

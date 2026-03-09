@@ -1,6 +1,8 @@
 package matteobenetazzo.safestepbackend.controllers;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.Profilo;
+import matteobenetazzo.safestepbackend.payloads.ProfiloCreateDTO;
 import matteobenetazzo.safestepbackend.services.ProfiliService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,7 @@ public class ProfiliController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Profilo create(@RequestBody Profilo body) {
+    public Profilo create(@RequestBody @Valid ProfiloCreateDTO body) {
         return this.profiliService.save(body);
     }
 

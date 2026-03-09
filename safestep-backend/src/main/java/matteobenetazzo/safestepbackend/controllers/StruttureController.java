@@ -1,6 +1,9 @@
 package matteobenetazzo.safestepbackend.controllers;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.Struttura;
+import matteobenetazzo.safestepbackend.payloads.StrutturaCreateDTO;
+import matteobenetazzo.safestepbackend.payloads.StrutturaUpdateDTO;
 import matteobenetazzo.safestepbackend.services.StruttureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,12 +41,12 @@ public class StruttureController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Struttura create(@RequestBody Struttura body) {
+    public Struttura create(@RequestBody @Valid StrutturaCreateDTO body) {
         return this.struttureService.save(body);
     }
 
     @PutMapping("/{id}")
-    public Struttura update(@PathVariable UUID id, @RequestBody Struttura body) {
+    public Struttura update(@PathVariable UUID id, @RequestBody @Valid StrutturaUpdateDTO body) {
         return this.struttureService.findByIdAndUpdate(id, body);
     }
 

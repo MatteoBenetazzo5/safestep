@@ -1,7 +1,9 @@
 package matteobenetazzo.safestepbackend.services;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.StrutturaSalvata;
 import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
+import matteobenetazzo.safestepbackend.payloads.StrutturaSalvataCreateDTO;
 import matteobenetazzo.safestepbackend.repositories.StrutturaSalvataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class StruttureSalvateService {
         return this.strutturaSalvataRepository.findByUtente_IdUtente(idUtente);
     }
 
-    public StrutturaSalvata save(StrutturaSalvata strutturaSalvata) {
+    public StrutturaSalvata save(@Valid StrutturaSalvataCreateDTO strutturaSalvata) {
         return this.strutturaSalvataRepository.save(strutturaSalvata);
     }
 

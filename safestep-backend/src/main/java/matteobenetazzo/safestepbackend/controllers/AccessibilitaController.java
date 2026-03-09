@@ -1,6 +1,8 @@
 package matteobenetazzo.safestepbackend.controllers;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.Accessibilita;
+import matteobenetazzo.safestepbackend.payloads.AccessibilitaCreateDTO;
 import matteobenetazzo.safestepbackend.services.AccessibilitaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +30,7 @@ public class AccessibilitaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Accessibilita create(@RequestBody Accessibilita body) {
+    public Accessibilita create(@RequestBody @Valid AccessibilitaCreateDTO body) {
         return this.accessibilitaService.save(body);
     }
 

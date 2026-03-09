@@ -1,5 +1,6 @@
 package matteobenetazzo.safestepbackend.controllers;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.Utente;
 import matteobenetazzo.safestepbackend.payloads.LoginDTO;
 import matteobenetazzo.safestepbackend.payloads.LoginResponseDTO;
@@ -18,12 +19,12 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public Utente register(@RequestBody RegisterDTO body) {
+    public Utente register(@RequestBody @Valid RegisterDTO body) {
         return this.authService.register(body);
     }
 
     @PostMapping("/login")
-    public LoginResponseDTO login(@RequestBody LoginDTO body) {
+    public LoginResponseDTO login(@RequestBody @Valid LoginDTO body) {
         return this.authService.login(body);
     }
 }

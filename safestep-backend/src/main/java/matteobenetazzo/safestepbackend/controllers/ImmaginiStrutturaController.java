@@ -1,6 +1,8 @@
 package matteobenetazzo.safestepbackend.controllers;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.ImmagineStruttura;
+import matteobenetazzo.safestepbackend.payloads.ImmagineStrutturaCreateDTO;
 import matteobenetazzo.safestepbackend.services.ImmaginiStrutturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,7 @@ public class ImmaginiStrutturaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ImmagineStruttura create(@RequestBody ImmagineStruttura body) {
+    public ImmagineStruttura create(@RequestBody @Valid ImmagineStrutturaCreateDTO body) {
         return this.immaginiStrutturaService.save(body);
     }
 

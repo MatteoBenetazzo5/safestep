@@ -1,6 +1,8 @@
 package matteobenetazzo.safestepbackend.controllers;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.Preferenza;
+import matteobenetazzo.safestepbackend.payloads.PreferenzaCreateDTO;
 import matteobenetazzo.safestepbackend.services.PreferenzeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +30,7 @@ public class PreferenzeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Preferenza create(@RequestBody Preferenza body) {
+    public Preferenza create(@RequestBody @Valid PreferenzaCreateDTO body) {
         return this.preferenzeService.save(body);
     }
 

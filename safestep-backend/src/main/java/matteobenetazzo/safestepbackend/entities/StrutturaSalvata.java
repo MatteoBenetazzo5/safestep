@@ -1,5 +1,6 @@
 package matteobenetazzo.safestepbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,10 +31,12 @@ public class StrutturaSalvata {
 
     @ManyToOne
     @JoinColumn(name = "utente_id", nullable = false)
+    @JsonIgnoreProperties({"passwordHash", "profilo", "recensioni", "preferenze", "struttureSalvate", "struttureCreate"})
     private Utente utente;
 
     @ManyToOne
     @JoinColumn(name = "struttura_id", nullable = false)
+    @JsonIgnoreProperties({"recensioni", "accessibilita", "salvateDaUtenti", "immagini", "creataDa"})
     private Struttura struttura;
 
     @Column(name = "data_creazione", nullable = false)

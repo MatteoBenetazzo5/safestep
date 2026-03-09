@@ -1,6 +1,9 @@
 package matteobenetazzo.safestepbackend.controllers;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.Recensione;
+import matteobenetazzo.safestepbackend.payloads.RecensioneCreateDTO;
+import matteobenetazzo.safestepbackend.payloads.RecensioneUpdateDTO;
 import matteobenetazzo.safestepbackend.services.RecensioniService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,12 +41,12 @@ public class RecensioniController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Recensione create(@RequestBody Recensione body) {
+    public Recensione create(@RequestBody @Valid RecensioneCreateDTO body) {
         return this.recensioniService.save(body);
     }
 
     @PutMapping("/{id}")
-    public Recensione update(@PathVariable UUID id, @RequestBody Recensione body) {
+    public Recensione update(@PathVariable UUID id, @RequestBody @Valid RecensioneUpdateDTO body) {
         return this.recensioniService.findByIdAndUpdate(id, body);
     }
 

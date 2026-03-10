@@ -1,0 +1,57 @@
+.safestep-navbar {
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(6px);
+  border-radius: 14px;
+  margin: 20px auto;
+  max-width: 1100px;
+  padding: 8px 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.navbar-brand-custom img {
+  height: 40px;
+}
+
+.navbar-menu a {
+  font-weight: 500;
+  color: #5a647a !important;
+  margin: 0 10px;
+}
+
+.navbar-menu a.active {
+  font-weight: 600;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-search {
+  display: flex;
+  align-items: center;
+  background: #f3f5f8;
+  padding: 6px 12px;
+  border-radius: 10px;
+}
+
+.navbar-search input {
+  border: none;
+  background: transparent;
+  outline: none;
+  margin-left: 6px;
+  font-size: 0.9rem;
+}
+
+.navbar-profile {
+  width: 36px;
+  height: 36px;
+  background: #f3f5f8;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5a647a;
+  font-size: 18px;
+}

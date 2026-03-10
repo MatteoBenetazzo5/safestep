@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
 import NavigationBar from "./components/NavigationBar"
 import Home from "./pages/Home"
 import Terme from "./pages/Terme"
@@ -12,27 +12,35 @@ import Profilo from "./pages/Profilo"
 import AdminDashboard from "./pages/AdminDashboard"
 import "./App.css"
 
+function AppContent() {
+  const location = useLocation()
+
+  return (
+    <div className="app-wrapper">
+      {location.pathname !== "/login" && <NavigationBar />}
+
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/terme" element={<Terme />} />
+          <Route path="/struttura/:id" element={<DettaglioStruttura />} />
+          <Route path="/parchi" element={<Parchi />} />
+          <Route path="/ristoranti" element={<Ristoranti />} />
+          <Route path="/hotel" element={<Hotel />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profilo" element={<Profilo />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+        </Routes>
+      </main>
+    </div>
+  )
+}
+
 function App() {
   return (
     <BrowserRouter>
-      <div className="app-wrapper">
-        <NavigationBar />
-
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/terme" element={<Terme />} />
-            <Route path="/struttura/:id" element={<DettaglioStruttura />} />
-            <Route path="/parchi" element={<Parchi />} />
-            <Route path="/ristoranti" element={<Ristoranti />} />
-            <Route path="/hotel" element={<Hotel />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/profilo" element={<Profilo />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-          </Routes>
-        </main>
-      </div>
+      <AppContent />
     </BrowserRouter>
   )
 }

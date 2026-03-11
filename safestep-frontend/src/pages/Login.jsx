@@ -1,8 +1,52 @@
 import "../styles/pages/Login.css"
 import logoSafeStep from "../assets/logos/SAFESTEP_LOGO.png"
 import backgroundImage from "../assets/images/bg-login.jpg"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 function Login() {
+  const navigate = useNavigate()
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      })
+
+      if (!response.ok) {
+        alert("Credenziali non valide")
+        return
+      }
+
+      const data = await response.json()
+
+      localStorage.setItem("token", data.accessToken)
+      localStorage.setItem("idUtente", data.idUtente)
+      localStorage.setItem("email", data.email)
+      localStorage.setItem("nomeVisualizzato", data.nomeVisualizzato)
+      localStorage.setItem("ruolo", data.ruolo)
+
+      if (data.ruolo === "ADMIN") {
+        navigate("/admin")
+      } else {
+        navigate("/profilo")
+      }
+    } catch (error) {
+      console.error("Errore login:", error)
+      alert("Errore durante il login")
+    }
+  }
+
   return (
     <div
       className="login-page"
@@ -29,7 +73,6 @@ function Login() {
           </div>
 
           <div className="login-cards">
-            {/* REGISTRAZIONE */}
             <div className="login-card register-card">
               <div className="login-icon-circle">
                 <i className="bi bi-person"></i>
@@ -38,10 +81,14 @@ function Login() {
               <h2>Registrati</h2>
               <p>Crea un nuovo account.</p>
 
-              <button className="login-button">Registrati</button>
+              <button
+                className="login-button"
+                onClick={() => navigate("/register")}
+              >
+                Registrati
+              </button>
             </div>
 
-            {/* LOGIN */}
             <div className="login-card access-card">
               <div className="login-icon-circle login-icon-circle-blue">
                 <i className="bi bi-key-fill"></i>
@@ -52,19 +99,35 @@ function Login() {
 
               <div className="login-input-wrapper">
                 <i className="bi bi-envelope"></i>
-                <input type="email" placeholder="Email" />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
 
               <div className="login-input-wrapper">
                 <i className="bi bi-lock-fill"></i>
-                <input type="password" placeholder="Password" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </div>
 
               <div className="forgot-password">Password dimenticata?</div>
 
-              <button className="login-button">Login</button>
+              <button className="login-button" onClick={handleLogin}>
+                Login
+              </button>
 
-              <div className="register-link">
+              <div
+                className="register-link"
+                onClick={() => navigate("/register")}
+                style={{ cursor: "pointer" }}
+              >
                 Non hai un account? Registrati!
               </div>
             </div>

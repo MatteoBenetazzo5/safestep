@@ -17,7 +17,9 @@ function AppContent() {
 
   return (
     <div className="app-wrapper">
-      {location.pathname !== "/login" && <NavigationBar />}
+      {location.pathname !== "/login" && location.pathname !== "/register" && (
+        <NavigationBar />
+      )}
 
       <main className="main-content">
         <Routes>

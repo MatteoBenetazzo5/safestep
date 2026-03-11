@@ -7,61 +7,73 @@
 /* HERO */
 
 .home-hero {
-  min-height: 560px;
+  min-height: 700px;
   background-image: url("/bg-home.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  margin-top: 0;
 }
 
 .home-hero-overlay {
-  min-height: 560px;
-  background: rgba(245, 247, 250, 0.72);
-  padding: 1.25rem 1rem 2.5rem 1rem;
+  min-height: 700px;
+  background: rgba(245, 247, 250, 0.70);
+  padding: 200px 1rem 4rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .home-hero-content {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   text-align: center;
+  width: 100%;
 }
 
 .home-hero-content h1 {
-  font-size: 2.2rem;
+  font-size: 3.2rem;
   font-weight: 700;
-  margin-bottom: 0.8rem;
-  color: #2f3b4f;
+  margin-bottom: 1.2rem;
+  color: #2f3c52;
+  letter-spacing: -0.5px;
 }
 
 .home-hero-content p {
-  font-size: 1.1rem;
-  color: #68758d;
-  margin-bottom: 1.8rem;
+  font-size: 1.3rem;
+  color: #6f7d96;
+  margin-bottom: 2.5rem;
+  font-weight: 400;
 }
 
 .home-main-search {
   width: 100%;
-  max-width: 860px;
+  max-width: 920px;
   margin: 0 auto;
-  background-color: rgba(255, 255, 255, 0.92);
-  border-radius: 18px;
-  padding: 0.7rem;
+  background-color: rgba(255, 255, 255, 0.94);
+  border-radius: 20px;
+  padding: 1.2rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  gap: 1rem;
+  align-items: center;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
 }
 
 .home-main-search-input {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
-  padding: 0.8rem 1rem;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  flex: 1;
+  background-color: #f8f9fb;
+  border-radius: 14px;
+  border: 1px solid #e9ecef;
 }
 
 .home-main-search-input i {
-  font-size: 1.6rem;
-  color: #5f6981;
+  font-size: 1.4rem;
+  color: #7b8797;
+  flex-shrink: 0;
 }
 
 .home-main-search-input input {
@@ -69,12 +81,13 @@
   outline: none;
   background: transparent;
   width: 100%;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #4e5870;
+  font-weight: 400;
 }
 
 .home-main-search-input input::placeholder {
-  color: #6f7991;
+  color: #9ca3af;
 }
 
 .home-main-search button {
@@ -84,7 +97,15 @@
   color: white;
   font-size: 1.1rem;
   font-weight: 600;
-  padding: 1rem;
+  padding: 1rem 2.2rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.home-main-search button:hover {
+  background: #47b564;
+  box-shadow: 0 4px 12px rgba(79, 195, 111, 0.3);
 }
 
 /* SECTION GENERALI */

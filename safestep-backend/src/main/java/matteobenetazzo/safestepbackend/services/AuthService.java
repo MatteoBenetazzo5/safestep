@@ -40,6 +40,7 @@ public class AuthService {
     }
 
     public LoginResponseDTO login(LoginDTO body) {
+
         Utente found = this.utenteRepository.findByEmail(body.email())
                 .orElseThrow(() -> new IllegalArgumentException("Credenziali non valide"));
 
@@ -51,6 +52,12 @@ public class AuthService {
 
         String token = this.jwtTool.createToken(found);
 
-        return new LoginResponseDTO(token);
+        return new LoginResponseDTO(
+                token,
+                found.getIdUtente(),
+                found.getEmail(),
+                found.getNomeVisualizzato(),
+                found.getRuolo()
+        );
     }
 }

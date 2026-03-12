@@ -3,6 +3,7 @@ import logoSafeStep from "../assets/logos/SAFESTEP_LOGO.png"
 import backgroundImage from "../assets/images/bg-login.jpg"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { saveAuthData } from "../utils/auth"
 
 function Login() {
   const navigate = useNavigate()
@@ -30,11 +31,7 @@ function Login() {
 
       const data = await response.json()
 
-      localStorage.setItem("token", data.accessToken)
-      localStorage.setItem("idUtente", data.idUtente)
-      localStorage.setItem("email", data.email)
-      localStorage.setItem("nomeVisualizzato", data.nomeVisualizzato)
-      localStorage.setItem("ruolo", data.ruolo)
+      saveAuthData(data)
 
       if (data.ruolo === "ADMIN") {
         navigate("/admin")

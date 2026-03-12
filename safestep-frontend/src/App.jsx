@@ -1,5 +1,7 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
 import NavigationBar from "./components/NavigationBar"
+import ProtectedRoute from "./components/ProtectedRoute"
+import AdminRoute from "./components/AdminRoute"
 import Home from "./pages/Home"
 import Terme from "./pages/Terme"
 import DettaglioStruttura from "./pages/DettaglioStruttura"
@@ -31,8 +33,24 @@ function AppContent() {
           <Route path="/hotel" element={<Hotel />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profilo" element={<Profilo />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+
+          <Route
+            path="/profilo"
+            element={
+              <ProtectedRoute>
+                <Profilo />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
         </Routes>
       </main>
     </div>

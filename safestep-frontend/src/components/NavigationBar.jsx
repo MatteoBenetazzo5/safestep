@@ -1,9 +1,27 @@
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import "../styles/components/NavigationBar.css"
 import logo from "../assets/logos/SAFESTEP_LOGO.png"
+import {
+  getAvatar,
+  getNomeVisualizzato,
+  isLoggedIn,
+  logout,
+} from "../utils/auth"
 
 function NavigationBar() {
+  const navigate = useNavigate()
+
+  const logged = isLoggedIn()
+  const avatar = getAvatar()
+  const nomeVisualizzato = getNomeVisualizzato() || "U"
+  const initial = nomeVisualizzato.charAt(0).toUpperCase()
+
+  const handleLogout = () => {
+    logout()
+    navigate("/login")
+  }
+
   return (
     <div className="navbar-overlay-wrapper">
       <Container className="navbar-overlay-container">
@@ -51,9 +69,37 @@ function NavigationBar() {
                   <input placeholder="Search" />
                 </div>
 
-                <NavLink to="/login" className="navbar-profile">
-                  <i className="bi bi-person-fill"></i>
-                </NavLink>
+                {logged ? (
+                  <div className="navbar-user-actions">
+                    <button
+                      className="navbar-logout-button"
+                      onClick={handleLogout}
+                    >
+                      Esci
+                    </button>
+
+                    <NavLink
+                      to="/profilo"
+                      className="navbar-profile avatar-profile"
+                    >
+                      {avatar ? (
+                        <img
+                          src={avatar}
+                          alt={nomeVisualizzato}
+                          className="navbar-avatar-image"
+                        />
+                      ) : (
+                        <span className="navbar-avatar-fallback">
+                          {initial}
+                        </span>
+                      )}
+                    </NavLink>
+                  </div>
+                ) : (
+                  <NavLink to="/login" className="navbar-profile">
+                    <i className="bi bi-person-fill"></i>
+                  </NavLink>
+                )}
               </div>
             </Navbar.Collapse>
           </Navbar>

@@ -7,6 +7,7 @@ public record LoginResponseDTO(
         UUID idUtente,
         String email,
         String nomeVisualizzato,
-        String ruolo
+        String ruolo,
+        String avatar
 ) {
 }

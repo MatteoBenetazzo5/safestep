@@ -1,303 +1,583 @@
-import { useParams } from "react-router-dom"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { getIdUtente } from "../utils/auth"
+import { API_BASE_URL, getAuthHeaders } from "../utils/api"
 import "../styles/pages/DettaglioStruttura.css"
-import mainImage from "../assets/images/terme-card-1.jpg"
-import galleryImage2 from "../assets/images/terme-card-2.jpg"
-import galleryImage3 from "../assets/images/terme-card-3.jpg"
-import galleryImage4 from "../assets/images/terme-card-4.jpg"
-import mapImage from "../assets/images/map-placeholder.jpg"
-import avatar1 from "../assets/images/avatar-1.jpg"
-import avatar2 from "../assets/images/avatar-2.jpg"
 
 function DettaglioStruttura() {
   const { id } = useParams()
+  const navigate = useNavigate()
+  const idUtente = getIdUtente()
 
-  const structures = {
-    1: {
-      name: "Hotel Terme Olympia",
-      city: "Montegrotto Terme",
-      category: "Hotel",
-      rating: 4.6,
-      heroImage: mainImage,
-      gallery: [mainImage, galleryImage2, galleryImage3, galleryImage4],
-    },
-    2: {
-      name: "Terme Sensoriali",
-      city: "Chianciano Terme",
-      category: "Terme",
-      rating: 4.8,
-      heroImage: galleryImage2,
-      gallery: [galleryImage2, mainImage, galleryImage3, galleryImage4],
-    },
-    3: {
-      name: "Terme di Abano",
-      city: "Abano Terme",
-      category: "Terme",
-      rating: 4.7,
-      heroImage: galleryImage3,
-      gallery: [galleryImage3, mainImage, galleryImage2, galleryImage4],
-    },
-    4: {
-      name: "Terme di Sirmione",
-      city: "Sirmione",
-      category: "Terme",
-      rating: 4.9,
-      heroImage: galleryImage4,
-      gallery: [galleryImage4, mainImage, galleryImage2, galleryImage3],
-    },
+  const [structure, setStructure] = useState(null)
+  const [images, setImages] = useState([])
+  const [selectedImage, setSelectedImage] = useState("")
+  const [reviews, setReviews] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const [isSaved, setIsSaved] = useState(false)
+  const [savingFavorite, setSavingFavorite] = useState(false)
+
+  const [reviewForm, setReviewForm] = useState({
+    voto: 5,
+    testo: "",
+  })
+  const [sendingReview, setSendingReview] = useState(false)
+
+  const placeholderImage =
+    "https://via.placeholder.com/1200x700?text=SafeStep+Structure"
+
+  const fetchStructureDetails = useCallback(async () => {
+    try {
+      setLoading(true)
+      setError("")
+
+      const requests = [
+        fetch(`${API_BASE_URL}/strutture/${id}`, {
+          headers: getAuthHeaders(),
+        }),
+        fetch(`${API_BASE_URL}/immagini-struttura/struttura/${id}`, {
+          headers: getAuthHeaders(),
+        }),
+        fetch(`${API_BASE_URL}/recensioni/struttura/${id}`, {
+          headers: getAuthHeaders(),
+        }),
+      ]
+
+      if (idUtente) {
+        requests.push(
+          fetch(`${API_BASE_URL}/strutture-salvate/utente/${idUtente}`, {
+            headers: getAuthHeaders(),
+          }),
+        )
+      }
+
+      const responses = await Promise.all(requests)
+
+      const structureResponse = responses[0]
+      const imagesResponse = responses[1]
+      const reviewsResponse = responses[2]
+      const savedResponse = responses[3]
+
+      if (!structureResponse.ok) {
+        throw new Error("Errore nel caricamento della struttura")
+      }
+
+      const structureData = await structureResponse.json()
+      const imagesData = imagesResponse.ok ? await imagesResponse.json() : []
+      const reviewsData = reviewsResponse.ok ? await reviewsResponse.json() : []
+
+      setStructure(structureData)
+      setImages(imagesData)
+      setReviews(reviewsData)
+
+      if (imagesData.length > 0) {
+        setSelectedImage(imagesData[0].url)
+      } else if (structureData.immagineCopertina) {
+        setSelectedImage(structureData.immagineCopertina)
+      } else {
+        setSelectedImage(placeholderImage)
+      }
+
+      if (savedResponse && savedResponse.ok) {
+        const savedData = await savedResponse.json()
+
+        const alreadySaved = savedData.some(
+          (item) => item.struttura?.idStruttura === structureData.idStruttura,
+        )
+
+        setIsSaved(alreadySaved)
+      } else {
+        setIsSaved(false)
+      }
+    } catch (error) {
+      console.error("Errore caricamento dettaglio struttura:", error)
+      setError("Non è stato possibile caricare questa struttura.")
+    } finally {
+      setLoading(false)
+    }
+  }, [id, idUtente, placeholderImage])
+
+  useEffect(() => {
+    fetchStructureDetails()
+  }, [fetchStructureDetails])
+
+  const handleToggleSaved = async () => {
+    if (!idUtente) {
+      alert("Devi effettuare il login per salvare una struttura.")
+      navigate("/login")
+      return
+    }
+
+    try {
+      setSavingFavorite(true)
+
+      if (isSaved) {
+        const response = await fetch(
+          `${API_BASE_URL}/strutture-salvate/utente/${idUtente}/struttura/${id}`,
+          {
+            method: "DELETE",
+            headers: getAuthHeaders(),
+          },
+        )
+
+        if (!response.ok) {
+          throw new Error("Errore nella rimozione dai preferiti")
+        }
+
+        setIsSaved(false)
+        alert("Struttura rimossa dai preferiti.")
+      } else {
+        const response = await fetch(`${API_BASE_URL}/strutture-salvate`, {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            utenteId: Number(idUtente),
+            strutturaId: Number(id),
+          }),
+        })
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          console.error("Errore salvataggio preferiti:", errorText)
+          throw new Error("Errore nel salvataggio della struttura")
+        }
+
+        setIsSaved(true)
+        alert("Struttura salvata nei preferiti.")
+      }
+    } catch (error) {
+      console.error("Errore preferiti:", error)
+      alert("Operazione non riuscita.")
+    } finally {
+      setSavingFavorite(false)
+    }
   }
 
-  const selectedStructure = structures[id] || structures[1]
+  const handleReviewChange = (e) => {
+    const { name, value } = e.target
 
-  const reviews = [
-    {
-      id: 1,
-      name: "Marta Bianchi",
-      city: "Padova",
-      avatar: avatar1,
-      rating: 4.6,
-      text: "Esperienza fantastica! La piscina è accessibile con una sedia a rotelle e ci sono molte camere adatte. Il personale è stato molto gentile e disponibile. Torneremo sicuramente.",
-      image: mainImage,
-      likes: 56,
-    },
-    {
-      id: 2,
-      name: "Marco Rossi",
-      city: "Verona",
-      avatar: avatar2,
-      rating: 4.4,
-      text: "Struttura molto curata e facile da raggiungere. Ho apprezzato i percorsi senza barriere e la disponibilità del personale all'ingresso.",
-      image: galleryImage2,
-      likes: 34,
-    },
-  ]
+    setReviewForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!idUtente) {
+      alert("Devi effettuare il login per lasciare una recensione.")
+      navigate("/login")
+      return
+    }
+
+    if (!reviewForm.testo.trim()) {
+      alert("Scrivi un testo per la recensione.")
+      return
+    }
+
+    try {
+      setSendingReview(true)
+
+      const response = await fetch(`${API_BASE_URL}/recensioni`, {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          strutturaId: Number(id),
+          utenteId: Number(idUtente),
+          voto: Number(reviewForm.voto),
+          testo: reviewForm.testo.trim(),
+        }),
+      })
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error("Errore invio recensione:", errorText)
+        alert(
+          "Recensione non inviata. Potresti aver già recensito questa struttura.",
+        )
+        return
+      }
+
+      alert("Recensione inviata con successo!")
+
+      setReviewForm({
+        voto: 5,
+        testo: "",
+      })
+
+      fetchStructureDetails()
+    } catch (error) {
+      console.error("Errore invio recensione:", error)
+      alert("Errore durante l'invio della recensione.")
+    } finally {
+      setSendingReview(false)
+    }
+  }
+
+  const formatDate = (dateString) => {
+    if (!dateString) return ""
+    const date = new Date(dateString)
+    return date.toLocaleDateString("it-IT")
+  }
+
+  const allGalleryImages = useMemo(() => {
+    const gallery = []
+
+    if (structure?.immagineCopertina) {
+      gallery.push({
+        id: "cover",
+        url: structure.immagineCopertina,
+      })
+    }
+
+    images.forEach((image) => {
+      if (image.url !== structure?.immagineCopertina) {
+        gallery.push({
+          id: image.idImmagineStruttura,
+          url: image.url,
+        })
+      }
+    })
+
+    if (gallery.length === 0) {
+      gallery.push({
+        id: "placeholder",
+        url: placeholderImage,
+      })
+    }
+
+    return gallery
+  }, [images, structure, placeholderImage])
+
+  const averageVote =
+    reviews.length > 0
+      ? (
+          reviews.reduce((acc, review) => acc + Number(review.voto || 0), 0) /
+          reviews.length
+        ).toFixed(1)
+      : "4.6"
+
+  const voteDistribution = useMemo(() => {
+    const counts = {
+      5: 0,
+      4: 0,
+      3: 0,
+      2: 0,
+      1: 0,
+    }
+
+    reviews.forEach((review) => {
+      const vote = Number(review.voto)
+      if (counts[vote] !== undefined) {
+        counts[vote] += 1
+      }
+    })
+
+    return [5, 4, 3, 2, 1].map((vote) => {
+      const count = counts[vote]
+      const percentage =
+        reviews.length > 0 ? Math.round((count / reviews.length) * 100) : 0
+
+      return {
+        vote,
+        percentage,
+      }
+    })
+  }, [reviews])
+
+  const renderWheelchairs = (count = 5) => {
+    return (
+      <span className="detail-wheelchairs">
+        {Array.from({ length: count }).map((_, index) => (
+          <i key={index} className="bi bi-person-wheelchair"></i>
+        ))}
+      </span>
+    )
+  }
+
+  const renderStars = (vote) => {
+    return (
+      <span className="detail-stars">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <i
+            key={index}
+            className={index < vote ? "bi bi-star-fill" : "bi bi-star"}
+          ></i>
+        ))}
+      </span>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="structure-detail-page">
+        <div className="structure-detail-container">
+          <p className="detail-feedback">Caricamento struttura...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !structure) {
+    return (
+      <div className="structure-detail-page">
+        <div className="structure-detail-container">
+          <p className="detail-feedback">{error || "Struttura non trovata."}</p>
+
+          <Link to="/terme" className="detail-back-link">
+            Torna alle terme
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="detail-page">
+    <div className="structure-detail-page">
       <section
         className="detail-hero"
-        style={{ backgroundImage: `url(${selectedStructure.heroImage})` }}
+        style={{
+          backgroundImage: `url(${selectedImage || structure.immagineCopertina || placeholderImage})`,
+        }}
       >
         <div className="detail-hero-overlay">
           <div className="detail-hero-content">
             <div className="detail-breadcrumb">
-              Home <i className="bi bi-chevron-right"></i>{" "}
-              {selectedStructure.name}
+              <button
+                type="button"
+                className="detail-breadcrumb-link"
+                onClick={() => navigate(-1)}
+              >
+                Home
+              </button>
+              <i className="bi bi-chevron-right"></i>
+              <span>{structure.nome}</span>
             </div>
 
-            <h1>{selectedStructure.name}</h1>
+            <h1>{structure.nome}</h1>
 
             <div className="detail-location-row">
-              <span>
-                <i className="bi bi-geo-alt-fill"></i> {selectedStructure.city}
+              <span className="detail-location">
+                <i className="bi bi-geo-alt-fill"></i>
+                {structure.citta || "Località non disponibile"}
               </span>
 
               <span className="detail-category-badge">
-                {selectedStructure.rating} {selectedStructure.category}
+                {structure.categoria || "Struttura"}
               </span>
             </div>
 
             <div className="detail-action-buttons">
-              <button className="detail-btn light-btn">
-                <i className="bi bi-heart"></i> Salva
+              <button
+                type="button"
+                className="detail-btn light-btn"
+                onClick={handleToggleSaved}
+                disabled={savingFavorite}
+              >
+                <i className="bi bi-heart"></i>
+                {savingFavorite ? "Attendi..." : isSaved ? "Salvata" : "Salva"}
               </button>
 
-              <button className="detail-btn blue-btn">Sito ufficiale</button>
+              {structure.sitoWeb ? (
+                <a
+                  href={structure.sitoWeb}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="detail-btn blue-btn detail-btn-link"
+                >
+                  Sito ufficiale
+                </a>
+              ) : (
+                <button type="button" className="detail-btn blue-btn" disabled>
+                  Sito ufficiale
+                </button>
+              )}
 
-              <button className="detail-btn circle-btn">
+              <button type="button" className="detail-btn circle-btn">
                 <i className="bi bi-send-fill"></i>
               </button>
 
-              <button className="detail-btn green-btn">Indicazioni</button>
+              <button type="button" className="detail-btn green-btn">
+                Indicazioni
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="detail-main-section">
-        <div className="detail-top-layout">
+      <main className="structure-detail-container">
+        <section className="detail-top-layout">
           <div className="detail-gallery-column">
             <div className="detail-main-image-card">
               <img
-                src={selectedStructure.gallery[0]}
-                alt={selectedStructure.name}
+                src={selectedImage || placeholderImage}
+                alt={structure.nome}
+                className="detail-main-image"
               />
 
-              <div className="detail-gallery-counter">1 / 5</div>
+              <div className="detail-gallery-counter">
+                1 / {allGalleryImages.length}
+              </div>
             </div>
 
             <div className="detail-thumbnails">
-              <img src={selectedStructure.gallery[1]} alt="Anteprima 1" />
-              <img src={selectedStructure.gallery[2]} alt="Anteprima 2" />
-              <img src={selectedStructure.gallery[3]} alt="Anteprima 3" />
+              {allGalleryImages.slice(0, 3).map((image) => (
+                <button
+                  key={image.id}
+                  type="button"
+                  className={`detail-thumbnail-button ${
+                    selectedImage === image.url ? "active" : ""
+                  }`}
+                  onClick={() => setSelectedImage(image.url)}
+                >
+                  <img src={image.url} alt="Anteprima struttura" />
+                </button>
+              ))}
             </div>
           </div>
 
-          <div className="detail-side-column">
+          <aside className="detail-side-column">
             <div className="detail-rating-card">
               <h3>Valutazioni e recensioni</h3>
 
               <div className="detail-big-rating">
-                <div className="wheelchair-icons">
-                  <i className="bi bi-person-wheelchair"></i>
-                  <i className="bi bi-person-wheelchair"></i>
-                  <i className="bi bi-person-wheelchair"></i>
-                  <i className="bi bi-person-wheelchair"></i>
-                  <i className="bi bi-person-wheelchair"></i>
-                </div>
-
-                <div className="rating-number">
-                  {selectedStructure.rating} / 5
+                <div className="detail-rating-main">
+                  {renderWheelchairs()}
+                  <span className="rating-number">{averageVote} / 5</span>
                 </div>
               </div>
 
               <div className="rating-bars">
-                <div className="rating-bar-row">
-                  <span>5</span>
-                  <div className="bar">
-                    <div className="bar-fill fill-77"></div>
-                  </div>
-                  <span>77%</span>
-                </div>
+                {voteDistribution.map((item) => (
+                  <div key={item.vote} className="rating-bar-row">
+                    <span>{item.vote}</span>
 
-                <div className="rating-bar-row">
-                  <span>4</span>
-                  <div className="bar">
-                    <div className="bar-fill fill-15"></div>
-                  </div>
-                  <span>15%</span>
-                </div>
+                    <div className="bar">
+                      <div
+                        className="bar-fill"
+                        style={{ width: `${item.percentage}%` }}
+                      ></div>
+                    </div>
 
-                <div className="rating-bar-row">
-                  <span>3</span>
-                  <div className="bar">
-                    <div className="bar-fill fill-4"></div>
+                    <span>{item.percentage}%</span>
                   </div>
-                  <span>4%</span>
-                </div>
-
-                <div className="rating-bar-row">
-                  <span>2</span>
-                  <div className="bar">
-                    <div className="bar-fill fill-2"></div>
-                  </div>
-                  <span>2%</span>
-                </div>
-
-                <div className="rating-bar-row">
-                  <span>1</span>
-                  <div className="bar">
-                    <div className="bar-fill fill-1"></div>
-                  </div>
-                  <span>{"<1%"}</span>
-                </div>
+                ))}
               </div>
 
-              <button className="follow-button">Segui il rilievo</button>
+              <button type="button" className="follow-button">
+                Segui il rilievo
+              </button>
             </div>
 
-            <div className="detail-mini-review-card">
-              <img src={avatar1} alt="utente" />
+            {reviews.length > 0 && (
+              <div className="detail-mini-review-card">
+                <div className="detail-mini-review-avatar">
+                  <i className="bi bi-person-fill"></i>
+                </div>
 
-              <div>
-                <h4>Marta Bianchi</h4>
-                <p>Padova</p>
-
-                <div className="mini-review-rating">
-                  <div className="wheelchair-icons small-icons">
-                    <i className="bi bi-person-wheelchair"></i>
-                    <i className="bi bi-person-wheelchair"></i>
-                    <i className="bi bi-person-wheelchair"></i>
-                    <i className="bi bi-person-wheelchair"></i>
-                    <i className="bi bi-person-wheelchair"></i>
+                <div className="detail-mini-review-content">
+                  <div className="detail-mini-review-top">
+                    <h4>{reviews[0]?.utente?.nomeVisualizzato || "Utente"}</h4>
+                    <p>{structure.citta || "Italia"}</p>
                   </div>
 
-                  <span>4.6 / 5</span>
+                  <div className="mini-review-rating">
+                    {renderWheelchairs()}
+                    <span>{reviews[0]?.voto || 5}.0 / 5</span>
+                    <i className="bi bi-check-circle-fill verified-icon"></i>
+                  </div>
                 </div>
               </div>
+            )}
+          </aside>
+        </section>
 
-              <i className="bi bi-check-circle-fill verified-icon"></i>
-            </div>
-          </div>
-        </div>
-
-        <div className="detail-bottom-layout">
+        <section className="detail-bottom-layout">
           <div className="detail-info-column">
             <div className="info-box">
               <h2>Informazioni</h2>
 
-              <img src={mapImage} alt="Mappa struttura" className="map-image" />
+              <div className="map-placeholder">
+                <i className="bi bi-geo-alt-fill"></i>
+              </div>
 
               <p className="address-line">
-                <i className="bi bi-geo-alt-fill"></i> Via Agordat, 4, 35036
-                Montegrotto Terme PD
+                <i className="bi bi-geo-alt-fill"></i>
+                {structure.indirizzo
+                  ? `${structure.indirizzo}, ${structure.citta || ""}`
+                  : structure.citta || "Indirizzo non disponibile"}
               </p>
 
               <div className="accessibility-block">
-                <h3>
-                  <i className="bi bi-person-wheelchair"></i> Livello di
-                  accessibilità
-                </h3>
+                <h3>Livello di accessibilità</h3>
 
                 <div className="accessibility-rating-row">
-                  <div className="wheelchair-icons">
-                    <i className="bi bi-person-wheelchair"></i>
-                    <i className="bi bi-person-wheelchair"></i>
-                    <i className="bi bi-person-wheelchair"></i>
-                    <i className="bi bi-person-wheelchair"></i>
-                    <i className="bi bi-person-wheelchair"></i>
-                  </div>
-
-                  <span>{selectedStructure.rating} / 5</span>
+                  {renderWheelchairs()}
+                  {renderStars(Math.round(Number(averageVote)))}
+                  <span>{averageVote} / 5</span>
                 </div>
 
                 <ul className="accessibility-list">
                   <li>
-                    <i className="bi bi-check-circle-fill"></i> Piscina con
-                    accesso facilitato
+                    <i className="bi bi-check-circle-fill"></i>
+                    Piscina con accesso facilitato
                   </li>
                   <li>
-                    <i className="bi bi-check-circle-fill"></i> Camere
-                    attrezzate
+                    <i className="bi bi-check-circle-fill"></i>
+                    Camere attrezzate
                   </li>
                   <li>
-                    <i className="bi bi-check-circle-fill"></i> Bagni spaziosi
+                    <i className="bi bi-check-circle-fill"></i>
+                    Bagni spaziosi
                   </li>
                 </ul>
+
+                {structure.telefono && (
+                  <p className="detail-extra-row">
+                    <strong>Telefono:</strong> {structure.telefono}
+                  </p>
+                )}
+
+                {structure.paese && (
+                  <p className="detail-extra-row">
+                    <strong>Paese:</strong> {structure.paese}
+                  </p>
+                )}
               </div>
             </div>
 
-            <div className="comments-box">
-              <h2>Commentari (304)</h2>
+            {reviews.length > 0 && (
+              <div className="comments-box">
+                <h2>Commentari ({reviews.length})</h2>
 
-              <div className="comment-preview-card">
-                <div className="comment-user-row">
-                  <img src={avatar2} alt="utente" />
+                <div className="comment-preview-card">
+                  <div className="comment-user-row">
+                    <div className="detail-mini-review-avatar">
+                      <i className="bi bi-person-fill"></i>
+                    </div>
 
-                  <div>
-                    <h4>Marta Bianchi</h4>
-                    <p>Padova</p>
-
-                    <div className="mini-review-rating">
-                      <div className="wheelchair-icons small-icons">
-                        <i className="bi bi-person-wheelchair"></i>
-                        <i className="bi bi-person-wheelchair"></i>
-                        <i className="bi bi-person-wheelchair"></i>
-                        <i className="bi bi-person-wheelchair"></i>
-                        <i className="bi bi-person-wheelchair"></i>
+                    <div>
+                      <h4>
+                        {reviews[0]?.utente?.nomeVisualizzato || "Utente"}
+                      </h4>
+                      <p>{structure.citta || "Italia"}</p>
+                      <div className="mini-review-rating">
+                        {renderWheelchairs(5)}
+                        {renderStars(reviews[0]?.voto || 5)}
                       </div>
-
-                      <span>4.8 / 5</span>
                     </div>
                   </div>
-                </div>
 
-                <img
-                  src={galleryImage3}
-                  alt="commento visuale"
-                  className="comment-preview-image"
-                />
+                  <img
+                    src={selectedImage || placeholderImage}
+                    alt="Anteprima recensione"
+                    className="comment-preview-image"
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           <div className="detail-reviews-column">
@@ -305,99 +585,158 @@ function DettaglioStruttura() {
               <h2>Valutazioni e recensioni</h2>
               <p>Condividi la tua esperienza con questo luogo!</p>
 
-              <div className="review-input-card">
-                <div className="review-user-header">
-                  <div className="review-user-info">
-                    <img src={avatar2} alt="Matteo" />
-                    <div>
-                      <h4>Matteo</h4>
-                      <div className="wheelchair-icons small-icons">
-                        <i className="bi bi-person-wheelchair"></i>
-                        <i className="bi bi-person-wheelchair"></i>
-                        <i className="bi bi-person-wheelchair"></i>
-                        <i className="bi bi-person-wheelchair"></i>
-                        <i className="bi bi-person-wheelchair"></i>
-                      </div>
-                    </div>
-                  </div>
+              {!idUtente ? (
+                <div className="review-login-box">
+                  <p>Effettua il login per scrivere una recensione.</p>
 
-                  <button className="upload-photo-button">
-                    <i className="bi bi-camera-fill"></i> Carica foto
+                  <button
+                    type="button"
+                    className="review-submit-button"
+                    onClick={() => navigate("/login")}
+                  >
+                    Vai al login
                   </button>
                 </div>
+              ) : (
+                <form
+                  onSubmit={handleReviewSubmit}
+                  className="review-input-card"
+                >
+                  <div className="review-user-header">
+                    <div className="review-user-info">
+                      <div className="detail-mini-review-avatar big-avatar">
+                        <i className="bi bi-person-fill"></i>
+                      </div>
 
-                <textarea placeholder="Scrivi la tua recensione"></textarea>
+                      <div>
+                        <h4>La tua recensione</h4>
+                        <div className="review-vote-selector">
+                          <label htmlFor="voto">Voto</label>
+                          <select
+                            id="voto"
+                            name="voto"
+                            value={reviewForm.voto}
+                            onChange={handleReviewChange}
+                          >
+                            <option value={1}>1</option>
+                            <option value={2}>2</option>
+                            <option value={3}>3</option>
+                            <option value={4}>4</option>
+                            <option value={5}>5</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
 
-                <div className="review-form-footer">
-                  <div className="review-upload-preview"></div>
-
-                  <div className="review-actions">
-                    <button>
-                      <i className="bi bi-hand-thumbs-up-fill"></i>
+                    <button type="button" className="upload-photo-button">
+                      <i className="bi bi-camera-fill"></i>
+                      Carica foto
                     </button>
-                    <button>Rispondi</button>
                   </div>
-                </div>
-              </div>
+
+                  <textarea
+                    name="testo"
+                    value={reviewForm.testo}
+                    onChange={handleReviewChange}
+                    placeholder="Scrivi la tua recensione"
+                  ></textarea>
+
+                  <div className="review-form-footer">
+                    <div className="review-upload-preview"></div>
+
+                    <div className="review-actions">
+                      <button type="button">
+                        <i className="bi bi-circle-fill"></i>
+                      </button>
+
+                      <button type="button">
+                        <i className="bi bi-hand-thumbs-up-fill"></i>
+                      </button>
+
+                      <button
+                        type="submit"
+                        className="review-submit-button"
+                        disabled={sendingReview}
+                      >
+                        {sendingReview
+                          ? "Invio in corso..."
+                          : "Invia recensione"}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              )}
             </div>
 
             <div className="reviews-list-box">
               <div className="reviews-pagination">
-                <button className="active-page">1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>...</button>
-                <button>5</button>
+                <button type="button" className="active-page">
+                  1
+                </button>
+                <button type="button">2</button>
+                <button type="button">3</button>
+                <button type="button">...</button>
+                <button type="button">5</button>
               </div>
 
-              {reviews.map((review) => (
-                <div key={review.id} className="review-card">
-                  <div className="review-card-header">
-                    <div className="review-card-user">
-                      <img src={review.avatar} alt={review.name} />
-                      <div>
-                        <div className="review-name-row">
-                          <h4>{review.name}</h4>
-                          <span>{review.city}</span>
+              {reviews.length === 0 ? (
+                <div className="review-card">
+                  <p className="detail-feedback">
+                    Ancora nessuna recensione per questa struttura.
+                  </p>
+                </div>
+              ) : (
+                reviews.map((review) => (
+                  <article key={review.idRecensione} className="review-card">
+                    <div className="review-card-header">
+                      <div className="review-card-user">
+                        <div className="detail-mini-review-avatar big-avatar">
+                          <i className="bi bi-person-fill"></i>
                         </div>
 
-                        <div className="mini-review-rating">
-                          <div className="wheelchair-icons small-icons">
-                            <i className="bi bi-person-wheelchair"></i>
-                            <i className="bi bi-person-wheelchair"></i>
-                            <i className="bi bi-person-wheelchair"></i>
-                            <i className="bi bi-person-wheelchair"></i>
-                            <i className="bi bi-person-wheelchair"></i>
+                        <div>
+                          <div className="review-name-row">
+                            <h4>
+                              {review.utente?.nomeVisualizzato || "Utente"}
+                            </h4>
+                            <span>{structure.citta || "Italia"}</span>
                           </div>
 
-                          <span>{review.rating} / 5</span>
+                          <div className="mini-review-rating">
+                            {renderWheelchairs()}
+                            {renderStars(review.voto || 5)}
+                          </div>
                         </div>
+                      </div>
+
+                      <div className="review-donations">
+                        {formatDate(review.dataCreazione)}
                       </div>
                     </div>
 
-                    <div className="review-donations">3 doni</div>
-                  </div>
+                    <p className="review-text">{review.testo}</p>
 
-                  <p className="review-text">{review.text}</p>
+                    <img
+                      src={selectedImage || placeholderImage}
+                      alt="Recensione struttura"
+                      className="review-image"
+                    />
 
-                  <img
-                    src={review.image}
-                    alt="review"
-                    className="review-image"
-                  />
+                    <div className="review-bottom-row">
+                      <button type="button">
+                        <i className="bi bi-hand-thumbs-up"></i>
+                        56
+                      </button>
 
-                  <div className="review-bottom-row">
-                    <button>
-                      <i className="bi bi-hand-thumbs-up"></i> {review.likes}
-                    </button>
-                    <button>Rispondi</button>
-                  </div>
-                </div>
-              ))}
+                      <button type="button">Rispondi</button>
+                    </div>
+                  </article>
+                ))
+              )}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
     </div>
   )
 }

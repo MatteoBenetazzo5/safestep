@@ -11,6 +11,10 @@ export const getToken = () => {
   return localStorage.getItem("token")
 }
 
+export const getIdUtente = () => {
+  return localStorage.getItem("idUtente")
+}
+
 export const getRuolo = () => {
   return localStorage.getItem("ruolo")
 }

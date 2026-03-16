@@ -2,9 +2,11 @@ import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap"
 import { NavLink, useNavigate } from "react-router-dom"
 import "../styles/components/NavigationBar.css"
 import logo from "../assets/logos/SAFESTEP_LOGO.png"
+
 import {
   getAvatar,
   getNomeVisualizzato,
+  getRuolo,
   isLoggedIn,
   logout,
 } from "../utils/auth"
@@ -15,6 +17,8 @@ function NavigationBar() {
   const logged = isLoggedIn()
   const avatar = getAvatar()
   const nomeVisualizzato = getNomeVisualizzato() || "U"
+  const ruolo = getRuolo()
+
   const initial = nomeVisualizzato.charAt(0).toUpperCase()
 
   const handleLogout = () => {
@@ -22,13 +26,17 @@ function NavigationBar() {
     navigate("/login")
   }
 
+  const profileRoute = ruolo === "ADMIN" ? "/admin" : "/profilo"
+
   return (
     <div className="navbar-overlay-wrapper">
       <Container className="navbar-overlay-container">
+        {/* LOGO */}
         <NavLink to="/" className="navbar-logo-side">
           <img src={logo} alt="SafeStep logo" />
         </NavLink>
 
+        {/* NAVBAR GLASS */}
         <div className="navbar-pill">
           <Navbar expand="lg" className="safestep-navbar">
             <Navbar.Toggle aria-controls="main-navbar" />
@@ -43,12 +51,15 @@ function NavigationBar() {
                   <NavDropdown.Item as={NavLink} to="/terme">
                     Terme
                   </NavDropdown.Item>
+
                   <NavDropdown.Item as={NavLink} to="/ristoranti">
                     Ristoranti
                   </NavDropdown.Item>
+
                   <NavDropdown.Item as={NavLink} to="/hotel">
                     Hotel
                   </NavDropdown.Item>
+
                   <NavDropdown.Item as={NavLink} to="/parchi">
                     Parchi
                   </NavDropdown.Item>
@@ -57,12 +68,9 @@ function NavigationBar() {
                 <Nav.Link as={NavLink} to="/profilo">
                   Preferiti
                 </Nav.Link>
-
-                <Nav.Link as={NavLink} to="/admin">
-                  Menu
-                </Nav.Link>
               </Nav>
 
+              {/* RIGHT SIDE */}
               <div className="navbar-right">
                 <div className="navbar-search">
                   <i className="bi bi-search"></i>
@@ -78,8 +86,9 @@ function NavigationBar() {
                       Esci
                     </button>
 
+                    {/* AVATAR */}
                     <NavLink
-                      to="/profilo"
+                      to={profileRoute}
                       className="navbar-profile avatar-profile"
                     >
                       {avatar ? (

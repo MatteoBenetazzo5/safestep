@@ -1,5 +1,13 @@
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { getAvatar, getEmail, getNomeVisualizzato, logout } from "../utils/auth"
+import {
+  getAvatar,
+  getEmail,
+  getIdUtente,
+  getNomeVisualizzato,
+  logout,
+} from "../utils/auth"
+import { API_BASE_URL, getAuthHeaders } from "../utils/api"
 import "../styles/pages/AdminDashboard.css"
 
 function AdminDashboard() {
@@ -9,100 +17,250 @@ function AdminDashboard() {
   const email = getEmail() || "admin@safestep.com"
   const avatar = getAvatar()
   const initial = nomeVisualizzato.charAt(0).toUpperCase()
+  const idUtente = getIdUtente()
+
+  const [structures, setStructures] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [showForm, setShowForm] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [editingId, setEditingId] = useState(null)
+  const [saving, setSaving] = useState(false)
+
+  const [formData, setFormData] = useState({
+    categoria: "TERME",
+    nome: "",
+    descrizione: "",
+    indirizzo: "",
+    citta: "",
+    paese: "Italia",
+    telefono: "",
+    sitoWeb: "",
+    immagineCopertina: "",
+    latitudine: "",
+    longitudine: "",
+    stato: "APPROVATA",
+  })
 
   const stats = [
-    { id: 1, icon: "bi-people-fill", number: "1,245", label: "Utenti" },
-    { id: 2, icon: "bi-grid-1x2-fill", number: "158", label: "Strutture" },
-    {
-      id: 3,
-      icon: "bi-chat-left-text-fill",
-      number: "870",
-      label: "Recensioni",
-    },
-    { id: 4, icon: "bi-heart-fill", number: "2,310", label: "Salvataggi" },
-  ]
-
-  const structures = [
     {
       id: 1,
-      title: "Hotel Terme Olympia",
-      city: "Montegrotto Terme",
-      rating: 4.5,
-      image:
-        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=500&fit=crop",
-    },
-    {
-      id: 2,
-      title: "Terme Sensoriali",
-      city: "Abano Terme",
-      rating: 4.5,
-      image:
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=500&fit=crop",
-    },
-    {
-      id: 3,
-      title: "Parco Termale del Garda",
-      city: "Colà di Lazise",
-      rating: 4.5,
-      image:
-        "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&h=500&fit=crop",
-    },
-    {
-      id: 4,
-      title: "Terme di Saturnia",
-      city: "Saturnia",
-      rating: 4.5,
-      image:
-        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&h=500&fit=crop",
-    },
-    {
-      id: 5,
-      title: "Terme Bagni Vecchi",
-      city: "Bormio",
-      rating: 4.7,
-      image:
-        "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=800&h=500&fit=crop",
-    },
-    {
-      id: 6,
-      title: "Victoria Terme Hotel",
-      city: "Tivoli Terme",
-      rating: 4.6,
-      image:
-        "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800&h=500&fit=crop",
-    },
-  ]
-
-  const reviews = [
-    {
-      id: 1,
-      name: "Marco",
-      place: "Hotel Terme Olympia",
-      text: "Ultime recensioni positive e struttura accessibile.",
-    },
-    {
-      id: 2,
-      name: "Sara",
-      place: "Terme Sensoriali",
-      text: "Percorso comodo e personale molto disponibile.",
-    },
-    {
-      id: 3,
-      name: "Francesco",
-      place: "Parco Termale del Garda",
-      text: "Area ben organizzata e ottima accessibilità.",
-    },
-    {
-      id: 4,
-      name: "Lisa",
-      place: "Terme di Saturnia",
-      text: "Hotel curato e accessi molto comodi.",
+      icon: "bi-grid-1x2-fill",
+      number: structures.length,
+      label: "Strutture",
     },
   ]
 
   const handleLogout = () => {
     logout()
     navigate("/login")
+  }
+
+  const resetForm = () => {
+    setFormData({
+      categoria: "TERME",
+      nome: "",
+      descrizione: "",
+      indirizzo: "",
+      citta: "",
+      paese: "Italia",
+      telefono: "",
+      sitoWeb: "",
+      immagineCopertina: "",
+      latitudine: "",
+      longitudine: "",
+      stato: "APPROVATA",
+    })
+    setSelectedImage(null)
+    setEditingId(null)
+    setShowForm(false)
+  }
+
+  const fetchStructures = async () => {
+    try {
+      setLoading(true)
+
+      const response = await fetch(
+        `${API_BASE_URL}/strutture/categoria/TERME`,
+        {
+          headers: getAuthHeaders(),
+        },
+      )
+
+      if (!response.ok) {
+        throw new Error("Errore nel recupero delle strutture")
+      }
+
+      const data = await response.json()
+      setStructures(data)
+    } catch (error) {
+      console.error("Errore caricamento strutture:", error)
+      alert("Errore nel caricamento delle strutture")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchStructures()
+  }, [])
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(e.target.files[0])
+    }
+  }
+
+  const uploadImage = async () => {
+    if (!selectedImage) {
+      return (
+        formData.immagineCopertina ||
+        "https://via.placeholder.com/800x500?text=SafeStep"
+      )
+    }
+
+    const data = new FormData()
+    data.append("file", selectedImage)
+
+    const response = await fetch(`${API_BASE_URL}/upload/image`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: data,
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error("Errore upload immagine:", errorText)
+      throw new Error("Upload immagine non riuscito")
+    }
+
+    const result = await response.json()
+    return result.url
+  }
+
+  const handleCreateOrUpdateStructure = async (e) => {
+    e.preventDefault()
+
+    try {
+      setSaving(true)
+
+      const imageUrl = await uploadImage()
+
+      const body = {
+        categoria: formData.categoria,
+        nome: formData.nome,
+        descrizione: formData.descrizione,
+        indirizzo: formData.indirizzo,
+        citta: formData.citta,
+        paese: formData.paese,
+        telefono: formData.telefono,
+        sitoWeb: formData.sitoWeb,
+        immagineCopertina: imageUrl || "",
+        latitudine: formData.latitudine ? Number(formData.latitudine) : null,
+        longitudine: formData.longitudine ? Number(formData.longitudine) : null,
+        stato: formData.stato,
+      }
+
+      let response
+
+      if (editingId) {
+        response = await fetch(`${API_BASE_URL}/strutture/${editingId}`, {
+          method: "PUT",
+          headers: getAuthHeaders(),
+          body: JSON.stringify(body),
+        })
+      } else {
+        response = await fetch(`${API_BASE_URL}/strutture`, {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            ...body,
+            creataDaId: idUtente,
+          }),
+        })
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error("Errore salvataggio struttura:", errorText)
+        alert("Salvataggio struttura non riuscito")
+        return
+      }
+
+      alert(
+        editingId
+          ? "Struttura aggiornata con successo!"
+          : "Struttura creata con successo!",
+      )
+      resetForm()
+      fetchStructures()
+    } catch (error) {
+      console.error("Errore salvataggio struttura:", error)
+      alert("Errore durante il salvataggio della struttura")
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleEditStructure = (structure) => {
+    setEditingId(structure.idStruttura)
+    setShowForm(true)
+    setSelectedImage(null)
+
+    setFormData({
+      categoria: structure.categoria || "TERME",
+      nome: structure.nome || "",
+      descrizione: structure.descrizione || "",
+      indirizzo: structure.indirizzo || "",
+      citta: structure.citta || "",
+      paese: structure.paese || "Italia",
+      telefono: structure.telefono || "",
+      sitoWeb: structure.sitoWeb || "",
+      immagineCopertina: structure.immagineCopertina || "",
+      latitudine: structure.latitudine || "",
+      longitudine: structure.longitudine || "",
+      stato: structure.stato || "APPROVATA",
+    })
+  }
+
+  const handleDeleteStructure = async (idStruttura) => {
+    const conferma = window.confirm(
+      "Sei sicuro di voler eliminare questa struttura?",
+    )
+
+    if (!conferma) {
+      return
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/strutture/${idStruttura}`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      })
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error("Errore eliminazione struttura:", errorText)
+        alert("Eliminazione non riuscita")
+        return
+      }
+
+      alert("Struttura eliminata con successo!")
+      fetchStructures()
+    } catch (error) {
+      console.error("Errore eliminazione struttura:", error)
+      alert("Errore durante l'eliminazione")
+    }
   }
 
   return (
@@ -128,25 +286,7 @@ function AdminDashboard() {
             <i className="bi bi-building"></i>
             Gestione strutture
           </button>
-
-          <button className="admin-menu-link">
-            <i className="bi bi-people"></i>
-            Gestione utenti
-          </button>
-
-          <button className="admin-menu-link">
-            <i className="bi bi-card-text"></i>
-            Gestione contenuti
-          </button>
         </nav>
-
-        <div className="admin-system-box">
-          <h3>Impostazioni sistema</h3>
-
-          <button className="admin-system-link">Categorie</button>
-          <button className="admin-system-link">Caratteristiche</button>
-          <button className="admin-system-link">Accessibilità</button>
-        </div>
 
         <button className="admin-logout-button" onClick={handleLogout}>
           <i className="bi bi-box-arrow-right"></i>
@@ -191,98 +331,263 @@ function AdminDashboard() {
           ))}
         </section>
 
-        <section className="admin-filters-card">
-          <div className="admin-search-row">
-            <div className="admin-search-box">
-              <i className="bi bi-search"></i>
-              <input type="text" placeholder="Cerca per nome o per categoria" />
-            </div>
-
-            <button>Categorie</button>
-            <button>Accessibilità</button>
-            <button>Salvate</button>
-            <button className="filter-main-button">Filtra</button>
-          </div>
-        </section>
-
         <section className="admin-main-grid">
           <div className="admin-left-column">
             <div className="admin-section-header">
               <h2>Gestione strutture termali</h2>
-              <button className="admin-add-button">
+
+              <button
+                className="admin-add-button"
+                onClick={() => {
+                  if (showForm && editingId) {
+                    resetForm()
+                  } else {
+                    setShowForm(!showForm)
+                  }
+                }}
+              >
                 <i className="bi bi-plus-lg"></i>
-                Aggiungi nuova struttura
+                {showForm ? "Chiudi form" : "Aggiungi nuova struttura"}
               </button>
             </div>
 
-            <div className="admin-cards-grid">
-              {structures.map((structure) => (
-                <div key={structure.id} className="admin-structure-card">
-                  <img src={structure.image} alt={structure.title} />
+            {showForm && (
+              <form
+                className="admin-side-card mb-4"
+                onSubmit={handleCreateOrUpdateStructure}
+              >
+                <h3>
+                  {editingId ? "Modifica struttura" : "Crea nuova struttura"}
+                </h3>
 
-                  <div className="admin-structure-body">
-                    <h3>{structure.title}</h3>
-                    <p>{structure.city}</p>
-
-                    <div className="admin-structure-rating">
-                      <span className="stars">
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-fill"></i>
-                        <i className="bi bi-star-half"></i>
-                      </span>
-                      <span>{structure.rating}</span>
-                    </div>
-
-                    <div className="admin-card-actions">
-                      <button className="edit-btn">Modifica</button>
-                      <button className="delete-btn">Elimina</button>
-                    </div>
-                  </div>
+                <div className="mb-3">
+                  <label>Nome</label>
+                  <input
+                    type="text"
+                    name="nome"
+                    value={formData.nome}
+                    onChange={handleChange}
+                    className="form-control"
+                    required
+                  />
                 </div>
-              ))}
-            </div>
-          </div>
 
-          <div className="admin-right-column">
-            <div className="admin-side-card">
-              <h3>Ultime recensioni</h3>
+                <div className="mb-3">
+                  <label>Descrizione</label>
+                  <textarea
+                    name="descrizione"
+                    value={formData.descrizione}
+                    onChange={handleChange}
+                    className="form-control"
+                    rows="4"
+                  ></textarea>
+                </div>
 
-              <div className="admin-side-list">
-                {reviews.map((review) => (
-                  <div key={review.id} className="admin-side-item">
-                    <div className="admin-side-avatar">
-                      {review.name.charAt(0)}
-                    </div>
+                <div className="mb-3">
+                  <label>Indirizzo</label>
+                  <input
+                    type="text"
+                    name="indirizzo"
+                    value={formData.indirizzo}
+                    onChange={handleChange}
+                    className="form-control"
+                  />
+                </div>
 
-                    <div>
-                      <h4>{review.name}</h4>
-                      <strong>{review.place}</strong>
-                      <p>{review.text}</p>
+                <div className="mb-3">
+                  <label>Città</label>
+                  <input
+                    type="text"
+                    name="citta"
+                    value={formData.citta}
+                    onChange={handleChange}
+                    className="form-control"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label>Paese</label>
+                  <input
+                    type="text"
+                    name="paese"
+                    value={formData.paese}
+                    onChange={handleChange}
+                    className="form-control"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label>Telefono</label>
+                  <input
+                    type="text"
+                    name="telefono"
+                    value={formData.telefono}
+                    onChange={handleChange}
+                    className="form-control"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label>Sito Web</label>
+                  <input
+                    type="text"
+                    name="sitoWeb"
+                    value={formData.sitoWeb}
+                    onChange={handleChange}
+                    className="form-control"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label>Latitudine</label>
+                  <input
+                    type="number"
+                    step="any"
+                    name="latitudine"
+                    value={formData.latitudine}
+                    onChange={handleChange}
+                    className="form-control"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label>Longitudine</label>
+                  <input
+                    type="number"
+                    step="any"
+                    name="longitudine"
+                    value={formData.longitudine}
+                    onChange={handleChange}
+                    className="form-control"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label>Stato</label>
+                  <select
+                    name="stato"
+                    value={formData.stato}
+                    onChange={handleChange}
+                    className="form-control"
+                  >
+                    <option value="APPROVATA">APPROVATA</option>
+                    <option value="BOZZA">BOZZA</option>
+                    <option value="IN_REVISIONE">IN_REVISIONE</option>
+                  </select>
+                </div>
+
+                <div className="mb-3">
+                  <label>Immagine</label>
+                  <input
+                    type="file"
+                    onChange={handleImageChange}
+                    className="form-control"
+                    accept="image/*"
+                  />
+                </div>
+
+                {formData.immagineCopertina && (
+                  <div className="mb-3">
+                    <img
+                      src={formData.immagineCopertina}
+                      alt="Anteprima"
+                      style={{ width: "220px", borderRadius: "12px" }}
+                    />
+                  </div>
+                )}
+
+                <div style={{ display: "flex", gap: "12px" }}>
+                  <button
+                    type="submit"
+                    className="admin-add-button"
+                    disabled={saving}
+                  >
+                    {saving
+                      ? "Salvataggio..."
+                      : editingId
+                        ? "Aggiorna struttura"
+                        : "Salva struttura"}
+                  </button>
+
+                  {editingId && (
+                    <button
+                      type="button"
+                      className="delete-btn"
+                      onClick={resetForm}
+                    >
+                      Annulla modifica
+                    </button>
+                  )}
+                </div>
+              </form>
+            )}
+
+            {loading ? (
+              <p>Caricamento strutture...</p>
+            ) : (
+              <div className="admin-cards-grid">
+                {structures.map((structure) => (
+                  <div
+                    key={structure.idStruttura}
+                    className="admin-structure-card"
+                  >
+                    <img
+                      src={
+                        structure.immagineCopertina ||
+                        "https://via.placeholder.com/800x500?text=No+Image"
+                      }
+                      alt={structure.nome}
+                    />
+
+                    <div className="admin-structure-body">
+                      <h3>{structure.nome}</h3>
+                      <p>{structure.citta}</p>
+
+                      <div className="admin-structure-rating">
+                        <span>{structure.categoria}</span>
+                      </div>
+
+                      <div className="admin-card-actions">
+                        <button
+                          className="edit-btn"
+                          onClick={() =>
+                            navigate(`/struttura/${structure.idStruttura}`)
+                          }
+                        >
+                          Apri
+                        </button>
+
+                        <button
+                          className="edit-btn"
+                          onClick={() => handleEditStructure(structure)}
+                        >
+                          Modifica
+                        </button>
+
+                        <button
+                          className="delete-btn"
+                          onClick={() =>
+                            handleDeleteStructure(structure.idStruttura)
+                          }
+                        >
+                          Elimina
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
+            )}
+          </div>
 
+          <div className="admin-right-column">
             <div className="admin-side-card">
-              <h3>Operazioni rapide</h3>
-
-              <button className="admin-quick-button">
-                <i className="bi bi-plus-square"></i>
-                Crea nuova struttura
-              </button>
-
-              <button className="admin-quick-button">
-                <i className="bi bi-person-plus"></i>
-                Aggiungi utente
-              </button>
-
-              <button className="admin-quick-button">
-                <i className="bi bi-list-task"></i>
-                Gestisci categorie
-              </button>
+              <h3>Note rapide</h3>
+              <div className="admin-side-list">
+                <p>Ora puoi creare, modificare ed eliminare strutture.</p>
+                <p>L'immagine viene caricata davvero sul backend.</p>
+                <p>La parte stile la rifiniamo dopo.</p>
+              </div>
             </div>
           </div>
         </section>

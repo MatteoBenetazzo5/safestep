@@ -2,15 +2,15 @@
   min-height: 100vh;
   background: #f4f6fb;
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 1fr;
   color: #2f3b4f;
 }
 
 .admin-sidebar {
+  display: none;
   background: linear-gradient(180deg, #f8fbff 0%, #f3f6fb 100%);
   border-right: 1px solid #dfe7f2;
   padding: 24px 18px;
-  display: flex;
   flex-direction: column;
   gap: 24px;
 }
@@ -106,7 +106,7 @@
 }
 
 .admin-content {
-  padding: 26px;
+  padding: 18px;
 }
 
 .admin-topbar {
@@ -148,9 +148,9 @@
 
 .admin-stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-bottom: 22px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .admin-user-image {
@@ -247,8 +247,8 @@
 
 .admin-main-grid {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) 360px;
-  gap: 22px;
+  grid-template-columns: 1fr;
+  gap: 16px;
 }
 
 .admin-section-header {
@@ -278,8 +278,8 @@
 
 .admin-cards-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
+  grid-template-columns: 1fr;
+  gap: 14px;
 }
 
 .admin-structure-card {
@@ -417,20 +417,47 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .admin-content {
-    padding: 18px;
+    padding: 22px;
   }
 
-  .admin-topbar,
-  .admin-section-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .admin-search-row,
-  .admin-cards-grid,
   .admin-stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .admin-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-page {
+    grid-template-columns: 280px 1fr;
+  }
+
+  .admin-sidebar {
+    display: flex;
+  }
+
+  .admin-content {
+    padding: 26px;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .admin-main-grid {
+    grid-template-columns: minmax(0, 2fr) 360px;
+    gap: 22px;
+  }
+
+  .admin-cards-grid {
+    gap: 18px;
   }
 }

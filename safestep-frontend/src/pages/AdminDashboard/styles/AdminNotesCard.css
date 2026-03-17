@@ -1,0 +1,46 @@
+.admin-side-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-side-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.admin-side-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #41b8de, #59d39a);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.admin-side-item h4 {
+  margin: 0 0 3px 0;
+  font-size: 1rem;
+}
+
+.admin-side-item strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.admin-side-item p {
+  margin: 0;
+  color: #6b7a92;
+  line-height: 1.5;
+}
+
+.admin-side-list p {
+  margin: 0;
+  color: #6b7a92;
+  line-height: 1.5;
+}

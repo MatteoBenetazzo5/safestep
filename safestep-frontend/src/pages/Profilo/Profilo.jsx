@@ -6,9 +6,17 @@ import {
   getIdUtente,
   getNomeVisualizzato,
   logout,
-} from "../utils/auth"
-import { API_BASE_URL, getAuthHeaders } from "../utils/api"
-import "../styles/pages/Profilo.css"
+} from "../../utils/auth"
+import { API_BASE_URL, getAuthHeaders } from "../../utils/api"
+
+import ProfileHeader from "./components/ProfileHeader"
+import AccountForm from "./components/AccountForm"
+import AccessibilityProfileForm from "./components/AccessibilityProfileForm"
+import PreferencesForm from "./components/PreferencesForm"
+import PreferencesList from "./components/PreferencesList"
+import SavedPlaces from "./components/SavedPlaces"
+
+import "./styles/ProfiloLayout.css"
 
 function Profilo() {
   const navigate = useNavigate()
@@ -380,278 +388,53 @@ function Profilo() {
   return (
     <section className="profile-page">
       <div className="profile-container">
-        <div className="profile-header-card">
-          <div className="profile-main-info">
-            <div className="profile-avatar-wrapper">
-              {avatar ? (
-                <img
-                  src={avatar}
-                  alt={nomeVisualizzato}
-                  className="profile-avatar"
-                />
-              ) : (
-                <div className="profile-avatar-fallback">{initial}</div>
-              )}
-            </div>
-
-            <div>
-              <h1>{nomeVisualizzato}</h1>
-              <p>{email}</p>
-              <p>{userForm.telefono || "Nessun telefono inserito"}</p>
-            </div>
-          </div>
-
-          <button className="profile-logout-button" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
+        <ProfileHeader
+          avatar={avatar}
+          nomeVisualizzato={nomeVisualizzato}
+          email={email}
+          telefono={userForm.telefono}
+          initial={initial}
+          onLogout={handleLogout}
+        />
 
         <div className="profile-grid">
           <div className="profile-left-column">
-            <div className="profile-side-card">
-              <h3>Dati account</h3>
+            <AccountForm
+              userForm={userForm}
+              onChange={handleUserChange}
+              onSubmit={handleSaveUser}
+              savingUser={savingUser}
+            />
 
-              <form onSubmit={handleSaveUser}>
-                <div className="mb-3">
-                  <label>Nome visualizzato</label>
-                  <input
-                    type="text"
-                    name="nomeVisualizzato"
-                    value={userForm.nomeVisualizzato}
-                    onChange={handleUserChange}
-                    className="form-control"
-                    required
-                  />
-                </div>
+            <AccessibilityProfileForm
+              profileForm={profileForm}
+              onChange={handleProfileChange}
+              onSubmit={handleSaveProfile}
+              savingProfile={savingProfile}
+            />
 
-                <div className="mb-3">
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={userForm.email}
-                    onChange={handleUserChange}
-                    className="form-control"
-                    required
-                  />
-                </div>
+            <PreferencesForm
+              preferenceForm={preferenceForm}
+              caratteristiche={caratteristiche}
+              onChange={handlePreferenceChange}
+              onSubmit={handleAddPreference}
+              savingPreference={savingPreference}
+            />
 
-                <div className="mb-3">
-                  <label>Telefono</label>
-                  <input
-                    type="text"
-                    name="telefono"
-                    value={userForm.telefono}
-                    onChange={handleUserChange}
-                    className="form-control"
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label>Avatar URL</label>
-                  <input
-                    type="text"
-                    name="avatar"
-                    value={userForm.avatar}
-                    onChange={handleUserChange}
-                    className="form-control"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="profile-gradient-button"
-                  disabled={savingUser}
-                >
-                  {savingUser ? "Salvataggio..." : "Salva dati account"}
-                </button>
-              </form>
-            </div>
-
-            <div className="profile-side-card">
-              <h3>Profilo accessibilità</h3>
-
-              <form onSubmit={handleSaveProfile}>
-                <div className="mb-3">
-                  <label>Tipo mobilità</label>
-                  <input
-                    type="text"
-                    name="tipoMobilita"
-                    value={profileForm.tipoMobilita}
-                    onChange={handleProfileChange}
-                    className="form-control"
-                    placeholder="Es. Carrozzina manuale"
-                    required
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label>Note</label>
-                  <textarea
-                    name="note"
-                    value={profileForm.note}
-                    onChange={handleProfileChange}
-                    className="form-control"
-                    rows="4"
-                    placeholder="Scrivi eventuali esigenze personali"
-                  ></textarea>
-                </div>
-
-                <div className="mb-3">
-                  <label>Colore tema</label>
-                  <input
-                    type="text"
-                    name="coloreTema"
-                    value={profileForm.coloreTema}
-                    onChange={handleProfileChange}
-                    className="form-control"
-                    placeholder="Es. azzurro, verde, lilla"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="profile-gradient-button"
-                  disabled={savingProfile}
-                >
-                  {savingProfile ? "Salvataggio..." : "Salva profilo"}
-                </button>
-              </form>
-            </div>
-
-            <div className="profile-side-card">
-              <h3>Preferenze accessibilità</h3>
-
-              <form onSubmit={handleAddPreference}>
-                <div className="mb-3">
-                  <label>Caratteristica</label>
-                  <select
-                    name="caratteristicaId"
-                    value={preferenceForm.caratteristicaId}
-                    onChange={handlePreferenceChange}
-                    className="form-control"
-                  >
-                    <option value="">Seleziona una caratteristica</option>
-                    {caratteristiche.map((caratteristica) => (
-                      <option
-                        key={caratteristica.idCaratteristica}
-                        value={caratteristica.idCaratteristica}
-                      >
-                        {caratteristica.nome}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label>Livello preferenza</label>
-                  <select
-                    name="livelloPreferenza"
-                    value={preferenceForm.livelloPreferenza}
-                    onChange={handlePreferenceChange}
-                    className="form-control"
-                  >
-                    <option value="IMPORTANTE">IMPORTANTE</option>
-                    <option value="UTILE">UTILE</option>
-                    <option value="OPZIONALE">OPZIONALE</option>
-                  </select>
-                </div>
-
-                <button
-                  type="submit"
-                  className="profile-gradient-button"
-                  disabled={savingPreference}
-                >
-                  {savingPreference ? "Aggiunta..." : "Aggiungi preferenza"}
-                </button>
-              </form>
-
-              <div className="profile-preferences-list">
-                {preferenze.length === 0 ? (
-                  <p>Nessuna preferenza salvata.</p>
-                ) : (
-                  preferenze.map((item) => (
-                    <div
-                      key={item.idPreferenza}
-                      className="profile-preference-item"
-                    >
-                      <div>
-                        <strong>
-                          {item.caratteristica?.nome || "Caratteristica"}
-                        </strong>
-                        <p>{item.livelloPreferenza}</p>
-                      </div>
-
-                      <button
-                        className="profile-remove-button"
-                        onClick={() =>
-                          handleDeletePreference(item.idPreferenza)
-                        }
-                      >
-                        Elimina
-                      </button>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
+            <PreferencesList
+              preferenze={preferenze}
+              onDeletePreference={handleDeletePreference}
+            />
           </div>
 
           <div className="profile-right-column">
-            <div className="profile-side-card">
-              <h3>Luoghi salvati</h3>
-
-              {savedPlaces.length === 0 ? (
-                <p>Nessuna struttura salvata.</p>
-              ) : (
-                <div className="profile-saved-grid">
-                  {savedPlaces.map((item) => (
-                    <div
-                      key={item.idStrutturaSalvata}
-                      className="profile-saved-card"
-                    >
-                      <img
-                        src={
-                          item.struttura?.immagineCopertina ||
-                          "https://via.placeholder.com/600x350?text=SafeStep"
-                        }
-                        alt={item.struttura?.nome || "Struttura"}
-                      />
-
-                      <div className="profile-saved-body">
-                        <h4>{item.struttura?.nome}</h4>
-                        <p>{item.struttura?.citta}</p>
-                        <p>{item.struttura?.categoria}</p>
-
-                        <div className="profile-saved-actions">
-                          <button
-                            className="profile-gradient-button"
-                            onClick={() =>
-                              navigate(
-                                `/struttura/${item.struttura?.idStruttura}`,
-                              )
-                            }
-                          >
-                            Apri
-                          </button>
-
-                          <button
-                            className="profile-remove-button"
-                            onClick={() =>
-                              handleRemoveSavedPlace(
-                                item.struttura?.idStruttura,
-                              )
-                            }
-                          >
-                            Rimuovi
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            <SavedPlaces
+              savedPlaces={savedPlaces}
+              onOpenStructure={(idStruttura) =>
+                navigate(`/struttura/${idStruttura}`)
+              }
+              onRemoveSavedPlace={handleRemoveSavedPlace}
+            />
           </div>
         </div>
       </div>

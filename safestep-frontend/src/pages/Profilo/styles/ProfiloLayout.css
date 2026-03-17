@@ -1,0 +1,67 @@
+.profile-page {
+  background: #f4f6fb;
+  min-height: 100vh;
+  color: #2f3b4f;
+  padding: 140px 16px 40px;
+}
+
+.profile-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  margin-top: 22px;
+}
+
+.profile-left-column,
+.profile-right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.profile-side-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 22px;
+  box-shadow: 0 12px 30px rgba(24, 40, 72, 0.08);
+  border: 1px solid rgba(225, 232, 242, 0.8);
+  padding: 20px;
+}
+
+.profile-side-card h3 {
+  margin-top: 0;
+  margin-bottom: 18px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.profile-gradient-button {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #41b8de, #59d39a);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 15px;
+}
+
+.profile-remove-button {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  background: #ffe9ec;
+  color: #d96a7a;
+  font-weight: 700;
+}
+
+@media (min-width: 1024px) {
+  .profile-grid {
+    grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+    align-items: start;
+  }
+}

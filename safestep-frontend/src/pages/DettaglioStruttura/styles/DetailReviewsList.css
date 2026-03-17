@@ -1,0 +1,83 @@
+.reviews-list-box {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.reviews-pagination {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.active-page {
+  background: linear-gradient(90deg, #59a9f1 0%, #3f8fe7 100%) !important;
+  color: white !important;
+}
+
+.review-card {
+  padding: 22px;
+}
+
+.review-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.review-card-user {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.review-name-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.review-name-row h4 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: #2f4055;
+}
+
+.review-name-row span {
+  color: #7b8899;
+  font-size: 1rem;
+}
+
+.review-donations {
+  color: #98a4b3;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.review-text {
+  margin: 0 0 16px;
+  color: #45566d;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.review-image {
+  width: 100%;
+  max-width: 430px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.review-bottom-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}

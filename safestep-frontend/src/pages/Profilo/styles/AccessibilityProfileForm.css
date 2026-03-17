@@ -1,0 +1,5 @@
+.profile-side-card textarea,
+.profile-side-card input,
+.profile-side-card select {
+  border-radius: 14px;
+}

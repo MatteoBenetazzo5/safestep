@@ -23,6 +23,11 @@ public class AccessibilitaController {
         return this.accessibilitaService.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Accessibilita findById(@PathVariable UUID id) {
+        return this.accessibilitaService.findById(id);
+    }
+
     @GetMapping("/struttura/{idStruttura}")
     public List<Accessibilita> findByStruttura(@PathVariable UUID idStruttura) {
         return this.accessibilitaService.findByStruttura(idStruttura);

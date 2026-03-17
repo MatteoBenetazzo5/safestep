@@ -1,0 +1,20 @@
+.profile-preferences-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-preference-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #f8fbfd;
+}
+
+.profile-preference-item p {
+  margin: 4px 0 0 0;
+  color: #677790;
+}

@@ -1,47 +1,72 @@
 .admin-cards-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .admin-structure-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 22px;
+  box-shadow: 0 12px 30px rgba(24, 40, 72, 0.08);
+  border: 1px solid rgba(225, 232, 242, 0.8);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .admin-structure-card img {
   width: 100%;
   height: 210px;
   object-fit: cover;
+  display: block;
 }
 
 .admin-structure-body {
   padding: 18px;
 }
 
-.admin-structure-body h3 {
+.admin-structure-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.admin-structure-title-row h3 {
   margin: 0 0 6px 0;
   font-size: 1.5rem;
 }
 
-.admin-structure-body p {
+.admin-structure-title-row p {
   margin: 0 0 10px 0;
   color: #6b7a92;
 }
 
-.admin-structure-rating {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
+.admin-structure-stars {
+  color: #56b876;
+  font-size: 0.95rem;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
-.stars {
-  color: #4abc72;
+.admin-structure-rating {
+  margin-bottom: 16px;
+}
+
+.admin-structure-rating span {
+  display: inline-flex;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #eef7fc;
+  color: #45b7d8;
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .admin-card-actions {
   display: flex;
   gap: 10px;
+  margin-bottom: 10px;
 }
 
 .admin-card-actions button {
@@ -49,7 +74,11 @@
   border: none;
   border-radius: 12px;
   padding: 12px;
-  font-weight: 600;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .edit-btn {
@@ -60,4 +89,13 @@
 .delete-btn {
   background: #ffe9ec;
   color: #d96a7a;
+}
+
+.admin-open-link {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #657793;
+  font-weight: 700;
+  padding-top: 4px;
 }

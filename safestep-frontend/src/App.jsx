@@ -12,6 +12,8 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Profilo from "./pages/Profilo/Profilo"
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard"
+import GuidaAccessibilitaTerme from "./pages/GuidaAccessibilitaTerme"
+import ConsigliVisitaTerme from "./pages/ConsigliVisitaTerme"
 import "./App.css"
 
 function AppContent() {
@@ -27,6 +29,14 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/terme" element={<Terme />} />
+          <Route
+            path="/terme/guida-accessibilita"
+            element={<GuidaAccessibilitaTerme />}
+          />
+          <Route
+            path="/terme/consigli-visita"
+            element={<ConsigliVisitaTerme />}
+          />
           <Route path="/struttura/:id" element={<DettaglioStruttura />} />
           <Route path="/parchi" element={<Parchi />} />
           <Route path="/ristoranti" element={<Ristoranti />} />

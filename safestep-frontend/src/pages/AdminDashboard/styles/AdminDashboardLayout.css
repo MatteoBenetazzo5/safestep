@@ -1,32 +1,43 @@
 .admin-page {
   min-height: 100vh;
   background: #f4f6fb;
-  display: grid;
-  grid-template-columns: 1fr;
   color: #2f3b4f;
+  padding-top: 120px;
 }
 
 .admin-content {
-  padding: 18px;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px;
 }
 
 .admin-main-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 24px;
+  align-items: start;
+}
+
+.admin-left-column,
+.admin-right-column {
+  min-width: 0;
 }
 
 .admin-section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 18px;
   gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .admin-section-header h2 {
   margin: 0;
-  font-size: 2rem;
+  font-size: 2.2rem;
+  line-height: 1.1;
+  font-weight: 700;
 }
 
 .admin-add-button {
@@ -34,74 +45,46 @@
   border-radius: 14px;
   background: linear-gradient(135deg, #41b8de, #59d39a);
   color: white;
-  padding: 14px 18px;
+  padding: 14px 20px;
   font-weight: 700;
   display: flex;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(65, 184, 222, 0.18);
+}
+
+.admin-add-button:hover {
+  transform: translateY(-1px);
 }
 
 .admin-right-column {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
 
-@media (max-width: 1200px) {
-  .admin-page {
-    grid-template-columns: 1fr;
+@media (min-width: 992px) {
+  .admin-main-grid {
+    grid-template-columns: minmax(0, 1fr) 340px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .admin-content {
+    max-width: 1520px;
+    padding: 28px 32px;
   }
 
   .admin-main-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .admin-stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 28px;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1800px) {
   .admin-content {
-    padding: 22px;
-  }
-
-  .admin-stats-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-
-  .admin-cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    max-width: 1650px;
   }
 }
 
-@media (min-width: 1024px) {
-  .admin-page {
-    grid-template-columns: 280px 1fr;
-  }
-
-  .admin-sidebar {
-    display: flex;
-  }
-
-  .admin-content {
-    padding: 26px;
-  }
-
-  .admin-stats-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    margin-bottom: 22px;
-  }
-
-  .admin-main-grid {
-    grid-template-columns: minmax(0, 2fr) 360px;
-    gap: 22px;
-  }
-
-  .admin-cards-grid {
-    gap: 18px;
-  }
-}

@@ -363,6 +363,21 @@
   padding: 20px;
 }
 
+.terme-guide-button-link {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 18px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(90deg, #2ab5d0 0%, #31c98b 100%);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* POPULAR */
 
 .terme-popular-section {

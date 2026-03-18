@@ -1,7 +1,20 @@
+.admin-side-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 22px;
+  box-shadow: 0 12px 30px rgba(24, 40, 72, 0.08);
+  border: 1px solid rgba(225, 232, 242, 0.8);
+  padding: 22px;
+}
+
+.admin-side-card h3 {
+  margin: 0 0 18px 0;
+  font-size: 1.8rem;
+}
+
 .admin-side-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .admin-side-item {
@@ -11,8 +24,8 @@
 }
 
 .admin-side-avatar {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: linear-gradient(135deg, #41b8de, #59d39a);
   color: white;
@@ -24,23 +37,37 @@
 }
 
 .admin-side-item h4 {
-  margin: 0 0 3px 0;
+  margin: 0 0 4px 0;
   font-size: 1rem;
 }
 
-.admin-side-item strong {
-  display: block;
-  margin-bottom: 4px;
-}
-
 .admin-side-item p {
-  margin: 0;
-  color: #6b7a92;
-  line-height: 1.5;
+  margin: 0 0 4px 0;
+  color: #4b5d79;
+  font-weight: 600;
 }
 
-.admin-side-list p {
-  margin: 0;
-  color: #6b7a92;
-  line-height: 1.5;
+.admin-side-item span {
+  color: #7f8ba0;
+  font-size: 0.9rem;
+}
+
+.admin-quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-quick-button {
+  width: 100%;
+  border: 1px solid #e4ebf4;
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #52637d;
+  font-weight: 700;
 }

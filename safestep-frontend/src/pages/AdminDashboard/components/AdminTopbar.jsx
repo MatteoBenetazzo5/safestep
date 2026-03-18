@@ -1,23 +1,24 @@
 import "../styles/AdminTopbar.css"
+
 function AdminTopbar({ nomeVisualizzato, email, avatar, initial }) {
   return (
     <header className="admin-topbar">
-      <div>
+      <div className="admin-topbar-left">
         <h1>Benvenuto nell'area Admin!</h1>
         <p>
           {nomeVisualizzato} · {email}
         </p>
       </div>
 
-      <div className="admin-user-pill">
+      <div className="admin-topbar-user">
         {avatar ? (
           <img
             src={avatar}
             alt={nomeVisualizzato}
-            className="admin-user-image"
+            className="admin-topbar-image"
           />
         ) : (
-          <div className="admin-user-avatar">{initial}</div>
+          <div className="admin-topbar-avatar">{initial}</div>
         )}
       </div>
     </header>

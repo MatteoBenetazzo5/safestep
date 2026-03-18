@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import {
-  getAvatar,
   getEmail,
   getIdUtente,
   getNomeVisualizzato,
@@ -21,8 +20,6 @@ function AdminDashboard() {
 
   const nomeVisualizzato = getNomeVisualizzato() || "Admin"
   const email = getEmail() || "admin@safestep.com"
-  const avatar = getAvatar()
-  const initial = nomeVisualizzato.charAt(0).toUpperCase()
   const idUtente = getIdUtente()
 
   const [structures, setStructures] = useState([])
@@ -55,9 +52,24 @@ function AdminDashboard() {
   const stats = [
     {
       id: 1,
-      icon: "bi-grid-1x2-fill",
+      icon: "bi-buildings",
       number: structures.length,
       label: "Strutture",
+      tone: "green",
+    },
+    {
+      id: 2,
+      icon: "bi-chat-left-text",
+      number: 0,
+      label: "Recensioni",
+      tone: "purple",
+    },
+    {
+      id: 3,
+      icon: "bi-heart",
+      number: 0,
+      label: "Salvataggi",
+      tone: "pink",
     },
   ]
 
@@ -342,18 +354,25 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="admin-page">
+    <div className="admin-shell">
       <AdminSidebar handleLogout={handleLogout} />
 
-      <main className="admin-content">
-        <AdminTopbar
-          nomeVisualizzato={nomeVisualizzato}
-          email={email}
-          avatar={avatar}
-          initial={initial}
-        />
+      <main className="admin-page">
+        <AdminTopbar nomeVisualizzato={nomeVisualizzato} email={email} />
 
         <AdminStats stats={stats} />
+
+        <section className="admin-toolbar-card">
+          <div className="admin-toolbar-search">
+            <i className="bi bi-search"></i>
+            <input type="text" placeholder="Cerca per nome o per categorie" />
+          </div>
+
+          <button className="admin-toolbar-chip">Categorie</button>
+          <button className="admin-toolbar-chip">Accessibilità</button>
+          <button className="admin-toolbar-chip">Salvate</button>
+          <button className="admin-toolbar-primary">Filtra</button>
+        </section>
 
         <section className="admin-main-grid">
           <div className="admin-left-column">

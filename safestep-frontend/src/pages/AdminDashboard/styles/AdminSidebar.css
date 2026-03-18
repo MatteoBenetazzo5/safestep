@@ -5,6 +5,7 @@
   padding: 24px 18px;
   flex-direction: column;
   gap: 24px;
+  min-width: 0;
 }
 
 .admin-brand {

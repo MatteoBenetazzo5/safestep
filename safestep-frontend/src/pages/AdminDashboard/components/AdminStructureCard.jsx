@@ -1,4 +1,5 @@
 import "../styles/AdminStructureCard.css"
+
 function AdminStructureCard({ structure, onOpen, onEdit, onDelete }) {
   return (
     <div className="admin-structure-card">
@@ -11,26 +12,34 @@ function AdminStructureCard({ structure, onOpen, onEdit, onDelete }) {
       />
 
       <div className="admin-structure-body">
-        <h3>{structure.nome}</h3>
-        <p>{structure.citta}</p>
+        <div className="admin-structure-title-row">
+          <div>
+            <h3>{structure.nome}</h3>
+            <p>{structure.citta}</p>
+          </div>
+
+          <div className="admin-structure-stars">★★★★★</div>
+        </div>
 
         <div className="admin-structure-rating">
           <span>{structure.categoria}</span>
         </div>
 
         <div className="admin-card-actions">
-          <button className="edit-btn" onClick={onOpen}>
-            Apri
-          </button>
-
           <button className="edit-btn" onClick={onEdit}>
+            <i className="bi bi-pencil"></i>
             Modifica
           </button>
 
           <button className="delete-btn" onClick={onDelete}>
+            <i className="bi bi-trash"></i>
             Elimina
           </button>
         </div>
+
+        <button className="admin-open-link" onClick={onOpen}>
+          Apri dettaglio
+        </button>
       </div>
     </div>
   )

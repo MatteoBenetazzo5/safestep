@@ -112,49 +112,6 @@ function Terme() {
     return !Number.isNaN(latitudine) && !Number.isNaN(longitudine)
   }
 
-  const toRadians = (value) => {
-    return (value * Math.PI) / 180
-  }
-
-  const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const earthRadius = 6371
-
-    const deltaLat = toRadians(lat2 - lat1)
-    const deltaLon = toRadians(lon2 - lon1)
-
-    const a =
-      Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
-      Math.cos(toRadians(lat1)) *
-        Math.cos(toRadians(lat2)) *
-        Math.sin(deltaLon / 2) *
-        Math.sin(deltaLon / 2)
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-    return earthRadius * c
-  }
-
-  const getDistanceFromUser = (terma) => {
-    if (!posizioneUtente || !terma) return Number.POSITIVE_INFINITY
-
-    const latitudineStruttura = Number(terma.latitudine)
-    const longitudineStruttura = Number(terma.longitudine)
-
-    if (
-      Number.isNaN(latitudineStruttura) ||
-      Number.isNaN(longitudineStruttura)
-    ) {
-      return Number.POSITIVE_INFINITY
-    }
-
-    return calculateDistance(
-      posizioneUtente.latitude,
-      posizioneUtente.longitude,
-      latitudineStruttura,
-      longitudineStruttura,
-    )
-  }
-
   const scrollToResults = () => {
     if (risultatiRef.current) {
       risultatiRef.current.scrollIntoView({
@@ -212,6 +169,49 @@ function Terme() {
 
   const termeFiltrate = useMemo(() => {
     if (!Array.isArray(termePrincipali)) return []
+
+    const toRadians = (value) => {
+      return (value * Math.PI) / 180
+    }
+
+    const calculateDistance = (lat1, lon1, lat2, lon2) => {
+      const earthRadius = 6371
+
+      const deltaLat = toRadians(lat2 - lat1)
+      const deltaLon = toRadians(lon2 - lon1)
+
+      const a =
+        Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+        Math.cos(toRadians(lat1)) *
+          Math.cos(toRadians(lat2)) *
+          Math.sin(deltaLon / 2) *
+          Math.sin(deltaLon / 2)
+
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+      return earthRadius * c
+    }
+
+    const getDistanceFromUser = (terma) => {
+      if (!posizioneUtente || !terma) return Number.POSITIVE_INFINITY
+
+      const latitudineStruttura = Number(terma.latitudine)
+      const longitudineStruttura = Number(terma.longitudine)
+
+      if (
+        Number.isNaN(latitudineStruttura) ||
+        Number.isNaN(longitudineStruttura)
+      ) {
+        return Number.POSITIVE_INFINITY
+      }
+
+      return calculateDistance(
+        posizioneUtente.latitude,
+        posizioneUtente.longitude,
+        latitudineStruttura,
+        longitudineStruttura,
+      )
+    }
 
     let lista = [...termePrincipali]
 

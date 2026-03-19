@@ -22,7 +22,7 @@
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 150px 16px 28px;
+  padding: 150px 16px 48px;
 }
 
 .detail-breadcrumb {
@@ -145,7 +145,7 @@
   }
 
   .detail-hero-content {
-    padding: 190px 24px 36px;
+    padding: 190px 24px 56px;
   }
 
   .detail-hero-content h1 {
@@ -167,7 +167,7 @@
   }
 
   .detail-hero-content {
-    padding: 210px 28px 44px;
+    padding: 210px 28px 70px;
   }
 
   .detail-hero-content h1 {

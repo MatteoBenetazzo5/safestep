@@ -37,6 +37,76 @@ function Parchi() {
       rating: 4.7,
       image: cardImage4,
     },
+    {
+      id: 308,
+      name: "Parco del Fiume",
+      city: "Mantova",
+      rating: 4.6,
+      image: cardImage1,
+    },
+    {
+      id: 309,
+      name: "Giardino delle Rose",
+      city: "Bologna",
+      rating: 4.5,
+      image: cardImage2,
+    },
+    {
+      id: 310,
+      name: "Parco Panorama Verde",
+      city: "Trento",
+      rating: 4.8,
+      image: cardImage3,
+    },
+    {
+      id: 311,
+      name: "Area Relax Natura",
+      city: "Udine",
+      rating: 4.4,
+      image: cardImage4,
+    },
+    {
+      id: 312,
+      name: "Parco del Lago",
+      city: "Como",
+      rating: 4.7,
+      image: cardImage1,
+    },
+    {
+      id: 313,
+      name: "Giardino del Sole",
+      city: "Ravenna",
+      rating: 4.6,
+      image: cardImage2,
+    },
+    {
+      id: 314,
+      name: "Parco Collina Aperta",
+      city: "Perugia",
+      rating: 4.5,
+      image: cardImage3,
+    },
+    {
+      id: 315,
+      name: "Oasi Verde Urbana",
+      city: "Milano",
+      rating: 4.7,
+      image: cardImage4,
+    },
+    {
+      id: 316,
+      name: "Parco dei Tigli",
+      city: "Vicenza",
+      rating: 4.6,
+      image: cardImage1,
+    },
+    {
+      id: 317,
+      name: "Bosco Accessibile",
+      city: "Brescia",
+      rating: 4.8,
+      image: cardImage2,
+    },
   ]
 
   const parchiPopolari = [
@@ -160,17 +230,29 @@ function Parchi() {
                 Scopri i percorsi, gli ingressi e i servizi più utili per vivere
                 una giornata all'aperto senza ostacoli.
               </p>
-              <button>Scopri di più</button>
+
+              <Link
+                to="/parchi/guida-accessibilita"
+                className="terme-guide-button-link"
+              >
+                Scopri di più
+              </Link>
             </div>
 
             <div className="parchi-guide-card image-card">
               <img src={guideImage} alt="Guida parchi accessibili" />
-              <h3>Guida all'accessibilità nei parchi</h3>
+              <h3>Consigli per visitare i parchi</h3>
               <p>
-                Scopri i percorsi, gli ingressi e i servizi più utili per vivere
-                una giornata all'aperto senza ostacoli.
+                Scopri i suggerimenti utili per organizzare la visita, capire
+                cosa controllare prima di partire e quali percorsi preferire.
               </p>
-              <button>Scopri di più</button>
+
+              <Link
+                to="/parchi/consigli-visita"
+                className="terme-guide-button-link"
+              >
+                Scopri di più
+              </Link>
             </div>
           </div>
         </div>

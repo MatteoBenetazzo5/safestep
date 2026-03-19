@@ -5,10 +5,10 @@
 }
 
 /* HERO */
-
 .home-hero {
   min-height: 700px;
-  background-image: url("/bg-home.jpg");
+  position: relative;
+  background-image: url("../../assets/images/homepage.png") !important;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -17,7 +17,7 @@
 
 .home-hero-overlay {
   min-height: 700px;
-  background: rgba(245, 247, 250, 0.70);
+  
   padding: 200px 1rem 4rem 1rem;
   display: flex;
   align-items: center;

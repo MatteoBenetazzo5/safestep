@@ -12,6 +12,91 @@
   padding: 24px;
 }
 
+.admin-toolbar-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(24, 40, 72, 0.08);
+  border: 1px solid rgba(225, 232, 242, 0.8);
+  padding: 18px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.admin-toolbar-search {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f9f9fb;
+  border: 1px solid #e1e8f2;
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.admin-toolbar-search i {
+  color: #a3afc1;
+  font-size: 1.1rem;
+}
+
+.admin-toolbar-search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.95rem;
+  color: #2f3b4f;
+}
+
+.admin-toolbar-search input::placeholder {
+  color: #a3afc1;
+}
+
+.admin-toolbar-select {
+  padding: 10px 14px;
+  border: 1px solid #d4dce9;
+  border-radius: 10px;
+  background: white;
+  color: #2f3b4f;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 140px;
+}
+
+.admin-toolbar-select:hover {
+  border-color: #41b8de;
+  box-shadow: 0 2px 8px rgba(65, 184, 222, 0.1);
+}
+
+.admin-toolbar-select:focus {
+  outline: none;
+  border-color: #41b8de;
+  box-shadow: 0 0 0 3px rgba(65, 184, 222, 0.1);
+}
+
+.admin-toolbar-primary {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #41b8de, #59d39a);
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(65, 184, 222, 0.18);
+  transition: all 0.2s ease;
+}
+
+.admin-toolbar-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(65, 184, 222, 0.24);
+}
+
 .admin-main-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -56,6 +141,7 @@
 
 .admin-add-button:hover {
   transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(65, 184, 222, 0.24);
 }
 
 .admin-right-column {
@@ -64,27 +150,75 @@
   gap: 20px;
 }
 
+/* Media Queries for responsive layout */
+
+/* Tablet - 992px: Show 2-column layout */
 @media (min-width: 992px) {
   .admin-main-grid {
     grid-template-columns: minmax(0, 1fr) 340px;
   }
+
+  .admin-content {
+    padding: 28px 24px;
+  }
+
+  .admin-toolbar-card {
+    padding: 20px 24px;
+  }
 }
 
+/* Desktop - 1400px: Wider layout */
 @media (min-width: 1400px) {
   .admin-content {
-    max-width: 1520px;
-    padding: 28px 32px;
+    max-width: 1600px;
+    padding: 32px 32px;
   }
 
   .admin-main-grid {
-    grid-template-columns: minmax(0, 1fr) 360px;
-    gap: 28px;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 32px;
+  }
+
+  .admin-section-header h2 {
+    font-size: 2.4rem;
+  }
+
+  .admin-toolbar-card {
+    padding: 22px 28px;
+  }
+
+  .admin-toolbar-select {
+    min-width: 160px;
   }
 }
 
+/* Large Desktop - 1800px: Extra wide */
 @media (min-width: 1800px) {
   .admin-content {
-    max-width: 1650px;
+    max-width: 1800px;
+    padding: 36px 40px;
+  }
+
+  .admin-main-grid {
+    grid-template-columns: minmax(0, 1fr) 400px;
+    gap: 36px;
+  }
+
+  .admin-toolbar-card {
+    padding: 24px 32px;
+  }
+}
+
+/* Ultra-wide screens - 2200px+ */
+@media (min-width: 2200px) {
+  .admin-content {
+    max-width: 2000px;
+    padding: 40px 48px;
+  }
+
+  .admin-main-grid {
+    grid-template-columns: minmax(0, 1fr) 420px;
+    gap: 40px;
   }
 }
 

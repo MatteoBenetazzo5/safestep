@@ -7,6 +7,7 @@ function DetailReviewForm({
   handleReviewChange,
   handleReviewSubmit,
   sendingReview,
+  renderWheelchairs,
 }) {
   return (
     <div className="review-form-box">
@@ -35,20 +36,16 @@ function DetailReviewForm({
 
               <div>
                 <h4>La tua recensione</h4>
+
                 <div className="review-vote-selector">
-                  <label htmlFor="voto">Voto</label>
-                  <select
-                    id="voto"
-                    name="voto"
-                    value={reviewForm.voto}
-                    onChange={handleReviewChange}
-                  >
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                    <option value={4}>4</option>
-                    <option value={5}>5</option>
-                  </select>
+                  <label>Voto</label>
+
+                  <div className="review-wheelchair-selector">
+                    {renderWheelchairs(reviewForm.voto, true)}
+                    <span className="review-current-vote">
+                      {Number(reviewForm.voto).toFixed(1)} / 5
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

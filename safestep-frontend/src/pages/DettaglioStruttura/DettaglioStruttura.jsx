@@ -284,9 +284,11 @@ function DettaglioStruttura() {
     }
 
     reviews.forEach((review) => {
-      const vote = Number(review.voto)
-      if (counts[vote] !== undefined) {
-        counts[vote] += 1
+      const rawVote = Number(review.voto)
+      const normalizedVote = Math.round(rawVote)
+
+      if (counts[normalizedVote] !== undefined) {
+        counts[normalizedVote] += 1
       }
     })
 
@@ -302,25 +304,65 @@ function DettaglioStruttura() {
     })
   }, [reviews])
 
-  const renderWheelchairs = (count = 5) => {
-    return (
-      <span className="detail-wheelchairs">
-        {Array.from({ length: count }).map((_, index) => (
-          <i key={index} className="bi bi-person-wheelchair"></i>
-        ))}
-      </span>
-    )
-  }
+  const renderWheelchairs = (vote = 0, interactive = false) => {
+    const normalizedVote = Number(vote) || 0
 
-  const renderStars = (vote) => {
     return (
-      <span className="detail-stars">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <i
-            key={index}
-            className={index < vote ? "bi bi-star-fill" : "bi bi-star"}
-          ></i>
-        ))}
+      <span
+        className={`detail-wheelchairs ${interactive ? "interactive" : ""}`}
+      >
+        {[1, 2, 3, 4, 5].map((item) => {
+          let fillPercentage = 0
+
+          if (normalizedVote >= item) {
+            fillPercentage = 100
+          } else if (normalizedVote >= item - 0.5) {
+            fillPercentage = 50
+          }
+
+          return (
+            <span key={item} className="wheelchair-rating-item">
+              {interactive && (
+                <>
+                  <button
+                    type="button"
+                    className="wheelchair-hitbox wheelchair-hitbox-half"
+                    onClick={() =>
+                      setReviewForm((prev) => ({
+                        ...prev,
+                        voto: item - 0.5,
+                      }))
+                    }
+                    aria-label={`Valuta ${item - 0.5}`}
+                  ></button>
+
+                  <button
+                    type="button"
+                    className="wheelchair-hitbox wheelchair-hitbox-full"
+                    onClick={() =>
+                      setReviewForm((prev) => ({
+                        ...prev,
+                        voto: item,
+                      }))
+                    }
+                    aria-label={`Valuta ${item}`}
+                  ></button>
+                </>
+              )}
+
+              <span className="wheelchair-icon-base">
+                <i className="bi bi-person-wheelchair"></i>
+              </span>
+
+              <span
+                className="wheelchair-icon-fill"
+                style={{ width: `${fillPercentage}%` }}
+              >
+                <i className="bi bi-person-wheelchair"></i>
+              </span>
+            </span>
+          )
+        })}
       </span>
     )
   }
@@ -390,7 +432,6 @@ function DettaglioStruttura() {
               selectedImage={selectedImage}
               placeholderImage={placeholderImage}
               renderWheelchairs={renderWheelchairs}
-              renderStars={renderStars}
             />
           </div>
 
@@ -402,6 +443,7 @@ function DettaglioStruttura() {
               handleReviewChange={handleReviewChange}
               handleReviewSubmit={handleReviewSubmit}
               sendingReview={sendingReview}
+              renderWheelchairs={renderWheelchairs}
             />
 
             <DetailReviewsList
@@ -410,7 +452,6 @@ function DettaglioStruttura() {
               selectedImage={selectedImage}
               placeholderImage={placeholderImage}
               renderWheelchairs={renderWheelchairs}
-              renderStars={renderStars}
               formatDate={formatDate}
             />
           </div>

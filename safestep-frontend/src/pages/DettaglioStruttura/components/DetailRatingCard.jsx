@@ -14,7 +14,7 @@ function DetailRatingCard({
 
         <div className="detail-big-rating">
           <div className="detail-rating-main">
-            {renderWheelchairs()}
+            {renderWheelchairs(averageVote)}
             <span className="rating-number">{averageVote} / 5</span>
           </div>
         </div>
@@ -54,8 +54,8 @@ function DetailRatingCard({
             </div>
 
             <div className="mini-review-rating">
-              {renderWheelchairs()}
-              <span>{reviews[0]?.voto || 5}.0 / 5</span>
+              {renderWheelchairs(reviews[0]?.voto || 5)}
+              <span>{Number(reviews[0]?.voto || 5).toFixed(1)} / 5</span>
               <i className="bi bi-check-circle-fill verified-icon"></i>
             </div>
           </div>

@@ -12,43 +12,49 @@ function Terme() {
   const [searchTerm, setSearchTerm] = useState("")
 
   useEffect(() => {
+    const fetchTerme = async () => {
+      try {
+        setLoading(true)
+        setError("")
+
+        const response = await fetch(
+          `${API_BASE_URL}/strutture/categoria/TERME`,
+          {
+            headers: getAuthHeaders(),
+          },
+        )
+
+        if (!response.ok) {
+          throw new Error("Errore nel recupero delle terme")
+        }
+
+        const data = await response.json()
+        setTermePrincipali(Array.isArray(data) ? data : [])
+      } catch (error) {
+        console.error("Errore caricamento terme:", error)
+        setError("Non è stato possibile caricare le terme.")
+        setTermePrincipali([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
     fetchTerme()
   }, [])
 
-  const fetchTerme = async () => {
-    try {
-      setLoading(true)
-      setError("")
-
-      const response = await fetch(
-        `${API_BASE_URL}/strutture/categoria/TERME`,
-        {
-          headers: getAuthHeaders(),
-        },
-      )
-
-      if (!response.ok) {
-        throw new Error("Errore nel recupero delle terme")
-      }
-
-      const data = await response.json()
-      setTermePrincipali(data)
-    } catch (error) {
-      console.error("Errore caricamento terme:", error)
-      setError("Non è stato possibile caricare le terme.")
-    } finally {
-      setLoading(false)
-    }
-  }
-
   const termeFiltrate = useMemo(() => {
+    if (!Array.isArray(termePrincipali)) return []
+
     if (!searchTerm.trim()) return termePrincipali
 
+    const testoRicerca = searchTerm.toLowerCase()
+
     return termePrincipali.filter((terma) => {
+      if (!terma) return false
+
       const nome = terma.nome?.toLowerCase() || ""
       const citta = terma.citta?.toLowerCase() || ""
       const descrizione = terma.descrizione?.toLowerCase() || ""
-      const testoRicerca = searchTerm.toLowerCase()
 
       return (
         nome.includes(testoRicerca) ||
@@ -59,7 +65,8 @@ function Terme() {
   }, [termePrincipali, searchTerm])
 
   const termePopolari = useMemo(() => {
-    return [...termeFiltrate].slice(0, 3)
+    if (!Array.isArray(termeFiltrate)) return []
+    return termeFiltrate.slice(0, 3)
   }, [termeFiltrate])
 
   const renderWheelchairs = () => {
@@ -184,36 +191,41 @@ function Terme() {
             <div className="terme-main-layout">
               <div className="terme-cards-column">
                 <div className="terme-grid">
-                  {termeFiltrate.map((terma, index) => (
-                    <Link
-                      key={terma.idStruttura}
-                      to={`/struttura/${terma.idStruttura}`}
-                      className="terme-card-link"
-                    >
-                      <article className="terme-card">
-                        <img
-                          src={
-                            terma.immagineCopertina ||
-                            "https://via.placeholder.com/800x500?text=SafeStep"
-                          }
-                          alt={terma.nome}
-                          className="terme-card-image"
-                        />
+                  {Array.isArray(termeFiltrate) &&
+                    termeFiltrate.map((terma) => {
+                      if (!terma) return null
 
-                        <div className="terme-card-body">
-                          <h3>{terma.nome}</h3>
-                          <p className="terme-card-city">
-                            {terma.citta || "Città non disponibile"}
-                          </p>
+                      return (
+                        <Link
+                          key={terma.idStruttura}
+                          to={`/struttura/${terma.idStruttura}`}
+                          className="terme-card-link"
+                        >
+                          <article className="terme-card">
+                            <img
+                              src={
+                                terma.immagineCopertina ||
+                                "https://via.placeholder.com/800x500?text=SafeStep"
+                              }
+                              alt={terma.nome || "Struttura termale"}
+                              className="terme-card-image"
+                            />
 
-                          <div className="terme-card-bottom">
-                            {renderWheelchairs()}
-                            {renderStars(index)}
-                          </div>
-                        </div>
-                      </article>
-                    </Link>
-                  ))}
+                            <div className="terme-card-body">
+                              <h3>{terma.nome || "Nome non disponibile"}</h3>
+                              <p className="terme-card-city">
+                                {terma.citta || "Città non disponibile"}
+                              </p>
+
+                              <div className="terme-card-bottom">
+                                {renderWheelchairs()}
+                                {renderStars()}
+                              </div>
+                            </div>
+                          </article>
+                        </Link>
+                      )
+                    })}
                 </div>
               </div>
 
@@ -265,36 +277,41 @@ function Terme() {
             </h2>
 
             <div className="terme-popular-grid">
-              {termePopolari.map((terma) => (
-                <Link
-                  key={`popular-${terma.idStruttura}`}
-                  to={`/struttura/${terma.idStruttura}`}
-                  className="terme-card-link"
-                >
-                  <article className="terme-small-card">
-                    <img
-                      src={
-                        terma.immagineCopertina ||
-                        "https://via.placeholder.com/800x500?text=SafeStep"
-                      }
-                      alt={terma.nome}
-                      className="terme-small-card-image"
-                    />
+              {Array.isArray(termePopolari) &&
+                termePopolari.map((terma) => {
+                  if (!terma) return null
 
-                    <div className="terme-small-card-body">
-                      <h3>{terma.nome}</h3>
-                      <p className="terme-card-city">
-                        {terma.citta || "Città non disponibile"}
-                      </p>
+                  return (
+                    <Link
+                      key={`popular-${terma.idStruttura}`}
+                      to={`/struttura/${terma.idStruttura}`}
+                      className="terme-card-link"
+                    >
+                      <article className="terme-small-card">
+                        <img
+                          src={
+                            terma.immagineCopertina ||
+                            "https://via.placeholder.com/800x500?text=SafeStep"
+                          }
+                          alt={terma.nome || "Struttura termale"}
+                          className="terme-small-card-image"
+                        />
 
-                      <div className="terme-card-bottom">
-                        {renderWheelchairs()}
-                        {renderStars()}
-                      </div>
-                    </div>
-                  </article>
-                </Link>
-              ))}
+                        <div className="terme-small-card-body">
+                          <h3>{terma.nome || "Nome non disponibile"}</h3>
+                          <p className="terme-card-city">
+                            {terma.citta || "Città non disponibile"}
+                          </p>
+
+                          <div className="terme-card-bottom">
+                            {renderWheelchairs()}
+                            {renderStars()}
+                          </div>
+                        </div>
+                      </article>
+                    </Link>
+                  )
+                })}
             </div>
           </div>
         </section>

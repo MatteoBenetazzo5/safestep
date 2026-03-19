@@ -8,7 +8,6 @@ function DetailInfoBox({
   selectedImage,
   placeholderImage,
   renderWheelchairs,
-  renderStars,
 }) {
   return (
     <>
@@ -16,7 +15,11 @@ function DetailInfoBox({
         <h2>Informazioni</h2>
 
         <div className="map-placeholder">
-          <i className="bi bi-geo-alt-fill"></i>
+          <img
+            src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80"
+            alt="Mappa della zona"
+            className="map-placeholder-image"
+          />
         </div>
 
         <p className="address-line">
@@ -30,8 +33,7 @@ function DetailInfoBox({
           <h3>Livello di accessibilità</h3>
 
           <div className="accessibility-rating-row">
-            {renderWheelchairs()}
-            {renderStars(Math.round(Number(averageVote)))}
+            {renderWheelchairs(averageVote)}
             <span>{averageVote} / 5</span>
           </div>
 
@@ -83,8 +85,7 @@ function DetailInfoBox({
                 <h4>{reviews[0]?.utente?.nomeVisualizzato || "Utente"}</h4>
                 <p>{structure.citta || "Italia"}</p>
                 <div className="mini-review-rating">
-                  {renderWheelchairs(5)}
-                  {renderStars(reviews[0]?.voto || 5)}
+                  {renderWheelchairs(reviews[0]?.voto || 5)}
                 </div>
               </div>
             </div>

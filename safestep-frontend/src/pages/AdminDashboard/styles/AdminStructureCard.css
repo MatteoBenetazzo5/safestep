@@ -12,6 +12,12 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.admin-structure-card:hover {
+  box-shadow: 0 16px 40px rgba(24, 40, 72, 0.12);
+  transform: translateY(-2px);
 }
 
 .admin-structure-card img {
@@ -23,6 +29,9 @@
 
 .admin-structure-body {
   padding: 18px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .admin-structure-title-row {
@@ -67,6 +76,7 @@
   display: flex;
   gap: 10px;
   margin-bottom: 10px;
+  margin-top: auto;
 }
 
 .admin-card-actions button {
@@ -79,6 +89,8 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
 }
 
 .edit-btn {
@@ -86,9 +98,17 @@
   color: #45b7d8;
 }
 
+.edit-btn:hover {
+  background: #d4f1f9;
+}
+
 .delete-btn {
   background: #ffe9ec;
   color: #d96a7a;
+}
+
+.delete-btn:hover {
+  background: #ffd4dc;
 }
 
 .admin-open-link {
@@ -98,4 +118,59 @@
   color: #657793;
   font-weight: 700;
   padding-top: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.admin-open-link:hover {
+  color: #41b8de;
+}
+
+/* Tablet - 768px and up */
+@media (min-width: 768px) {
+  .admin-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+/* Desktop - 1200px and up */
+@media (min-width: 1200px) {
+  .admin-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .admin-structure-card {
+    border-radius: 24px;
+  }
+
+  .admin-structure-card img {
+    height: 240px;
+  }
+
+  .admin-structure-body {
+    padding: 20px;
+  }
+}
+
+/* Large Desktop - 1600px and up */
+@media (min-width: 1600px) {
+  .admin-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+/* Extra Wide - 2000px and up */
+@media (min-width: 2000px) {
+  .admin-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .admin-structure-card img {
+    height: 280px;
+  }
 }

@@ -12,8 +12,8 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Profilo from "./pages/Profilo/Profilo"
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard"
-import GuidaAccessibilitaTerme from "./pages/GuidaAccessibilitaTerme"
-import ConsigliVisitaTerme from "./pages/ConsigliVisitaTerme"
+import GuidaAccessibilita from "./pages/GuidaAccessibilita"
+import ConsigliVisita from "./pages/ConsigliVisita"
 import "./App.css"
 
 function AppContent() {
@@ -29,18 +29,20 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/terme" element={<Terme />} />
-          <Route
-            path="/terme/guida-accessibilita"
-            element={<GuidaAccessibilitaTerme />}
-          />
-          <Route
-            path="/terme/consigli-visita"
-            element={<ConsigliVisitaTerme />}
-          />
-          <Route path="/struttura/:id" element={<DettaglioStruttura />} />
           <Route path="/parchi" element={<Parchi />} />
           <Route path="/ristoranti" element={<Ristoranti />} />
           <Route path="/hotel" element={<Hotel />} />
+
+          <Route
+            path="/:categoria/guida-accessibilita"
+            element={<GuidaAccessibilita />}
+          />
+          <Route
+            path="/:categoria/consigli-visita"
+            element={<ConsigliVisita />}
+          />
+
+          <Route path="/struttura/:id" element={<DettaglioStruttura />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 

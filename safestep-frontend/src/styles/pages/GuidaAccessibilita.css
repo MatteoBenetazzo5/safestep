@@ -1,0 +1,249 @@
+.guida-accessibilita-page {
+  min-height: 100vh;
+  background: var(--guide-page-bg);
+  color: var(--guide-title);
+}
+
+.guida-accessibilita-hero {
+  padding: 170px 20px 70px;
+  background: var(--guide-hero-bg);
+}
+
+.guida-accessibilita-hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.guida-accessibilita-badge {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--guide-badge-bg);
+  color: var(--guide-badge-text);
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.guida-accessibilita-hero-content h1 {
+  font-size: 3.3rem;
+  line-height: 1.08;
+  margin-bottom: 18px;
+  color: var(--guide-title);
+}
+
+.guida-accessibilita-hero-content p {
+  max-width: 760px;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: var(--guide-text);
+  margin-bottom: 28px;
+}
+
+.guida-accessibilita-hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.guida-accessibilita-primary-btn,
+.guida-accessibilita-secondary-btn {
+  text-decoration: none;
+  border-radius: 14px;
+  padding: 16px 24px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guida-accessibilita-primary-btn {
+  background: var(--guide-primary-gradient);
+  color: white;
+}
+
+.guida-accessibilita-secondary-btn {
+  background: var(--guide-secondary-bg);
+  color: var(--guide-secondary-text);
+  border: 1px solid var(--guide-secondary-border);
+}
+
+.guida-accessibilita-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 70px;
+}
+
+.guida-accessibilita-intro-card {
+  margin-top: -20px;
+  background: white;
+  border-radius: 28px;
+  box-shadow: 0 12px 30px rgba(39, 66, 100, 0.08);
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.guida-accessibilita-intro-text h2,
+.guida-accessibilita-section-header h2,
+.guida-accessibilita-highlight-box h2 {
+  font-size: 2.2rem;
+  color: var(--guide-title);
+  margin-bottom: 14px;
+}
+
+.guida-accessibilita-intro-text p,
+.guida-accessibilita-section-header p,
+.guida-accessibilita-highlight-box p {
+  font-size: 1.08rem;
+  line-height: 1.8;
+  color: var(--guide-text);
+}
+
+.guida-accessibilita-intro-image img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 22px;
+  display: block;
+}
+
+.guida-accessibilita-image-placeholder {
+  width: 100%;
+  height: 320px;
+  border-radius: 22px;
+  border: 2px dashed rgba(120, 140, 170, 0.28);
+  background: linear-gradient(135deg, #f8fbfd, #eef4f8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #7b8ba0;
+  text-align: center;
+  padding: 20px;
+}
+
+.guida-accessibilita-image-placeholder i {
+  font-size: 2rem;
+}
+
+.guida-accessibilita-section {
+  margin-top: 38px;
+}
+
+.guida-accessibilita-section-header {
+  margin-bottom: 22px;
+}
+
+.guida-accessibilita-checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.guida-accessibilita-check-card {
+  background: white;
+  border-radius: 22px;
+  padding: 22px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  box-shadow: 0 10px 24px rgba(39, 66, 100, 0.06);
+}
+
+.guida-accessibilita-check-card i {
+  color: var(--guide-check-icon);
+  font-size: 1.3rem;
+  margin-top: 2px;
+}
+
+.guida-accessibilita-check-card span {
+  color: var(--guide-text);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.guida-accessibilita-tips-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.guida-accessibilita-tip-card {
+  background: white;
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 10px 24px rgba(39, 66, 100, 0.06);
+}
+
+.guida-accessibilita-tip-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: var(--guide-icon-bg);
+  color: var(--guide-icon-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 16px;
+}
+
+.guida-accessibilita-tip-card h3 {
+  font-size: 1.35rem;
+  color: var(--guide-title);
+  margin-bottom: 12px;
+}
+
+.guida-accessibilita-tip-card p {
+  color: var(--guide-text);
+  line-height: 1.75;
+  margin: 0;
+}
+
+.guida-accessibilita-highlight-box {
+  margin-top: 38px;
+  background: var(--guide-highlight-bg);
+  border-radius: 28px;
+  padding: 32px;
+}
+
+@media screen and (max-width: 991px) {
+  .guida-accessibilita-hero-content h1 {
+    font-size: 2.6rem;
+  }
+
+  .guida-accessibilita-intro-card,
+  .guida-accessibilita-checklist-grid,
+  .guida-accessibilita-tips-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .guida-accessibilita-hero {
+    padding: 145px 16px 50px;
+  }
+
+  .guida-accessibilita-container {
+    padding: 0 16px 50px;
+  }
+
+  .guida-accessibilita-hero-content h1 {
+    font-size: 2.1rem;
+  }
+
+  .guida-accessibilita-intro-text h2,
+  .guida-accessibilita-section-header h2,
+  .guida-accessibilita-highlight-box h2 {
+    font-size: 1.7rem;
+  }
+
+  .guida-accessibilita-image-placeholder,
+  .guida-accessibilita-intro-image img {
+    height: 240px;
+  }
+}

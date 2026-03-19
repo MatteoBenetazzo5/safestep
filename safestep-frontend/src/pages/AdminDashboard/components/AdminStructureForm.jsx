@@ -1,9 +1,11 @@
+import { useState } from "react"
 import "../styles/AdminStructureForm.css"
 function AdminStructureForm({
   editingId,
   formData,
   handleChange,
   handleImageChange,
+  handleRemoveImage,
   caratteristiche,
   accessibilitaForm,
   handleAccessibilitaChange,
@@ -12,7 +14,26 @@ function AdminStructureForm({
   handleCreateOrUpdateStructure,
   saving,
   resetForm,
+  selectedImages = [],
 }) {
+  const [previewUrls, setPreviewUrls] = useState(selectedImages || [])
+
+  const handleImageSelect = (e) => {
+    if (e.target.files) {
+      const newImages = Array.from(e.target.files)
+      setPreviewUrls((prev) => [...prev, ...newImages])
+      handleImageChange(newImages)
+    }
+  }
+
+  const removeImage = (index) => {
+    const updatedPreviews = previewUrls.filter((_, i) => i !== index)
+    setPreviewUrls(updatedPreviews)
+    if (handleRemoveImage) {
+      handleRemoveImage(index)
+    }
+  }
+
   return (
     <form
       className="admin-side-card admin-structure-form"
@@ -137,22 +158,46 @@ function AdminStructureForm({
       </div>
 
       <div className="mb-3">
-        <label>Immagine</label>
-        <input
-          type="file"
-          onChange={handleImageChange}
-          className="form-control"
-          accept="image/*"
-        />
+        <label>Immagini (seleziona una o più foto)</label>
+        <div className="admin-image-upload-wrapper">
+          <input
+            type="file"
+            multiple
+            onChange={handleImageSelect}
+            className="form-control"
+            accept="image/*"
+            id="admin-image-input"
+          />
+          <small style={{ color: "#6b7a92", marginTop: "6px" }}>
+            Puoi selezionare più foto da visualizzare come gallery
+          </small>
+        </div>
       </div>
 
-      {formData.immagineCopertina && (
+      {previewUrls.length > 0 && (
         <div className="mb-3">
-          <img
-            src={formData.immagineCopertina}
-            alt="Anteprima"
-            className="admin-form-preview-image"
-          />
+          <div className="admin-images-grid">
+            <h5 style={{ marginBottom: "12px", gridColumn: "1/-1" }}>
+              Anteprima immagini ({previewUrls.length})
+            </h5>
+            {previewUrls.map((image, index) => {
+              const imageUrl =
+                typeof image === "string" ? image : URL.createObjectURL(image)
+              return (
+                <div key={index} className="admin-image-preview-item">
+                  <img src={imageUrl} alt={`Anteprima ${index + 1}`} />
+                  <button
+                    type="button"
+                    className="admin-remove-image-btn"
+                    onClick={() => removeImage(index)}
+                    title="Rimuovi foto"
+                  >
+                    <i className="bi bi-trash"></i>
+                  </button>
+                </div>
+              )
+            })}
+          </div>
         </div>
       )}
 

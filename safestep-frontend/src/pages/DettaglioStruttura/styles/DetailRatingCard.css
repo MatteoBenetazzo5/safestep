@@ -41,8 +41,67 @@
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.wheelchair-rating-item {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wheelchair-icon-base,
+.wheelchair-icon-fill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.wheelchair-icon-base {
+  color: #d6dee8;
+}
+
+.wheelchair-icon-fill {
   color: #1cb7ab;
-  font-size: 1.2rem;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.detail-wheelchairs.interactive .wheelchair-rating-item {
+  cursor: pointer;
+}
+
+.wheelchair-hitbox {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  z-index: 3;
+  cursor: pointer;
+}
+
+.wheelchair-hitbox-half {
+  left: 0;
+  width: 50%;
+}
+
+.wheelchair-hitbox-full {
+  right: 0;
+  width: 50%;
+}
+
+.detail-wheelchairs.interactive .wheelchair-rating-item:hover {
+  transform: scale(1.08);
 }
 
 .rating-number {
@@ -154,14 +213,6 @@
 .verified-icon {
   color: #56c791;
   font-size: 1.3rem;
-}
-
-.detail-stars {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  color: #4fb95e;
-  font-size: 0.95rem;
 }
 
 @media screen and (min-width: 1200px) {

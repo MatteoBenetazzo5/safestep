@@ -37,6 +37,76 @@ function Hotel() {
       rating: 4.8,
       image: cardImage4,
     },
+    {
+      id: 208,
+      name: "Hotel Riviera Blu",
+      city: "Rimini",
+      rating: 4.7,
+      image: cardImage1,
+    },
+    {
+      id: 209,
+      name: "Palace Comfort",
+      city: "Roma",
+      rating: 4.6,
+      image: cardImage2,
+    },
+    {
+      id: 210,
+      name: "Residenza Serena",
+      city: "Napoli",
+      rating: 4.5,
+      image: cardImage3,
+    },
+    {
+      id: 211,
+      name: "Hotel Giardino",
+      city: "Bologna",
+      rating: 4.7,
+      image: cardImage4,
+    },
+    {
+      id: 212,
+      name: "Suite Centrale",
+      city: "Genova",
+      rating: 4.6,
+      image: cardImage1,
+    },
+    {
+      id: 213,
+      name: "Resort del Sole",
+      city: "Cagliari",
+      rating: 4.8,
+      image: cardImage2,
+    },
+    {
+      id: 214,
+      name: "Hotel del Porto",
+      city: "Trieste",
+      rating: 4.5,
+      image: cardImage3,
+    },
+    {
+      id: 215,
+      name: "Dimora Accessibile",
+      city: "Padova",
+      rating: 4.7,
+      image: cardImage4,
+    },
+    {
+      id: 216,
+      name: "Grand Stay Milano",
+      city: "Milano",
+      rating: 4.6,
+      image: cardImage1,
+    },
+    {
+      id: 217,
+      name: "Hotel Bella Vista",
+      city: "Perugia",
+      rating: 4.5,
+      image: cardImage2,
+    },
   ]
 
   const hotelPopolari = [
@@ -160,17 +230,30 @@ function Hotel() {
                 Scopri i servizi più importanti da controllare prima di
                 prenotare il tuo soggiorno.
               </p>
-              <button>Scopri di più</button>
+
+              <Link
+                to="/hotel/guida-accessibilita"
+                className="terme-guide-button-link"
+              >
+                Scopri di più
+              </Link>
             </div>
 
             <div className="hotel-guide-card image-card">
               <img src={guideImage} alt="Guida hotel accessibili" />
-              <h3>Guida all'accessibilità negli hotel</h3>
+              <h3>Consigli per visitare gli hotel</h3>
               <p>
-                Scopri i servizi più importanti da controllare prima di
-                prenotare il tuo soggiorno.
+                Scopri i suggerimenti utili per organizzare il soggiorno, capire
+                cosa controllare prima di prenotare e quali domande fare alla
+                struttura.
               </p>
-              <button>Scopri di più</button>
+
+              <Link
+                to="/hotel/consigli-visita"
+                className="terme-guide-button-link"
+              >
+                Scopri di più
+              </Link>
             </div>
           </div>
         </div>

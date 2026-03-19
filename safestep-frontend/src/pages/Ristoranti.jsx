@@ -37,6 +37,76 @@ function Ristoranti() {
       rating: 4.6,
       image: cardImage4,
     },
+    {
+      id: 108,
+      name: "Ristorante Mare Chiaro",
+      city: "Rimini",
+      rating: 4.7,
+      image: cardImage1,
+    },
+    {
+      id: 109,
+      name: "Locanda Bella Vista",
+      city: "Bergamo",
+      rating: 4.4,
+      image: cardImage2,
+    },
+    {
+      id: 110,
+      name: "Cucina Inclusiva",
+      city: "Bologna",
+      rating: 4.8,
+      image: cardImage3,
+    },
+    {
+      id: 111,
+      name: "Sapori del Borgo",
+      city: "Ferrara",
+      rating: 4.5,
+      image: cardImage4,
+    },
+    {
+      id: 112,
+      name: "Ristorante La Darsena",
+      city: "Trieste",
+      rating: 4.6,
+      image: cardImage1,
+    },
+    {
+      id: 113,
+      name: "Tavola Aperta",
+      city: "Vicenza",
+      rating: 4.7,
+      image: cardImage2,
+    },
+    {
+      id: 114,
+      name: "Il Giardino dei Sapori",
+      city: "Parma",
+      rating: 4.5,
+      image: cardImage3,
+    },
+    {
+      id: 115,
+      name: "Ristorante Porta Nuova",
+      city: "Milano",
+      rating: 4.8,
+      image: cardImage4,
+    },
+    {
+      id: 116,
+      name: "Terrazza Serena",
+      city: "Firenze",
+      rating: 4.6,
+      image: cardImage1,
+    },
+    {
+      id: 117,
+      name: "Bottega del Gusto",
+      city: "Torino",
+      rating: 4.5,
+      image: cardImage2,
+    },
   ]
 
   const ristorantiPopolari = [
@@ -160,17 +230,30 @@ function Ristoranti() {
                 Scopri cosa controllare prima di prenotare e trova locali più
                 comodi, inclusivi e facili da raggiungere.
               </p>
-              <button>Scopri di più</button>
+
+              <Link
+                to="/ristoranti/guida-accessibilita"
+                className="terme-guide-button-link"
+              >
+                Scopri di più
+              </Link>
             </div>
 
             <div className="ristoranti-guide-card image-card">
               <img src={guideImage} alt="Guida ristoranti accessibili" />
-              <h3>Guida all'accessibilità nei ristoranti</h3>
+              <h3>Consigli per visitare i ristoranti</h3>
               <p>
-                Scopri cosa controllare prima di prenotare e trova locali più
-                comodi, inclusivi e facili da raggiungere.
+                Leggi i suggerimenti utili per organizzare la visita, capire
+                cosa controllare prima di prenotare e quali domande fare al
+                locale.
               </p>
-              <button>Scopri di più</button>
+
+              <Link
+                to="/ristoranti/consigli-visita"
+                className="terme-guide-button-link"
+              >
+                Scopri di più
+              </Link>
             </div>
           </div>
         </div>

@@ -6,7 +6,6 @@ function DetailReviewsList({
   selectedImage,
   placeholderImage,
   renderWheelchairs,
-  renderStars,
   formatDate,
 }) {
   return (
@@ -43,8 +42,8 @@ function DetailReviewsList({
                   </div>
 
                   <div className="mini-review-rating">
-                    {renderWheelchairs()}
-                    {renderStars(review.voto || 5)}
+                    {renderWheelchairs(review.voto || 5)}
+                    <span>{Number(review.voto || 5).toFixed(1)} / 5</span>
                   </div>
                 </div>
               </div>

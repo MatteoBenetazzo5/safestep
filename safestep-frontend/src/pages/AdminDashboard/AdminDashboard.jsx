@@ -26,9 +26,13 @@ function AdminDashboard() {
   const [caratteristiche, setCaratteristiche] = useState([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
-  const [selectedImage, setSelectedImage] = useState(null)
+  const [selectedImages, setSelectedImages] = useState([])
   const [editingId, setEditingId] = useState(null)
   const [saving, setSaving] = useState(false)
+  const [usersCount, setUsersCount] = useState(0)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [filterCategoria, setFilterCategoria] = useState("")
+  const [filterAccessibilita, setFilterAccessibilita] = useState("")
 
   const [formData, setFormData] = useState({
     categoria: "TERME",
@@ -52,20 +56,27 @@ function AdminDashboard() {
   const stats = [
     {
       id: 1,
+      icon: "bi-people",
+      number: usersCount,
+      label: "Utenti",
+      tone: "blue",
+    },
+    {
+      id: 2,
       icon: "bi-buildings",
       number: structures.length,
       label: "Strutture",
       tone: "green",
     },
     {
-      id: 2,
+      id: 3,
       icon: "bi-chat-left-text",
       number: 0,
       label: "Recensioni",
       tone: "purple",
     },
     {
-      id: 3,
+      id: 4,
       icon: "bi-heart",
       number: 0,
       label: "Salvataggi",
@@ -93,7 +104,7 @@ function AdminDashboard() {
       longitudine: "",
       stato: "APPROVATA",
     })
-    setSelectedImage(null)
+    setSelectedImages([])
     setEditingId(null)
     setAccessibilitaForm([{ caratteristicaId: "", valore: "", nota: "" }])
     setShowForm(false)
@@ -141,9 +152,25 @@ function AdminDashboard() {
     }
   }
 
+  const fetchUsersCount = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/utenti/count`, {
+        headers: getAuthHeaders(),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setUsersCount(data.count || 0)
+      }
+    } catch (error) {
+      console.error("Errore caricamento numero utenti:", error)
+    }
+  }
+
   useEffect(() => {
     fetchStructures()
     fetchCaratteristiche()
+    fetchUsersCount()
   }, [])
 
   const handleChange = (e) => {
@@ -155,10 +182,16 @@ function AdminDashboard() {
     }))
   }
 
-  const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedImage(e.target.files[0])
+  const handleImageChange = (files) => {
+    if (Array.isArray(files)) {
+      setSelectedImages(files)
+    } else if (files && files[0]) {
+      setSelectedImages([files[0]])
     }
+  }
+
+  const handleRemoveImage = (index) => {
+    setSelectedImages((prev) => prev.filter((_, i) => i !== index))
   }
 
   const handleAccessibilitaChange = (index, field, value) => {
@@ -178,33 +211,44 @@ function AdminDashboard() {
     setAccessibilitaForm((prev) => prev.filter((_, i) => i !== index))
   }
 
-  const uploadImage = async () => {
-    if (!selectedImage) {
-      return (
-        formData.immagineCopertina ||
-        "https://via.placeholder.com/800x500?text=SafeStep"
-      )
+  const uploadImages = async () => {
+    if (selectedImages.length === 0) {
+      return formData.immagineCopertina ? [formData.immagineCopertina] : []
     }
 
-    const data = new FormData()
-    data.append("file", selectedImage)
+    const uploadedUrls = []
 
-    const response = await fetch(`${API_BASE_URL}/upload/image`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: data,
-    })
+    for (const image of selectedImages) {
+      try {
+        const data = new FormData()
+        data.append("file", image)
 
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error("Errore upload immagine:", errorText)
-      throw new Error("Upload immagine non riuscito")
+        const response = await fetch(`${API_BASE_URL}/upload/image`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: data,
+        })
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          console.error("Errore upload immagine:", errorText)
+          throw new Error("Upload immagine non riuscito")
+        }
+
+        const result = await response.json()
+        uploadedUrls.push(result.url)
+      } catch (error) {
+        console.error("Errore caricamento immagine:", error)
+      }
     }
 
-    const result = await response.json()
-    return result.url
+    return uploadedUrls.length > 0
+      ? uploadedUrls
+      : formData.immagineCopertina
+        ? [formData.immagineCopertina]
+        : []
   }
 
   const handleCreateOrUpdateStructure = async (e) => {
@@ -213,7 +257,8 @@ function AdminDashboard() {
     try {
       setSaving(true)
 
-      const imageUrl = await uploadImage()
+      const imageUrls = await uploadImages()
+      const imagineCopertina = imageUrls.length > 0 ? imageUrls[0] : ""
 
       const body = {
         categoria: formData.categoria,
@@ -224,7 +269,7 @@ function AdminDashboard() {
         paese: formData.paese,
         telefono: formData.telefono,
         sitoWeb: formData.sitoWeb,
-        immagineCopertina: imageUrl || "",
+        immagineCopertina: imagineCopertina || "",
         latitudine: formData.latitudine ? Number(formData.latitudine) : null,
         longitudine: formData.longitudine ? Number(formData.longitudine) : null,
         stato: formData.stato,
@@ -258,6 +303,24 @@ function AdminDashboard() {
 
       const savedStructure = await response.json()
       const strutturaIdFinale = editingId || savedStructure.idStruttura
+
+      // Upload additional images as gallery if more than one
+      if (imageUrls.length > 1) {
+        for (let i = 1; i < imageUrls.length; i++) {
+          try {
+            await fetch(`${API_BASE_URL}/immagini-struttura`, {
+              method: "POST",
+              headers: getAuthHeaders(),
+              body: JSON.stringify({
+                strutturaId: strutturaIdFinale,
+                url: imageUrls[i],
+              }),
+            })
+          } catch (error) {
+            console.error("Errore salvataggio immagine galleria:", error)
+          }
+        }
+      }
 
       const accessibilitaValide = accessibilitaForm.filter(
         (item) => item.caratteristicaId && item.valore.trim(),
@@ -303,7 +366,7 @@ function AdminDashboard() {
   const handleEditStructure = (structure) => {
     setEditingId(structure.idStruttura)
     setShowForm(true)
-    setSelectedImage(null)
+    setSelectedImages([])
 
     setFormData({
       categoria: structure.categoria || "TERME",
@@ -365,12 +428,40 @@ function AdminDashboard() {
         <section className="admin-toolbar-card">
           <div className="admin-toolbar-search">
             <i className="bi bi-search"></i>
-            <input type="text" placeholder="Cerca per nome o per categorie" />
+            <input
+              type="text"
+              placeholder="Cerca per nome o per categorie"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
 
-          <button className="admin-toolbar-chip">Categorie</button>
-          <button className="admin-toolbar-chip">Accessibilità</button>
-          <button className="admin-toolbar-chip">Salvate</button>
+          <select
+            className="admin-toolbar-select"
+            value={filterCategoria}
+            onChange={(e) => setFilterCategoria(e.target.value)}
+          >
+            <option value="">Categorie</option>
+            <option value="TERME">Terme</option>
+            <option value="HOTEL">Hotel</option>
+            <option value="RISTORANTE">Ristorante</option>
+            <option value="PARCO">Parco</option>
+          </select>
+
+          <select
+            className="admin-toolbar-select"
+            value={filterAccessibilita}
+            onChange={(e) => setFilterAccessibilita(e.target.value)}
+          >
+            <option value="">Accessibilità</option>
+            <option value="accessibile">Accessibile</option>
+            <option value="non-accessibile">Non accessibile</option>
+          </select>
+
+          <select className="admin-toolbar-select">
+            <option value="">Salvate</option>
+          </select>
+
           <button className="admin-toolbar-primary">Filtra</button>
         </section>
 
@@ -400,6 +491,7 @@ function AdminDashboard() {
                 formData={formData}
                 handleChange={handleChange}
                 handleImageChange={handleImageChange}
+                handleRemoveImage={handleRemoveImage}
                 caratteristiche={caratteristiche}
                 accessibilitaForm={accessibilitaForm}
                 handleAccessibilitaChange={handleAccessibilitaChange}
@@ -408,6 +500,7 @@ function AdminDashboard() {
                 handleCreateOrUpdateStructure={handleCreateOrUpdateStructure}
                 saving={saving}
                 resetForm={resetForm}
+                selectedImages={selectedImages}
               />
             )}
 

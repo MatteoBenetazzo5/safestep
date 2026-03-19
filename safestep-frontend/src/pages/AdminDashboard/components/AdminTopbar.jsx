@@ -1,6 +1,8 @@
 import "../styles/AdminTopbar.css"
 
 function AdminTopbar({ nomeVisualizzato, email, avatar, initial }) {
+  const finalInitial = initial || (nomeVisualizzato ? nomeVisualizzato.charAt(0).toUpperCase() : "A")
+
   return (
     <header className="admin-topbar">
       <div className="admin-topbar-left">
@@ -18,7 +20,7 @@ function AdminTopbar({ nomeVisualizzato, email, avatar, initial }) {
             className="admin-topbar-image"
           />
         ) : (
-          <div className="admin-topbar-avatar">{initial}</div>
+          <div className="admin-topbar-avatar">{finalInitial}</div>
         )}
       </div>
     </header>

@@ -1,6 +1,16 @@
 import "../styles/AdminSidebar.css"
 
-function AdminSidebar({ handleLogout }) {
+function AdminSidebar({
+  handleLogout,
+  activeSection,
+  onDashboardClick,
+  onStructuresClick,
+  onUsersClick,
+  onContentsClick,
+  onCategoriesClick,
+  onFeaturesClick,
+  onAccessibilityClick,
+}) {
   return (
     <aside className="admin-sidebar">
       <div className="admin-sidebar-brand">
@@ -15,22 +25,28 @@ function AdminSidebar({ handleLogout }) {
       </div>
 
       <nav className="admin-sidebar-menu">
-        <button className="admin-sidebar-link active">
+        <button
+          className={`admin-sidebar-link ${activeSection === "dashboard" ? "active" : ""}`}
+          onClick={onDashboardClick}
+        >
           <i className="bi bi-house-door"></i>
           Dashboard
         </button>
 
-        <button className="admin-sidebar-link">
+        <button
+          className={`admin-sidebar-link ${activeSection === "structures" ? "active" : ""}`}
+          onClick={onStructuresClick}
+        >
           <i className="bi bi-building"></i>
           Gestione strutture
         </button>
 
-        <button className="admin-sidebar-link">
+        <button className="admin-sidebar-link" onClick={onUsersClick}>
           <i className="bi bi-people"></i>
           Gestione utenti
         </button>
 
-        <button className="admin-sidebar-link">
+        <button className="admin-sidebar-link" onClick={onContentsClick}>
           <i className="bi bi-card-text"></i>
           Gestione contenuti
         </button>
@@ -39,17 +55,20 @@ function AdminSidebar({ handleLogout }) {
       <div className="admin-sidebar-box">
         <h3>Impostazioni sistema</h3>
 
-        <button className="admin-sidebar-box-link">
+        <button className="admin-sidebar-box-link" onClick={onCategoriesClick}>
           <i className="bi bi-grid"></i>
           Categorie
         </button>
 
-        <button className="admin-sidebar-box-link">
+        <button className="admin-sidebar-box-link" onClick={onFeaturesClick}>
           <i className="bi bi-tags"></i>
           Caratteristiche
         </button>
 
-        <button className="admin-sidebar-box-link">
+        <button
+          className="admin-sidebar-box-link"
+          onClick={onAccessibilityClick}
+        >
           <i className="bi bi-universal-access"></i>
           Accessibilità
         </button>

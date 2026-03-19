@@ -1,7 +1,9 @@
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap"
 import { NavLink, useNavigate } from "react-router-dom"
 import "../styles/components/NavigationBar.css"
 import logo from "../assets/logos/SAFESTEP_LOGO.png"
+import { API_BASE_URL, getAuthHeaders } from "../utils/api"
 
 import {
   getAvatar,
@@ -21,9 +23,88 @@ function NavigationBar() {
 
   const initial = nomeVisualizzato.charAt(0).toUpperCase()
 
+  const [searchTerm, setSearchTerm] = useState("")
+  const [termeList, setTermeList] = useState([])
+  const [showSearchResults, setShowSearchResults] = useState(false)
+
+  const searchRef = useRef(null)
+
+  useEffect(() => {
+    const fetchTerme = async () => {
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/strutture/categoria/TERME`,
+          {
+            headers: getAuthHeaders(),
+          },
+        )
+
+        if (!response.ok) {
+          throw new Error("Errore nel recupero delle terme")
+        }
+
+        const data = await response.json()
+        setTermeList(Array.isArray(data) ? data : [])
+      } catch (error) {
+        console.error("Errore caricamento ricerca navbar:", error)
+        setTermeList([])
+      }
+    }
+
+    fetchTerme()
+  }, [])
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowSearchResults(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
+  const risultatiRicerca = useMemo(() => {
+    if (!searchTerm.trim()) return []
+
+    const testoRicerca = searchTerm.toLowerCase()
+
+    return termeList
+      .filter((terma) => {
+        if (!terma) return false
+
+        const nome = terma.nome?.toLowerCase() || ""
+        const citta = terma.citta?.toLowerCase() || ""
+        const descrizione = terma.descrizione?.toLowerCase() || ""
+
+        return (
+          nome.includes(testoRicerca) ||
+          citta.includes(testoRicerca) ||
+          descrizione.includes(testoRicerca)
+        )
+      })
+      .slice(0, 6)
+  }, [searchTerm, termeList])
+
   const handleLogout = () => {
     logout()
     navigate("/login")
+  }
+
+  const handleResultClick = (idStruttura) => {
+    setShowSearchResults(false)
+    setSearchTerm("")
+    navigate(`/struttura/${idStruttura}`)
+  }
+
+  const handleSearchFocus = () => {
+    if (searchTerm.trim()) {
+      setShowSearchResults(true)
+    }
   }
 
   const profileRoute = ruolo === "ADMIN" ? "/admin" : "/profilo"
@@ -31,12 +112,10 @@ function NavigationBar() {
   return (
     <div className="navbar-overlay-wrapper">
       <Container className="navbar-overlay-container">
-        {/* LOGO */}
         <NavLink to="/" className="navbar-logo-side">
           <img src={logo} alt="SafeStep logo" />
         </NavLink>
 
-        {/* NAVBAR GLASS */}
         <div className="navbar-pill">
           <Navbar expand="lg" className="safestep-navbar">
             <Navbar.Toggle aria-controls="main-navbar" />
@@ -70,11 +149,56 @@ function NavigationBar() {
                 </Nav.Link>
               </Nav>
 
-              {/* RIGHT SIDE */}
               <div className="navbar-right">
-                <div className="navbar-search">
+                <div className="navbar-search" ref={searchRef}>
                   <i className="bi bi-search"></i>
-                  <input placeholder="Search" />
+                  <input
+                    placeholder="Search"
+                    value={searchTerm}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value)
+                      setShowSearchResults(true)
+                    }}
+                    onFocus={handleSearchFocus}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && risultatiRicerca.length > 0) {
+                        handleResultClick(risultatiRicerca[0].idStruttura)
+                      }
+                    }}
+                  />
+
+                  {showSearchResults && searchTerm.trim() && (
+                    <div className="navbar-search-dropdown">
+                      {risultatiRicerca.length > 0 ? (
+                        risultatiRicerca.map((terma) => (
+                          <button
+                            key={terma.idStruttura}
+                            type="button"
+                            className="navbar-search-result"
+                            onClick={() => handleResultClick(terma.idStruttura)}
+                          >
+                            <img
+                              src={
+                                terma.immagineCopertina ||
+                                "https://via.placeholder.com/120x80?text=SafeStep"
+                              }
+                              alt={terma.nome || "Struttura"}
+                              className="navbar-search-result-image"
+                            />
+
+                            <div className="navbar-search-result-body">
+                              <h6>{terma.nome || "Nome non disponibile"}</h6>
+                              <p>{terma.citta || "Città non disponibile"}</p>
+                            </div>
+                          </button>
+                        ))
+                      ) : (
+                        <div className="navbar-search-empty">
+                          Nessuna terme trovata
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {logged ? (
@@ -86,7 +210,6 @@ function NavigationBar() {
                       Esci
                     </button>
 
-                    {/* AVATAR */}
                     <NavLink
                       to={profileRoute}
                       className="navbar-profile avatar-profile"

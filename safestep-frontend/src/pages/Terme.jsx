@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { API_BASE_URL, getAuthHeaders } from "../utils/api"
 import "../styles/pages/Terme.css"
@@ -10,6 +10,14 @@ function Terme() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [searchTerm, setSearchTerm] = useState("")
+  const [soloAccessibili, setSoloAccessibili] = useState(false)
+  const [soloConCoordinate, setSoloConCoordinate] = useState(false)
+  const [ordinamento, setOrdinamento] = useState("default")
+  const [posizioneUtente, setPosizioneUtente] = useState(null)
+  const [showFiltersDropdown, setShowFiltersDropdown] = useState(false)
+
+  const risultatiRef = useRef(null)
+  const filtersRef = useRef(null)
 
   useEffect(() => {
     const fetchTerme = async () => {
@@ -42,34 +50,231 @@ function Terme() {
     fetchTerme()
   }, [])
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (filtersRef.current && !filtersRef.current.contains(event.target)) {
+        setShowFiltersDropdown(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
+  const getRatingValue = (terma) => {
+    if (!terma) return 0
+
+    return Number(
+      terma.ratingMedio ||
+        terma.mediaVoti ||
+        terma.mediaRecensioni ||
+        terma.votoMedio ||
+        terma.rating ||
+        0,
+    )
+  }
+
+  const hasAccessibilityInfo = (terma) => {
+    if (!terma) return false
+
+    if (terma.accessibile === true) return true
+    if (terma.accessibilitaStruttura === true) return true
+    if (terma.rampe === true) return true
+    if (terma.parcheggioDisabili === true) return true
+    if (terma.bagnoAccessibile === true) return true
+
+    if (
+      Array.isArray(terma.caratteristicheAccessibilita) &&
+      terma.caratteristicheAccessibilita.length > 0
+    ) {
+      return true
+    }
+
+    if (Array.isArray(terma.accessibilita) && terma.accessibilita.length > 0) {
+      return true
+    }
+
+    const noteDisabili = terma.noteDisabili?.trim() || ""
+    const accessibilitaNote = terma.accessibilitaNote?.trim() || ""
+
+    return Boolean(noteDisabili || accessibilitaNote)
+  }
+
+  const hasCoordinates = (terma) => {
+    if (!terma) return false
+
+    const latitudine = Number(terma.latitudine)
+    const longitudine = Number(terma.longitudine)
+
+    return !Number.isNaN(latitudine) && !Number.isNaN(longitudine)
+  }
+
+  const toRadians = (value) => {
+    return (value * Math.PI) / 180
+  }
+
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const earthRadius = 6371
+
+    const deltaLat = toRadians(lat2 - lat1)
+    const deltaLon = toRadians(lon2 - lon1)
+
+    const a =
+      Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+      Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+        Math.sin(deltaLon / 2) *
+        Math.sin(deltaLon / 2)
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+    return earthRadius * c
+  }
+
+  const getDistanceFromUser = (terma) => {
+    if (!posizioneUtente || !terma) return Number.POSITIVE_INFINITY
+
+    const latitudineStruttura = Number(terma.latitudine)
+    const longitudineStruttura = Number(terma.longitudine)
+
+    if (
+      Number.isNaN(latitudineStruttura) ||
+      Number.isNaN(longitudineStruttura)
+    ) {
+      return Number.POSITIVE_INFINITY
+    }
+
+    return calculateDistance(
+      posizioneUtente.latitude,
+      posizioneUtente.longitude,
+      latitudineStruttura,
+      longitudineStruttura,
+    )
+  }
+
+  const scrollToResults = () => {
+    if (risultatiRef.current) {
+      risultatiRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      })
+    }
+  }
+
+  const handleSearch = () => {
+    scrollToResults()
+  }
+
+  const handleResetFilters = () => {
+    setSoloAccessibili(false)
+    setSoloConCoordinate(false)
+    setOrdinamento("default")
+    setPosizioneUtente(null)
+    setError("")
+    setShowFiltersDropdown(false)
+  }
+
+  const handleTopRated = () => {
+    setOrdinamento("rating")
+    scrollToResults()
+  }
+
+  const handleNearby = () => {
+    if (!navigator.geolocation) {
+      setError("La geolocalizzazione non è supportata dal browser.")
+      return
+    }
+
+    setError("")
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setPosizioneUtente({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        })
+        setOrdinamento("distance")
+        scrollToResults()
+      },
+      () => {
+        setError("Non è stato possibile recuperare la tua posizione.")
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000,
+      },
+    )
+  }
+
   const termeFiltrate = useMemo(() => {
     if (!Array.isArray(termePrincipali)) return []
 
-    if (!searchTerm.trim()) return termePrincipali
+    let lista = [...termePrincipali]
 
-    const testoRicerca = searchTerm.toLowerCase()
+    if (searchTerm.trim()) {
+      const testoRicerca = searchTerm.toLowerCase()
 
-    return termePrincipali.filter((terma) => {
-      if (!terma) return false
+      lista = lista.filter((terma) => {
+        if (!terma) return false
 
-      const nome = terma.nome?.toLowerCase() || ""
-      const citta = terma.citta?.toLowerCase() || ""
-      const descrizione = terma.descrizione?.toLowerCase() || ""
+        const nome = terma.nome?.toLowerCase() || ""
+        const citta = terma.citta?.toLowerCase() || ""
+        const descrizione = terma.descrizione?.toLowerCase() || ""
 
-      return (
-        nome.includes(testoRicerca) ||
-        citta.includes(testoRicerca) ||
-        descrizione.includes(testoRicerca)
-      )
-    })
-  }, [termePrincipali, searchTerm])
+        return (
+          nome.includes(testoRicerca) ||
+          citta.includes(testoRicerca) ||
+          descrizione.includes(testoRicerca)
+        )
+      })
+    }
+
+    if (soloAccessibili) {
+      lista = lista.filter((terma) => hasAccessibilityInfo(terma))
+    }
+
+    if (soloConCoordinate) {
+      lista = lista.filter((terma) => hasCoordinates(terma))
+    }
+
+    if (ordinamento === "rating") {
+      lista.sort((a, b) => getRatingValue(b) - getRatingValue(a))
+    }
+
+    if (ordinamento === "distance" && posizioneUtente) {
+      lista.sort((a, b) => getDistanceFromUser(a) - getDistanceFromUser(b))
+    }
+
+    return lista
+  }, [
+    termePrincipali,
+    searchTerm,
+    soloAccessibili,
+    soloConCoordinate,
+    ordinamento,
+    posizioneUtente,
+  ])
 
   const termePopolari = useMemo(() => {
     if (!Array.isArray(termeFiltrate)) return []
     return termeFiltrate.slice(0, 3)
   }, [termeFiltrate])
 
-  const renderWheelchairs = () => {
+  const renderWheelchairs = (terma) => {
+    const accessibilitaPresente = hasAccessibilityInfo(terma)
+
+    if (!accessibilitaPresente) {
+      return (
+        <div className="terme-card-accessibility">
+          <i className="bi bi-person-wheelchair"></i>
+        </div>
+      )
+    }
+
     return (
       <div className="terme-card-accessibility">
         <i className="bi bi-person-wheelchair"></i>
@@ -81,7 +286,10 @@ function Terme() {
     )
   }
 
-  const renderStars = () => {
+  const renderStars = (terma) => {
+    const rating = getRatingValue(terma)
+    const ratingDaMostrare = rating > 0 ? rating.toFixed(1) : "4.7"
+
     return (
       <div className="terme-card-rating">
         <span className="terme-stars">
@@ -91,7 +299,7 @@ function Terme() {
           <i className="bi bi-star-fill"></i>
           <i className="bi bi-star-half"></i>
         </span>
-        <span className="terme-rating-number">4.7</span>
+        <span className="terme-rating-number">{ratingDaMostrare}</span>
       </div>
     )
   }
@@ -119,56 +327,104 @@ function Terme() {
                     placeholder="Cerca terme accessibili"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSearch()
+                      }
+                    }}
                   />
                 </div>
 
-                <button type="button">Cerca</button>
+                <button type="button" onClick={handleSearch}>
+                  Cerca
+                </button>
               </div>
 
-              <div className="terme-filters-pill">
-                <button type="button">
+              <div className="terme-filters-pill" ref={filtersRef}>
+                <button
+                  type="button"
+                  onClick={() => setShowFiltersDropdown(!showFiltersDropdown)}
+                >
                   <i className="bi bi-funnel-fill"></i>
                   Filtri
                   <i className="bi bi-chevron-down"></i>
                 </button>
 
-                <button type="button">
+                <button type="button" onClick={handleResetFilters}>
                   Tutti
                   <i className="bi bi-chevron-down"></i>
                 </button>
 
-                <button type="button">Più votati</button>
+                <button type="button" onClick={handleTopRated}>
+                  Più votati
+                </button>
 
-                <button type="button">
+                <button type="button" onClick={handleNearby}>
                   Vicino a me
                   <i className="bi bi-chevron-down"></i>
                 </button>
+
+                {showFiltersDropdown && (
+                  <div className="terme-filters-dropdown">
+                    <button
+                      type="button"
+                      onClick={() => setSoloAccessibili(!soloAccessibili)}
+                    >
+                      {soloAccessibili ? "✓ " : ""}
+                      Solo accessibili
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setSoloConCoordinate(!soloConCoordinate)}
+                    >
+                      {soloConCoordinate ? "✓ " : ""}
+                      Solo con coordinate
+                    </button>
+
+                    <button type="button" onClick={handleTopRated}>
+                      Ordina per voto
+                    </button>
+
+                    <button type="button" onClick={handleNearby}>
+                      Ordina per vicinanza
+                    </button>
+
+                    <button type="button" onClick={handleResetFilters}>
+                      Reset filtri
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="terme-content-section">
+      <section className="terme-content-section" ref={risultatiRef}>
         <div className="terme-content-container">
           <div className="terme-section-title">
             <h2>Le migliori terme accessibili</h2>
           </div>
 
           <div className="terme-toolbar">
-            <button type="button" className="terme-toolbar-main">
+            <button
+              type="button"
+              className="terme-toolbar-main"
+              onClick={() => setShowFiltersDropdown(!showFiltersDropdown)}
+            >
               <i className="bi bi-sliders"></i>
               Filtri
               <i className="bi bi-chevron-right"></i>
             </button>
 
             <div className="terme-toolbar-secondary">
-              <button type="button">
+              <button type="button" onClick={handleTopRated}>
                 Più votati
                 <i className="bi bi-chevron-down"></i>
               </button>
 
-              <button type="button">
+              <button type="button" onClick={handleNearby}>
                 Vicino a me
                 <i className="bi bi-chevron-down"></i>
               </button>
@@ -191,41 +447,40 @@ function Terme() {
             <div className="terme-main-layout">
               <div className="terme-cards-column">
                 <div className="terme-grid">
-                  {Array.isArray(termeFiltrate) &&
-                    termeFiltrate.map((terma) => {
-                      if (!terma) return null
+                  {termeFiltrate.map((terma) => {
+                    if (!terma) return null
 
-                      return (
-                        <Link
-                          key={terma.idStruttura}
-                          to={`/struttura/${terma.idStruttura}`}
-                          className="terme-card-link"
-                        >
-                          <article className="terme-card">
-                            <img
-                              src={
-                                terma.immagineCopertina ||
-                                "https://via.placeholder.com/800x500?text=SafeStep"
-                              }
-                              alt={terma.nome || "Struttura termale"}
-                              className="terme-card-image"
-                            />
+                    return (
+                      <Link
+                        key={terma.idStruttura}
+                        to={`/struttura/${terma.idStruttura}`}
+                        className="terme-card-link"
+                      >
+                        <article className="terme-card">
+                          <img
+                            src={
+                              terma.immagineCopertina ||
+                              "https://via.placeholder.com/800x500?text=SafeStep"
+                            }
+                            alt={terma.nome || "Struttura termale"}
+                            className="terme-card-image"
+                          />
 
-                            <div className="terme-card-body">
-                              <h3>{terma.nome || "Nome non disponibile"}</h3>
-                              <p className="terme-card-city">
-                                {terma.citta || "Città non disponibile"}
-                              </p>
+                          <div className="terme-card-body">
+                            <h3>{terma.nome || "Nome non disponibile"}</h3>
+                            <p className="terme-card-city">
+                              {terma.citta || "Città non disponibile"}
+                            </p>
 
-                              <div className="terme-card-bottom">
-                                {renderWheelchairs()}
-                                {renderStars()}
-                              </div>
+                            <div className="terme-card-bottom">
+                              {renderWheelchairs(terma)}
+                              {renderStars(terma)}
                             </div>
-                          </article>
-                        </Link>
-                      )
-                    })}
+                          </div>
+                        </article>
+                      </Link>
+                    )
+                  })}
                 </div>
               </div>
 
@@ -277,41 +532,40 @@ function Terme() {
             </h2>
 
             <div className="terme-popular-grid">
-              {Array.isArray(termePopolari) &&
-                termePopolari.map((terma) => {
-                  if (!terma) return null
+              {termePopolari.map((terma) => {
+                if (!terma) return null
 
-                  return (
-                    <Link
-                      key={`popular-${terma.idStruttura}`}
-                      to={`/struttura/${terma.idStruttura}`}
-                      className="terme-card-link"
-                    >
-                      <article className="terme-small-card">
-                        <img
-                          src={
-                            terma.immagineCopertina ||
-                            "https://via.placeholder.com/800x500?text=SafeStep"
-                          }
-                          alt={terma.nome || "Struttura termale"}
-                          className="terme-small-card-image"
-                        />
+                return (
+                  <Link
+                    key={`popular-${terma.idStruttura}`}
+                    to={`/struttura/${terma.idStruttura}`}
+                    className="terme-card-link"
+                  >
+                    <article className="terme-small-card">
+                      <img
+                        src={
+                          terma.immagineCopertina ||
+                          "https://via.placeholder.com/800x500?text=SafeStep"
+                        }
+                        alt={terma.nome || "Struttura termale"}
+                        className="terme-small-card-image"
+                      />
 
-                        <div className="terme-small-card-body">
-                          <h3>{terma.nome || "Nome non disponibile"}</h3>
-                          <p className="terme-card-city">
-                            {terma.citta || "Città non disponibile"}
-                          </p>
+                      <div className="terme-small-card-body">
+                        <h3>{terma.nome || "Nome non disponibile"}</h3>
+                        <p className="terme-card-city">
+                          {terma.citta || "Città non disponibile"}
+                        </p>
 
-                          <div className="terme-card-bottom">
-                            {renderWheelchairs()}
-                            {renderStars()}
-                          </div>
+                        <div className="terme-card-bottom">
+                          {renderWheelchairs(terma)}
+                          {renderStars(terma)}
                         </div>
-                      </article>
-                    </Link>
-                  )
-                })}
+                      </div>
+                    </article>
+                  </Link>
+                )
+              })}
             </div>
           </div>
         </section>

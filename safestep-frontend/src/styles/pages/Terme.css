@@ -198,6 +198,38 @@
   justify-content: center;
 }
 
+.terme-filters-pill {
+  position: relative;
+}
+
+.terme-filters-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 240px;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+  padding: 0.6rem;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.terme-filters-dropdown button {
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 0.75rem 0.8rem;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.terme-filters-dropdown button:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
 /* MAIN LAYOUT */
 
 .terme-main-layout {

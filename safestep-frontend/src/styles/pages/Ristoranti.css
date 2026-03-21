@@ -1,7 +1,10 @@
 .ristoranti-page {
-  background-color: #fcf7f3;
   min-height: 100vh;
+  background: #fdf7f2;
+  color: #5a3325;
 }
+
+/* HERO */
 
 .ristoranti-hero {
   min-height: 700px;
@@ -12,318 +15,494 @@
 
 .ristoranti-hero-overlay {
   min-height: 700px;
-  background: rgba(252, 247, 243, 0.74);
+  background: rgba(253, 247, 242, 0.78);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 200px 20px 4rem;
-  margin-top: 0;
+  padding: 180px 20px 70px;
 }
 
 .ristoranti-hero-content {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1050px;
   text-align: center;
-  color: #4b352d;
 }
 
 .ristoranti-hero-content h1 {
-  font-size: 3.2rem;
-  font-weight: 700;
-  margin-bottom: 1.2rem;
-  color: #4b352d;
+  margin: 0 0 1rem 0;
+  font-size: 3.4rem;
+  line-height: 1.1;
+  font-weight: 800;
+  color: #6a3c2d;
 }
 
 .ristoranti-hero-content p {
-  font-size: 1.3rem;
-  margin-bottom: 2.5rem;
-  color: #7c6258;
+  margin: 0 0 2rem 0;
+  font-size: 1.18rem;
+  line-height: 1.6;
+  color: #9a6c5a;
 }
 
 .ristoranti-search-bar {
-  max-width: 920px;
+  width: 100%;
+  max-width: 900px;
   margin: 0 auto;
-  background-color: rgba(255, 255, 255, 0.94);
-  border-radius: 20px;
-  padding: 1.2rem;
+  padding: 10px;
   display: flex;
-  gap: 1rem;
   align-items: center;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(245, 219, 205, 0.95);
+  border-radius: 22px;
+  box-shadow: 0 16px 34px rgba(201, 109, 63, 0.1);
 }
 
 .ristoranti-search-input {
+  min-height: 62px;
   flex: 1;
-  background-color: #fff8f3;
-  border-radius: 14px;
   display: flex;
   align-items: center;
-  padding: 1rem 1.2rem;
-  gap: 1rem;
-  border: 1px solid #f0ddd2;
+  gap: 14px;
+  padding: 0 20px;
+  background: #fffaf6;
+  border: 1px solid #f4ddd0;
+  border-radius: 16px;
 }
 
 .ristoranti-search-input i {
-  font-size: 1.4rem;
-  color: #9b7b6d;
+  font-size: 1.35rem;
+  color: #f08a5d;
+  flex-shrink: 0;
 }
 
 .ristoranti-search-input input {
+  width: 100%;
   border: none;
   outline: none;
-  width: 100%;
-  font-size: 1.1rem;
-  background-color: transparent;
-  color: #5f4a42;
+  background: transparent;
+  color: #7a5547;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.ristoranti-search-input input::placeholder {
+  color: #b28a79;
 }
 
 .ristoranti-search-bar button {
+  min-width: 150px;
+  min-height: 62px;
+  padding: 0 30px;
   border: none;
-  background: #e77b52;
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 12px;
-  padding: 1rem 2.2rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f08a5d 0%, #f6a36e 100%);
+  color: #ffffff;
+  font-size: 1.02rem;
+  font-weight: 700;
   cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 10px 24px rgba(240, 138, 93, 0.25);
+}
+
+.ristoranti-search-bar button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px rgba(240, 138, 93, 0.32);
 }
 
 .ristoranti-filters-pill {
-  width: fit-content;
-  margin: 2rem auto 0;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #5f4a42;
-  border-radius: 50px;
-  padding: 14px 24px;
-  display: flex;
-  gap: 24px;
+  margin-top: 1.5rem;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  font-size: 1rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  gap: 0.45rem;
+  padding: 0.45rem;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #f5e2d8;
+  border-radius: 999px;
+  box-shadow: 0 12px 30px rgba(201, 109, 63, 0.08);
 }
 
+.ristoranti-filters-pill span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.82rem 1.2rem;
+  border-radius: 999px;
+  color: #8b6455;
+  font-size: 0.96rem;
+  font-weight: 600;
+}
+
+.ristoranti-filters-pill span:first-child {
+  background: #fff1e9;
+  color: #f08a5d;
+}
+
+/* MAIN */
+
 .ristoranti-main-section {
-  max-width: 1400px;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 50px 24px 30px;
+  padding: 3rem 1.5rem;
+}
+
+.ristoranti-main-header {
+  margin-bottom: 1.8rem;
 }
 
 .ristoranti-main-header h2 {
-  font-size: 3rem;
-  color: #3e2d27;
-  margin-bottom: 32px;
+  margin: 0;
+  font-size: 2.8rem;
+  line-height: 1.1;
+  font-weight: 800;
+  color: #6a3c2d;
 }
 
 .ristoranti-main-layout {
-  display: flex;
-  gap: 28px;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
 }
 
 .ristoranti-left-content {
-  flex: 1;
+  min-width: 0;
 }
 
 .ristoranti-right-content {
-  width: 360px;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1.5rem;
 }
+
+/* TOOLBAR */
 
 .ristoranti-toolbar {
+  margin-bottom: 1.7rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 26px;
-  gap: 16px;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.toolbar-button,
-.toolbar-dropdowns button {
+.toolbar-button {
   border: none;
-  background-color: #f8e7df;
-  color: #5f4a42;
-  border-radius: 12px;
-  padding: 16px 22px;
-  font-size: 1.2rem;
-  font-weight: 600;
+  background: #fff1e9;
+  color: #f08a5d;
+  border-radius: 14px;
+  padding: 0.95rem 1.2rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.toolbar-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(240, 138, 93, 0.14);
 }
 
 .toolbar-dropdowns {
   display: flex;
-  gap: 14px;
+  flex-wrap: wrap;
+  gap: 0.8rem;
 }
+
+.toolbar-dropdowns button {
+  border: none;
+  background: #fff5ef;
+  color: #9c6c59;
+  border-radius: 14px;
+  padding: 0.95rem 1.2rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.toolbar-dropdowns button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(240, 138, 93, 0.12);
+}
+
+/* GRID */
 
 .ristoranti-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 26px;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
 }
 
 .ristoranti-card-link {
+  display: block;
   text-decoration: none;
   color: inherit;
+  min-width: 0;
 }
 
-.ristoranti-card,
-.ristoranti-small-card {
-  background-color: white;
-  border-radius: 22px;
+.ristoranti-card {
+  height: 100%;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(90, 60, 50, 0.08);
-  transition: transform 0.2s ease;
+  background: #ffffff;
+  border: 1px solid #f3e2d7;
+  border-radius: 24px;
+  box-shadow: 0 12px 28px rgba(156, 91, 57, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.ristoranti-card:hover,
-.ristoranti-small-card:hover {
+.ristoranti-card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 18px 34px rgba(156, 91, 57, 0.14);
 }
 
-.ristoranti-card img,
-.ristoranti-small-card img {
+.ristoranti-card img {
   width: 100%;
-  height: 240px;
+  height: 245px;
   object-fit: cover;
   display: block;
 }
 
-.ristoranti-card-body,
-.ristoranti-small-card-body {
-  padding: 20px 22px 22px;
+.ristoranti-card-body {
+  padding: 1.25rem 1.25rem 1.35rem;
 }
 
-.ristoranti-card-body h3,
-.ristoranti-small-card-body h3 {
-  font-size: 1.9rem;
-  color: #3e2d27;
-  margin-bottom: 6px;
+.ristoranti-card-body h3 {
+  margin: 0 0 0.35rem 0;
+  font-size: 1.15rem;
+  line-height: 1.3;
+  font-weight: 800;
+  color: #6a3c2d;
 }
 
-.ristoranti-card-body p,
-.ristoranti-small-card-body p {
-  font-size: 1.2rem;
-  color: #8a7063;
-  margin-bottom: 14px;
+.ristoranti-card-body p {
+  margin: 0 0 0.9rem 0;
+  font-size: 1rem;
+  color: #a07969;
 }
 
 .ristoranti-card-footer {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
 .ristoranti-icons {
   display: flex;
-  gap: 8px;
-  color: #e77b52;
-  font-size: 1.3rem;
+  align-items: center;
+  gap: 0.3rem;
+  color: #f08a5d;
+  font-size: 1.05rem;
+  flex-wrap: wrap;
 }
 
 .ristoranti-rating {
   display: flex;
   align-items: center;
-  gap: 4px;
-  color: #d9653c;
-  font-size: 1.15rem;
-  font-weight: 600;
+  gap: 0.18rem;
+  color: #f08a5d;
+  font-size: 1rem;
+  font-weight: 800;
+  flex-wrap: wrap;
 }
 
+.ristoranti-rating span {
+  margin-left: 0.25rem;
+  color: #f08a5d;
+}
+
+/* RIGHT CARDS */
+
 .ristoranti-guide-card {
-  background: linear-gradient(180deg, #fff2eb 0%, #ffe6d9 100%);
+  background: #ffffff;
+  border: 1px solid #f3e2d7;
   border-radius: 24px;
-  padding: 28px;
-  box-shadow: 0 10px 30px rgba(90, 60, 50, 0.08);
+  padding: 1.6rem;
+  box-shadow: 0 12px 26px rgba(156, 91, 57, 0.07);
+  overflow: hidden;
 }
 
 .ristoranti-guide-card h3 {
-  font-size: 2rem;
-  color: #3e2d27;
-  margin-bottom: 18px;
+  margin: 0 0 0.9rem 0;
+  font-size: 1.95rem;
+  line-height: 1.15;
+  font-weight: 800;
+  color: #6a3c2d;
 }
 
 .ristoranti-guide-card p {
-  font-size: 1.25rem;
-  color: #7f6559;
-  line-height: 1.5;
-  margin-bottom: 22px;
+  margin: 0 0 1.4rem 0;
+  font-size: 1.08rem;
+  line-height: 1.65;
+  color: #8c6657;
 }
 
-.ristoranti-guide-card button {
-  width: 100%;
-  border: none;
-  border-radius: 14px;
-  padding: 18px;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: white;
-  background: linear-gradient(90deg, #f08a5d 0%, #d9653c 100%);
+.ristoranti-guide-button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+  padding: 1rem 1.4rem;
+  border-radius: 16px;
+  text-decoration: none;
+  background: linear-gradient(135deg, #f08a5d 0%, #f6a36e 100%);
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(240, 138, 93, 0.24);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.image-card img {
+.ristoranti-guide-button-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(240, 138, 93, 0.3);
+}
+
+.ristoranti-guide-card.image-card {
+  padding: 0;
+}
+
+.ristoranti-guide-card.image-card img {
   width: 100%;
-  height: 210px;
+  height: 230px;
   object-fit: cover;
-  border-radius: 18px;
-  margin-bottom: 18px;
+  display: block;
 }
+
+.ristoranti-guide-card.image-card h3,
+.ristoranti-guide-card.image-card p,
+.ristoranti-guide-card.image-card .ristoranti-guide-button-link {
+  margin-left: 1.4rem;
+  margin-right: 1.4rem;
+}
+
+.ristoranti-guide-card.image-card h3 {
+  margin-top: 1.35rem;
+}
+
+.ristoranti-guide-card.image-card .ristoranti-guide-button-link {
+  margin-bottom: 1.4rem;
+}
+
+/* POPULAR */
 
 .ristoranti-popular-section {
-  max-width: 1400px;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 20px 24px 60px;
-  position: relative;
+  padding: 0.8rem 1.5rem 4rem;
 }
 
 .ristoranti-popular-section h2 {
-  font-size: 2.8rem;
-  color: #3e2d27;
-  margin-bottom: 28px;
+  margin: 0 0 1.7rem 0;
+  font-size: 2.2rem;
+  line-height: 1.2;
+  font-weight: 800;
+  color: #6a3c2d;
 }
 
 .ristoranti-popular-section h2 span {
-  color: #8a7063;
-  font-weight: 500;
+  color: #a37d6b;
 }
 
 .ristoranti-popular-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 26px;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.ristoranti-small-card {
+  height: 100%;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #f3e2d7;
+  border-radius: 24px;
+  box-shadow: 0 12px 28px rgba(156, 91, 57, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.ristoranti-small-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 34px rgba(156, 91, 57, 0.14);
 }
 
 .ristoranti-small-card img {
+  width: 100%;
   height: 220px;
+  object-fit: cover;
+  display: block;
 }
+
+.ristoranti-small-card-body {
+  padding: 1.2rem 1.25rem 1.3rem;
+}
+
+.ristoranti-small-card-body h3 {
+  margin: 0 0 0.35rem 0;
+  font-size: 1.12rem;
+  line-height: 1.3;
+  font-weight: 800;
+  color: #6a3c2d;
+}
+
+.ristoranti-small-card-body p {
+  margin: 0 0 0.9rem 0;
+  color: #a07969;
+}
+
+/* CHAT */
 
 .chat-button {
   position: fixed;
-  right: 30px;
-  bottom: 26px;
+  right: 24px;
+  bottom: 24px;
+  z-index: 30;
   border: none;
-  border-radius: 40px;
-  padding: 16px 26px;
-  background: linear-gradient(90deg, #f08a5d 0%, #d9653c 100%);
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 600;
-  box-shadow: 0 14px 30px rgba(90, 60, 50, 0.18);
+  border-radius: 999px;
+  padding: 0.95rem 1.35rem;
+  background: linear-gradient(135deg, #f08a5d 0%, #f6a36e 100%);
+  color: #ffffff;
+  font-size: 0.98rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 14px 28px rgba(240, 138, 93, 0.28);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-@media screen and (max-width: 1200px) {
-  .ristoranti-main-layout {
-    flex-direction: column;
+.chat-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 32px rgba(240, 138, 93, 0.35);
+}
+
+/* TABLET */
+
+@media (min-width: 768px) {
+  .ristoranti-hero {
+    min-height: 670px;
   }
 
-  .ristoranti-right-content {
-    width: 100%;
+  .ristoranti-hero-overlay {
+    min-height: 670px;
+    padding: 176px 20px 70px;
+  }
+
+  .ristoranti-hero-content h1 {
+    font-size: 4rem;
+  }
+
+  .ristoranti-search-bar {
     flex-direction: row;
   }
 
-  .ristoranti-right-content .ristoranti-guide-card {
-    flex: 1;
+  .ristoranti-search-bar button {
+    width: 150px;
+  }
+
+  .ristoranti-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .ristoranti-popular-grid {
@@ -331,63 +510,146 @@
   }
 }
 
-@media screen and (max-width: 991px) {
+/* DESKTOP */
+
+@media (min-width: 992px) {
+  .ristoranti-hero {
+    min-height: 640px;
+  }
+
+  .ristoranti-hero-overlay {
+    min-height: 640px;
+    padding: 168px 24px 64px;
+  }
+
+  .ristoranti-hero-content {
+    max-width: 1000px;
+  }
+
   .ristoranti-hero-content h1 {
-    font-size: 2.8rem;
+    font-size: 4.1rem;
+  }
+
+  .ristoranti-main-layout {
+    grid-template-columns: minmax(0, 2.15fr) minmax(290px, 0.95fr);
+  }
+
+  .ristoranti-popular-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .ristoranti-main-section,
+  .ristoranti-popular-section {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 991px) {
+  .ristoranti-main-header h2 {
+    font-size: 2.35rem;
+  }
+
+  .ristoranti-guide-card h3 {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .ristoranti-hero {
+    min-height: 620px;
+  }
+
+  .ristoranti-hero-overlay {
+    min-height: 620px;
+    padding: 145px 16px 54px;
+  }
+
+  .ristoranti-hero-content h1 {
+    font-size: 2.5rem;
+    line-height: 1.12;
   }
 
   .ristoranti-hero-content p {
-    font-size: 1.2rem;
+    font-size: 1.03rem;
+    margin-bottom: 1.6rem;
   }
 
   .ristoranti-search-bar {
     flex-direction: column;
+    padding: 8px;
+    border-radius: 18px;
+  }
+
+  .ristoranti-search-input {
+    min-height: 56px;
+    padding: 0 14px;
+  }
+
+  .ristoranti-search-input i {
+    font-size: 1.2rem;
+  }
+
+  .ristoranti-search-input input {
+    font-size: 0.98rem;
   }
 
   .ristoranti-search-bar button {
     width: 100%;
+    min-width: 100%;
+    min-height: 54px;
+    font-size: 0.98rem;
   }
 
   .ristoranti-filters-pill {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px;
+    width: 100%;
+    border-radius: 22px;
   }
 
-  .ristoranti-grid,
-  .ristoranti-popular-grid {
-    grid-template-columns: 1fr;
+  .ristoranti-main-section,
+  .ristoranti-popular-section {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
-  .ristoranti-right-content {
-    flex-direction: column;
-  }
-
-  .ristoranti-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .toolbar-dropdowns {
-    flex-direction: column;
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .ristoranti-main-header h2,
-  .ristoranti-popular-section h2 {
+  .ristoranti-main-header h2 {
     font-size: 2rem;
   }
 
-  .ristoranti-card-body h3,
-  .ristoranti-small-card-body h3,
-  .ristoranti-guide-card h3 {
-    font-size: 1.5rem;
+  .ristoranti-popular-section h2 {
+    font-size: 1.8rem;
+  }
+
+  .ristoranti-toolbar {
+    align-items: stretch;
+  }
+
+  .toolbar-button {
+    width: 100%;
+  }
+
+  .toolbar-dropdowns {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .toolbar-dropdowns button {
+    width: 100%;
+  }
+
+  .ristoranti-card img,
+  .ristoranti-small-card img {
+    height: 210px;
   }
 
   .chat-button {
     right: 16px;
-    left: 16px;
     bottom: 16px;
+    padding: 0.82rem 1.15rem;
+    font-size: 0.92rem;
   }
 }

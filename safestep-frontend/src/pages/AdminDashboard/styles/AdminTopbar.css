@@ -1,23 +1,43 @@
 .admin-topbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 20px;
-  margin-bottom: 28px;
+  gap: 16px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
+  flex-direction: column;
 }
 
 .admin-topbar h1 {
   margin: 0;
-  font-size: clamp(2.3rem, 4vw, 3.4rem);
+  font-size: clamp(1.8rem, 5vw, 3.4rem);
   line-height: 1.05;
   font-weight: 700;
+  text-align: center;
 }
 
 .admin-topbar p {
-  margin: 10px 0 0 0;
+  margin: 8px 0 0 0;
   color: #6e7d95;
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .admin-topbar {
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  
+  .admin-topbar h1 {
+    text-align: left;
+  }
+  
+  .admin-topbar p {
+    text-align: left;
+  }
 }
 
 .admin-user-pill {
@@ -27,8 +47,8 @@
 }
 
 .admin-user-avatar {
-  width: 82px;
-  height: 82px;
+  width: clamp(60px, 15vw, 82px);
+  height: clamp(60px, 15vw, 82px);
   border-radius: 50%;
   background: linear-gradient(135deg, #41b8de, #59d39a);
   color: white;
@@ -36,13 +56,13 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   box-shadow: 0 12px 28px rgba(65, 184, 222, 0.2);
 }
 
 .admin-user-image {
-  width: 82px;
-  height: 82px;
+  width: clamp(60px, 15vw, 82px);
+  height: clamp(60px, 15vw, 82px);
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);

@@ -2,39 +2,93 @@
   min-height: 100vh;
   background: #f4f6fb;
   color: #2f3b4f;
-  padding-top: 120px;
+  padding-top: 100px;
 }
 
 .admin-content {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 16px;
+}
+
+@media (min-width: 640px) {
+  .admin-content {
+    padding: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .admin-page {
+    padding-top: 110px;
+  }
+  .admin-content {
+    padding: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-page {
+    padding-top: 120px;
+  }
+  .admin-content {
+    padding: 32px;
+  }
 }
 
 .admin-toolbar-card {
   background: rgba(255, 255, 255, 0.96);
-  border-radius: 18px;
+  border-radius: 16px;
   box-shadow: 0 12px 30px rgba(24, 40, 72, 0.08);
   border: 1px solid rgba(225, 232, 242, 0.8);
-  padding: 18px 20px;
+  padding: 14px 12px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 640px) {
+  .admin-toolbar-card {
+    padding: 16px 16px;
+    gap: 12px;
+  }
+}
+
+@media (min-width: 768px) {
+  .admin-toolbar-card {
+    padding: 18px 20px;
+    gap: 12px;
+    margin-bottom: 24px;
+    justify-content: flex-start;
+  }
 }
 
 .admin-toolbar-search {
-  flex: 1;
-  min-width: 200px;
+  flex: 0 1 100%;
+  min-width: 150px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background: #f9f9fb;
   border: 1px solid #e1e8f2;
-  border-radius: 12px;
-  padding: 10px 14px;
+  border-radius: 10px;
+  padding: 9px 12px;
+}
+
+@media (min-width: 640px) {
+  .admin-toolbar-search {
+    flex: 1;
+    padding: 10px 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .admin-toolbar-search {
+    border-radius: 12px;
+  }
 }
 
 .admin-toolbar-search i {
@@ -56,16 +110,26 @@
 }
 
 .admin-toolbar-select {
-  padding: 10px 14px;
+  padding: 9px 12px;
   border: 1px solid #d4dce9;
-  border-radius: 10px;
+  border-radius: 8px;
   background: white;
   color: #2f3b4f;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-width: 140px;
+  min-width: 110px;
+  flex: 0 1 auto;
+}
+
+@media (min-width: 640px) {
+  .admin-toolbar-select {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    min-width: 140px;
+    border-radius: 10px;
+  }
 }
 
 .admin-toolbar-select:hover {
@@ -80,16 +144,26 @@
 }
 
 .admin-toolbar-primary {
-  padding: 10px 20px;
+  padding: 9px 16px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   background: linear-gradient(135deg, #41b8de, #59d39a);
   color: white;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(65, 184, 222, 0.18);
   transition: all 0.2s ease;
+  white-space: nowrap;
+  flex: 0 1 auto;
+}
+
+@media (min-width: 640px) {
+  .admin-toolbar-primary {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
 }
 
 .admin-toolbar-primary:hover {
@@ -111,32 +185,59 @@
 
 .admin-section-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 18px;
   flex-wrap: wrap;
 }
 
 .admin-section-header h2 {
   margin: 0;
-  font-size: 2.2rem;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
   line-height: 1.1;
   font-weight: 700;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .admin-section-header {
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .admin-section-header h2 {
+    text-align: left;
+  }
 }
 
 .admin-add-button {
   border: none;
-  border-radius: 14px;
+  border-radius: 12px;
   background: linear-gradient(135deg, #41b8de, #59d39a);
   color: white;
-  padding: 14px 20px;
+  padding: 12px 16px;
   font-weight: 700;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 8px;
   cursor: pointer;
   box-shadow: 0 10px 24px rgba(65, 184, 222, 0.18);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .admin-add-button {
+    padding: 14px 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .admin-add-button {
+    border-radius: 14px;
+  }
 }
 
 .admin-add-button:hover {
@@ -147,7 +248,13 @@
 .admin-right-column {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .admin-right-column {
+    gap: 20px;
+  }
 }
 
 /* Media Queries for responsive layout */

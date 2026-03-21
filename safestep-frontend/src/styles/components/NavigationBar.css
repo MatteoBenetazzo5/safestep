@@ -11,15 +11,13 @@
   padding-top: 18px;
 }
 
-/* container navbar */
-
 .navbar-overlay-container {
-  max-width: 1400px;
+  max-width: 1480px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 22px;
+  gap: 18px;
   padding: 0 28px;
 }
 
@@ -36,7 +34,7 @@
 }
 
 .navbar-logo-side img {
-  height: 88px;
+  height: 118px;
   width: auto;
   object-fit: contain;
   display: block;
@@ -55,7 +53,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 860px;
+  max-width: 920px;
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.12);
   transition: all 0.25s ease;
 }
@@ -106,8 +104,6 @@
   background: rgba(34, 179, 214, 0.12);
 }
 
-/* dropdown */
-
 .dropdown-menu {
   border-radius: 12px;
   border: none;
@@ -135,8 +131,9 @@
   background: #f3f5f8;
   padding: 6px 10px;
   border-radius: 8px;
-  min-width: 140px;
+  min-width: 150px;
   transition: all 0.2s ease;
+  position: relative;
 }
 
 .navbar-search i {
@@ -156,10 +153,6 @@
 
 .navbar-search input::placeholder {
   color: #9ca3af;
-}
-
-.navbar-search {
-  position: relative;
 }
 
 .navbar-search-dropdown {
@@ -218,8 +211,6 @@
   color: #6b7280;
 }
 
-/* focus */
-
 .navbar-search:focus-within {
   background: white;
   border: 1px solid #22b3d6;
@@ -236,8 +227,6 @@
   gap: 10px;
 }
 
-/* logout */
-
 .navbar-logout-button {
   border: none;
   background: transparent;
@@ -251,11 +240,9 @@
   color: #2f3c52;
 }
 
-/* avatar */
-
 .navbar-profile {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   overflow: hidden;
   display: flex;
@@ -282,33 +269,22 @@
   font-weight: 600;
 }
 
-
 /* ------------------------------- */
 /* RESPONSIVE */
 /* ------------------------------- */
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1200px) {
   .navbar-overlay-container {
-    padding: 0 20px;
+    padding: 0 22px;
     gap: 16px;
   }
 
   .navbar-logo-side img {
-    height: 74px;
+    height: 104px;
   }
 
   .navbar-pill {
-    max-width: 760px;
-    padding: 10px 16px;
-  }
-
-  .navbar-search {
-    min-width: 120px;
-  }
-
-  .navbar-menu a {
-    font-size: 0.88rem;
-    padding: 6px 10px;
+    max-width: 860px;
   }
 }
 
@@ -318,38 +294,57 @@
   }
 
   .navbar-overlay-container {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    padding: 0 18px;
+    gap: 14px;
+    padding: 0 16px;
   }
 
   .navbar-logo-side img {
-    height: 76px;
+    height: 96px;
   }
 
   .navbar-pill {
-    width: 100%;
-    max-width: 100%;
-    border-radius: 28px;
-    padding: 12px 16px;
+    flex: 1;
+    width: auto;
+    max-width: none;
+    border-radius: 26px;
+    padding: 8px 12px;
+  }
+
+  .safestep-navbar {
+    min-height: 56px;
+    display: flex;
+    align-items: center;
   }
 
   .safestep-navbar .navbar-toggler {
     border: none;
     box-shadow: none;
-    padding: 4px 8px;
+    padding: 0;
     margin-left: auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #f3f5f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .safestep-navbar .navbar-toggler:focus {
     box-shadow: none;
   }
 
+  .safestep-navbar .navbar-toggler-icon {
+    width: 1.4em;
+    height: 1.4em;
+  }
+
   .safestep-navbar .navbar-collapse {
     margin-top: 12px;
-    background: rgba(255, 255, 255, 0.96);
+    background: rgba(255, 255, 255, 0.97);
     border-radius: 20px;
     padding: 14px;
   }
@@ -405,16 +400,18 @@
   }
 
   .navbar-overlay-container {
+    flex-direction: column;
     padding: 0 14px;
     gap: 8px;
   }
 
   .navbar-logo-side img {
-    height: 68px;
+    height: 90px;
   }
 
   .navbar-pill {
-    padding: 10px 12px;
+    width: 100%;
+    padding: 8px 10px;
     border-radius: 22px;
   }
 
@@ -444,12 +441,7 @@
     justify-content: space-between;
   }
 
-  .navbar-logout-button {
-    order: 1;
-  }
-
   .navbar-profile {
-    order: 2;
     width: 36px;
     height: 36px;
   }
@@ -465,7 +457,7 @@
   }
 
   .navbar-logo-side img {
-    height: 58px;
+    height: 78px;
   }
 
   .navbar-pill {

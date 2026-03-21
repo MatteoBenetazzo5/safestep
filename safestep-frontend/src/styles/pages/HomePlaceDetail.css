@@ -1,0 +1,39 @@
+.work-in-progress-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f0f4f8, #e6ecf3);
+}
+
+.work-content {
+  text-align: center;
+  background: white;
+  padding: 60px 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  max-width: 500px;
+}
+
+.work-icon {
+  font-size: 60px;
+  color: #4cafef;
+  margin-bottom: 20px;
+}
+
+.work-content h1 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.work-content p {
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.work-subtext {
+  font-size: 14px;
+  color: #999;
+}

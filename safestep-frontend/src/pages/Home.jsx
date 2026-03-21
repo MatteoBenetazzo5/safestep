@@ -1,8 +1,21 @@
 import "../styles/pages/Home.css"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import image1 from "../assets/images/image1.jpg"
+import image2 from "../assets/images/image2.jpg"
+import image3 from "../assets/images/image3.jpg"
+import image4 from "../assets/images/image4.jpg"
+import image5 from "../assets/images/image5.jpg"
+import image6 from "../assets/images/image6.jpg"
+import image7 from "../assets/images/image7.jpg"
+import image8 from "../assets/images/image8.jpg"
+import image9 from "../assets/images/image9.jpg"
+import image10 from "../assets/images/image10.jpg"
+import image11 from "../assets/images/image11.jpg"
 
 function Home() {
   const navigate = useNavigate()
+  const [searchTerm, setSearchTerm] = useState("")
 
   const categories = [
     {
@@ -38,75 +51,68 @@ function Home() {
   const nearbyPlaces = [
     {
       id: 1,
-      name: "Hotel Aurora",
+      name: "Pizzeria Al Vesuvio",
       city: "Napoli",
-      image:
-        "https://images.unsplash.com/photo-1576610616656-d3aa5d1f4fa0?w=400&h=280&fit=crop",
+      image: image1,
     },
     {
       id: 2,
-      name: "Terme di Abano",
-      city: "Abano Terme",
-      image:
-        "https://images.unsplash.com/photo-1576092160399-112ba8d25d1d?w=400&h=280&fit=crop",
+      name: "Villa Borghese",
+      city: "Roma",
+      image: image2,
     },
     {
       id: 3,
-      name: "Pizzeria Al Vesuvio",
-      city: "Napoli",
-      image:
-        "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=280&fit=crop",
+      name: "Parco Sempione",
+      city: "Milano",
+      image: image3,
     },
     {
       id: 4,
-      name: "Villa Borghese",
-      city: "Roma",
-      image:
-        "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=400&h=280&fit=crop",
+      name: "Hotel Cristallo",
+      city: "Cortina",
+      image: image4,
     },
     {
       id: 5,
-      name: "Parco Sempione",
-      city: "Milano",
-      image:
-        "https://images.unsplash.com/photo-1502933691298-84fc14542831?w=400&h=280&fit=crop",
+      name: "Terme Sensoriali",
+      city: "Chianciano",
+      image: image5,
     },
     {
       id: 6,
-      name: "Hotel Cristallo",
-      city: "Cortina",
-      image:
-        "https://images.unsplash.com/photo-1551632786-de41ec16a21b?w=400&h=280&fit=crop",
+      name: "Ristorante Mare Blu",
+      city: "Bari",
+      image: image6,
     },
     {
       id: 7,
-      name: "Terme Sensoriali",
-      city: "Chianciano",
-      image:
-        "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=280&fit=crop",
+      name: "Parco degli Ulivi",
+      city: "Lecce",
+      image: image7,
     },
     {
       id: 8,
-      name: "Ristorante Mare Blu",
-      city: "Bari",
-      image:
-        "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=280&fit=crop",
-    },
-    {
-      id: 9,
-      name: "Parco degli Ulivi",
-      city: "Lecce",
-      image:
-        "https://images.unsplash.com/photo-1469022563149-aa64dbd37dae?w=400&h=280&fit=crop",
-    },
-    {
-      id: 10,
       name: "Hotel Olimpia",
       city: "Padova",
-      image:
-        "https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?w=400&h=280&fit=crop",
+      image: image8,
     },
   ]
+
+  const handleSearch = () => {
+    if (!searchTerm.trim()) return
+
+    const searchLower = searchTerm.toLowerCase()
+    const matchedCategory = categories.find(
+      (cat) => cat.title.toLowerCase() === searchLower,
+    )
+
+    if (matchedCategory) {
+      navigate(matchedCategory.path)
+    } else {
+      alert(`Nessuna categoria trovata per: "${searchTerm}"`)
+    }
+  }
 
   const infoCards = [
     {
@@ -114,24 +120,21 @@ function Home() {
       title: "Cerca",
       text: "Trova locali e servizi accessibili vicino a te",
       icon: "bi-search",
-      image:
-        "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop",
+      image: image9,
     },
     {
       id: 2,
       title: "Recensisci",
       text: "Lascia una valutazione sui luoghi accessibili che hai visitato",
       icon: "bi-universal-access-circle",
-      image:
-        "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop",
+      image: image10,
     },
     {
       id: 3,
       title: "Condividi",
       text: "Aiuta gli altri condividendo informazioni utili e consigli",
       icon: "bi-chat-dots",
-      image:
-        "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop",
+      image: image11,
     },
   ]
 
@@ -141,7 +144,7 @@ function Home() {
         <div className="home-hero-overlay">
           <div className="home-hero-content">
             <h1>Trova e recensisci locali accessibili</h1>
-            <p>
+            <p className="home-hero-subtitle">
               Scopri e condividi i migliori luoghi accessibili per persone con
               disabilità
             </p>
@@ -149,9 +152,15 @@ function Home() {
             <div className="home-main-search">
               <div className="home-main-search-input">
                 <i className="bi bi-search"></i>
-                <input type="text" placeholder="Cerca luoghi accessibili" />
+                <input
+                  type="text"
+                  placeholder="Cerca luoghi accessibili (es: Terme, Ristoranti...)"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                />
               </div>
-              <button>Cerca</button>
+              <button onClick={handleSearch}>Cerca</button>
             </div>
           </div>
         </div>
@@ -185,7 +194,12 @@ function Home() {
 
         <div className="home-carousel">
           {nearbyPlaces.map((place) => (
-            <div key={place.id} className="place-card">
+            <div
+              key={place.id}
+              className="place-card"
+              onClick={() => navigate("/home-place-detail")}
+              style={{ cursor: "pointer" }}
+            >
               <div className="place-card-image">
                 {place.image ? (
                   <img src={place.image} alt={place.name} />

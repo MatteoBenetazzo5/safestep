@@ -11,35 +11,64 @@
 .admin-brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
+}
+
+@media (min-width: 768px) {
+  .admin-brand {
+    gap: 14px;
+  }
 }
 
 .admin-brand-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 18px;
+  width: clamp(48px, 12vw, 56px);
+  height: clamp(48px, 12vw, 56px);
+  border-radius: 14px;
   background: linear-gradient(135deg, #42b9df, #58d29a);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.6rem;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+}
+
+@media (min-width: 768px) {
+  .admin-brand-icon {
+    border-radius: 18px;
+  }
 }
 
 .admin-brand h2 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
 }
 
 .admin-brand p {
-  margin: 4px 0 0 0;
+  margin: 2px 0 0 0;
   color: #72819a;
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
+}
+
+@media (min-width: 768px) {
+  .admin-brand h2 {
+    font-size: 1.8rem;
+  }
+  
+  .admin-brand p {
+    font-size: 0.9rem;
+  }
 }
 
 .admin-menu {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .admin-menu {
+    gap: 10px;
+  }
 }
 
 .admin-menu-link,
@@ -49,14 +78,24 @@
   border: none;
   background: transparent;
   text-align: left;
-  border-radius: 16px;
-  padding: 14px 14px;
+  border-radius: 12px;
+  padding: 12px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   color: #5e6f88;
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 2vw, 1rem);
   transition: all 0.2s ease;
+}
+
+@media (min-width: 768px) {
+  .admin-menu-link,
+  .admin-system-link,
+  .admin-quick-button,
+  .admin-logout-button {
+    border-radius: 16px;
+    padding: 14px 14px;
+  }
 }
 
 .admin-menu-link:hover,
@@ -75,15 +114,26 @@
 
 .admin-system-box {
   background: rgba(255, 255, 255, 0.8);
-  border-radius: 20px;
-  padding: 18px;
+  border-radius: 16px;
+  padding: 14px;
   border: 1px solid #e1e8f2;
 }
 
 .admin-system-box h3 {
   margin-top: 0;
-  margin-bottom: 14px;
-  font-size: 1.2rem;
+  margin-bottom: 10px;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+@media (min-width: 768px) {
+  .admin-system-box {
+    border-radius: 20px;
+    padding: 18px;
+  }
+  
+  .admin-system-box h3 {
+    margin-bottom: 14px;
+  }
 }
 
 .admin-system-link {

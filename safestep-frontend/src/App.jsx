@@ -14,6 +14,7 @@ import Profilo from "./pages/Profilo/Profilo"
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard"
 import GuidaAccessibilita from "./pages/GuidaAccessibilita"
 import ConsigliVisita from "./pages/ConsigliVisita"
+import HomePlaceDetail from "./pages/HomePlaceDetail"
 import "./App.css"
 
 function AppContent() {
@@ -43,6 +44,7 @@ function AppContent() {
           />
 
           <Route path="/struttura/:id" element={<DettaglioStruttura />} />
+          <Route path="/home-place-detail" element={<HomePlaceDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 

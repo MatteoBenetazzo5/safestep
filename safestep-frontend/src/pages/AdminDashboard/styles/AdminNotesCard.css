@@ -3,14 +3,7 @@
   border-radius: 18px;
   box-shadow: 0 12px 30px rgba(24, 40, 72, 0.08);
   border: 1px solid rgba(225, 232, 242, 0.8);
-  padding: 16px;
-}
-
-@media (min-width: 640px) {
-  .admin-side-card {
-    padding: 18px;
-    border-radius: 20px;
-  }
+  padding: 18px;
 }
 
 @media (min-width: 768px) {
@@ -21,37 +14,61 @@
 }
 
 .admin-side-card h3 {
-  margin: 0 0 14px 0;
+  margin: 0 0 16px 0;
   font-size: clamp(1.3rem, 4vw, 1.8rem);
+  color: #2f3b4f;
 }
 
-@media (min-width: 768px) {
-  .admin-side-card h3 {
-    margin-bottom: 18px;
-  }
+.admin-reviews-card {
+  display: flex;
+  flex-direction: column;
 }
 
 .admin-side-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
-@media (min-width: 768px) {
-  .admin-side-list {
-    gap: 16px;
-  }
+.admin-side-list-scrollable {
+  max-height: 720px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.admin-side-list-scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-side-list-scrollable::-webkit-scrollbar-track {
+  background: #eef3f8;
+  border-radius: 999px;
+}
+
+.admin-side-list-scrollable::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #2f7de1, #59d39a);
+  border-radius: 999px;
+}
+
+.admin-side-list-scrollable::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #2569be, #42b97f);
 }
 
 .admin-side-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
   display: flex;
   gap: 12px;
   align-items: flex-start;
+  padding: 0;
+  cursor: pointer;
 }
 
 .admin-side-avatar {
-  width: clamp(36px, 8vw, 42px);
-  height: clamp(36px, 8vw, 42px);
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: linear-gradient(135deg, #41b8de, #59d39a);
   color: white;
@@ -60,24 +77,32 @@
   justify-content: center;
   font-weight: 700;
   flex-shrink: 0;
-  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  font-size: 0.9rem;
+}
+
+.admin-side-item-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .admin-side-item h4 {
-  margin: 0 0 2px 0;
-  font-size: clamp(0.9rem, 2vw, 1rem);
+  margin: 0 0 3px 0;
+  font-size: 1rem;
+  color: #111827;
 }
 
 .admin-side-item p {
-  margin: 0 0 2px 0;
-  color: #4b5d79;
+  margin: 0 0 4px 0;
+  color: #334a68;
   font-weight: 600;
-  font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+  font-size: 0.96rem;
 }
 
 .admin-side-item span {
-  color: #7f8ba0;
-  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+  display: block;
+  color: #68778f;
+  font-size: 0.95rem;
+  line-height: 1.65;
 }
 
 .admin-quick-actions {
@@ -90,21 +115,25 @@
   width: 100%;
   border: 1px solid #e4ebf4;
   background: #fff;
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: 14px;
+  padding: 14px;
   text-align: left;
   display: flex;
   align-items: center;
   gap: 10px;
   color: #52637d;
   font-weight: 700;
-  font-size: clamp(0.85rem, 2vw, 0.95rem);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
 }
 
-@media (min-width: 768px) {
-  .admin-quick-button {
-    border-radius: 16px;
-    padding: 16px;
-    gap: 12px;
+.admin-quick-button:hover {
+  background: #f7fbff;
+  border-color: #cfe1f3;
+}
+
+@media (max-width: 991px) {
+  .admin-side-list-scrollable {
+    max-height: 420px;
   }
 }

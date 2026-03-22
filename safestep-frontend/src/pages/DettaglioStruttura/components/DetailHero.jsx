@@ -2,18 +2,37 @@ import "../styles/DetailHero.css"
 
 function DetailHero({
   structure,
-  selectedImage,
+  heroImage,
   placeholderImage,
   navigate,
   handleToggleSaved,
   savingFavorite,
   isSaved,
 }) {
+  const hasCoordinates =
+    structure?.latitudine !== null &&
+    structure?.latitudine !== undefined &&
+    structure?.longitudine !== null &&
+    structure?.longitudine !== undefined
+
+  const directionsUrl = hasCoordinates
+    ? `https://www.google.com/maps?q=${structure.latitudine},${structure.longitudine}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+        [
+          structure?.nome,
+          structure?.indirizzo,
+          structure?.citta,
+          structure?.paese,
+        ]
+          .filter(Boolean)
+          .join(", "),
+      )}`
+
   return (
     <section
       className="detail-hero"
       style={{
-        backgroundImage: `url(${selectedImage || structure.immagineCopertina || placeholderImage})`,
+        backgroundImage: `url(${heroImage || placeholderImage})`,
       }}
     >
       <div className="detail-hero-overlay">
@@ -50,7 +69,7 @@ function DetailHero({
               onClick={handleToggleSaved}
               disabled={savingFavorite}
             >
-              <i className="bi bi-heart"></i>
+              <i className={`bi ${isSaved ? "bi-heart-fill" : "bi-heart"}`}></i>
               {savingFavorite ? "Attendi..." : isSaved ? "Salvata" : "Salva"}
             </button>
 
@@ -69,13 +88,14 @@ function DetailHero({
               </button>
             )}
 
-            <button type="button" className="detail-btn circle-btn">
-              <i className="bi bi-send-fill"></i>
-            </button>
-
-            <button type="button" className="detail-btn green-btn">
+            <a
+              href={directionsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="detail-btn green-btn detail-btn-link"
+            >
               Indicazioni
-            </button>
+            </a>
           </div>
         </div>
       </div>

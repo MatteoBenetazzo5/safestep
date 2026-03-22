@@ -8,12 +8,28 @@ import cardImage4 from "../assets/images/terme-card-4.jpg"
 import guideImage from "../assets/images/guida-terme.jpg"
 
 function Parchi() {
+  const renderWheelchairs = (count) => {
+    return (
+      <div className="parchi-icons">
+        {[1, 2, 3, 4, 5].map((item) => (
+          <i
+            key={item}
+            className={`bi bi-person-wheelchair ${
+              item <= count ? "is-active" : "is-muted"
+            }`}
+          ></i>
+        ))}
+      </div>
+    )
+  }
+
   const parchiPrincipali = [
     {
       id: 301,
       name: "Parco Verde Inclusivo",
       city: "Verona",
       rating: 4.8,
+      accessibilityLevel: 4,
       image: cardImage1,
     },
     {
@@ -21,6 +37,7 @@ function Parchi() {
       name: "Giardino Sereno",
       city: "Padova",
       rating: 4.6,
+      accessibilityLevel: 5,
       image: cardImage2,
     },
     {
@@ -28,6 +45,7 @@ function Parchi() {
       name: "Parco delle Acacie",
       city: "Ferrara",
       rating: 4.5,
+      accessibilityLevel: 3,
       image: cardImage3,
     },
     {
@@ -35,6 +53,7 @@ function Parchi() {
       name: "Oasi Cittadina",
       city: "Parma",
       rating: 4.7,
+      accessibilityLevel: 4,
       image: cardImage4,
     },
     {
@@ -42,6 +61,7 @@ function Parchi() {
       name: "Parco del Fiume",
       city: "Mantova",
       rating: 4.6,
+      accessibilityLevel: 2,
       image: cardImage1,
     },
     {
@@ -49,6 +69,7 @@ function Parchi() {
       name: "Giardino delle Rose",
       city: "Bologna",
       rating: 4.5,
+      accessibilityLevel: 3,
       image: cardImage2,
     },
     {
@@ -56,6 +77,7 @@ function Parchi() {
       name: "Parco Panorama Verde",
       city: "Trento",
       rating: 4.8,
+      accessibilityLevel: 5,
       image: cardImage3,
     },
     {
@@ -63,6 +85,7 @@ function Parchi() {
       name: "Area Relax Natura",
       city: "Udine",
       rating: 4.4,
+      accessibilityLevel: 2,
       image: cardImage4,
     },
     {
@@ -70,6 +93,7 @@ function Parchi() {
       name: "Parco del Lago",
       city: "Como",
       rating: 4.7,
+      accessibilityLevel: 4,
       image: cardImage1,
     },
     {
@@ -77,6 +101,7 @@ function Parchi() {
       name: "Giardino del Sole",
       city: "Ravenna",
       rating: 4.6,
+      accessibilityLevel: 3,
       image: cardImage2,
     },
     {
@@ -84,6 +109,7 @@ function Parchi() {
       name: "Parco Collina Aperta",
       city: "Perugia",
       rating: 4.5,
+      accessibilityLevel: 2,
       image: cardImage3,
     },
     {
@@ -91,6 +117,7 @@ function Parchi() {
       name: "Oasi Verde Urbana",
       city: "Milano",
       rating: 4.7,
+      accessibilityLevel: 4,
       image: cardImage4,
     },
     {
@@ -98,6 +125,7 @@ function Parchi() {
       name: "Parco dei Tigli",
       city: "Vicenza",
       rating: 4.6,
+      accessibilityLevel: 3,
       image: cardImage1,
     },
     {
@@ -105,6 +133,7 @@ function Parchi() {
       name: "Bosco Accessibile",
       city: "Brescia",
       rating: 4.8,
+      accessibilityLevel: 5,
       image: cardImage2,
     },
   ]
@@ -115,6 +144,7 @@ function Parchi() {
       name: "Parco del Sole",
       city: "Ravenna",
       rating: 4.7,
+      accessibilityLevel: 4,
       image: cardImage1,
     },
     {
@@ -122,6 +152,7 @@ function Parchi() {
       name: "Bosco Urbano",
       city: "Brescia",
       rating: 4.6,
+      accessibilityLevel: 3,
       image: cardImage2,
     },
     {
@@ -129,6 +160,7 @@ function Parchi() {
       name: "Parco Panorama",
       city: "Trento",
       rating: 4.8,
+      accessibilityLevel: 5,
       image: cardImage4,
     },
   ]
@@ -172,87 +204,74 @@ function Parchi() {
           <h2>I migliori parchi accessibili</h2>
         </div>
 
-        <div className="parchi-main-layout">
-          <div className="parchi-left-content">
-            <div className="parchi-toolbar">
-              <button className="toolbar-button">
-                <i className="bi bi-sliders"></i> Filtri
-              </button>
+        <div className="parchi-scroll-area">
+          <div className="parchi-main-layout">
+            <div className="parchi-left-content">
+              <div className="parchi-toolbar">
+                <button className="toolbar-button">
+                  <i className="bi bi-sliders"></i> Filtri
+                </button>
 
-              <div className="toolbar-dropdowns">
-                <button>Più votati</button>
-                <button>Vicino a me</button>
+                <div className="toolbar-dropdowns">
+                  <button>Più votati</button>
+                  <button>Vicino a me</button>
+                </div>
               </div>
-            </div>
 
-            <div className="parchi-grid">
-              {parchiPrincipali.map((parco) => (
-                <Link
-                  key={parco.id}
-                  to={`/struttura/${parco.id}`}
-                  className="parchi-card-link"
-                >
-                  <div className="parchi-card">
-                    <img src={parco.image} alt={parco.name} />
-                    <div className="parchi-card-body">
-                      <h3>{parco.name}</h3>
-                      <p>{parco.city}</p>
+              <div className="parchi-grid">
+                {parchiPrincipali.map((parco) => (
+                  <Link
+                    key={parco.id}
+                    to={`/struttura/${parco.id}`}
+                    className="parchi-card-link"
+                  >
+                    <div className="parchi-card">
+                      <img src={parco.image} alt={parco.name} />
+                      <div className="parchi-card-body">
+                        <h3>{parco.name}</h3>
+                        <p>{parco.city}</p>
 
-                      <div className="parchi-card-footer">
-                        <div className="parchi-icons">
-                          <i className="bi bi-person-wheelchair"></i>
-                          <i className="bi bi-person-wheelchair"></i>
-                          <i className="bi bi-person-wheelchair"></i>
-                          <i className="bi bi-person-wheelchair"></i>
-                          <i className="bi bi-person-wheelchair"></i>
-                        </div>
-
-                        <div className="parchi-rating">
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-half"></i>
-                          <span>{parco.rating}</span>
+                        <div className="parchi-card-footer">
+                          {renderWheelchairs(parco.accessibilityLevel)}
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="parchi-right-content">
+              <div className="parchi-guide-card">
+                <h3>Guida all'accessibilità nei parchi</h3>
+                <p>
+                  Scopri i percorsi, gli ingressi e i servizi più utili per
+                  vivere una giornata all'aperto senza ostacoli.
+                </p>
+
+                <Link
+                  to="/parchi/guida-accessibilita"
+                  className="parchi-guide-button-link"
+                >
+                  Scopri di più
                 </Link>
-              ))}
-            </div>
-          </div>
+              </div>
 
-          <div className="parchi-right-content">
-            <div className="parchi-guide-card">
-              <h3>Guida all'accessibilità nei parchi</h3>
-              <p>
-                Scopri i percorsi, gli ingressi e i servizi più utili per vivere
-                una giornata all'aperto senza ostacoli.
-              </p>
+              <div className="parchi-guide-card image-card">
+                <img src={guideImage} alt="Guida parchi accessibili" />
+                <h3>Consigli per visitare i parchi</h3>
+                <p>
+                  Scopri i suggerimenti utili per organizzare la visita, capire
+                  cosa controllare prima di partire e quali percorsi preferire.
+                </p>
 
-              <Link
-                to="/parchi/guida-accessibilita"
-                className="terme-guide-button-link"
-              >
-                Scopri di più
-              </Link>
-            </div>
-
-            <div className="parchi-guide-card image-card">
-              <img src={guideImage} alt="Guida parchi accessibili" />
-              <h3>Consigli per visitare i parchi</h3>
-              <p>
-                Scopri i suggerimenti utili per organizzare la visita, capire
-                cosa controllare prima di partire e quali percorsi preferire.
-              </p>
-
-              <Link
-                to="/parchi/consigli-visita"
-                className="terme-guide-button-link"
-              >
-                Scopri di più
-              </Link>
+                <Link
+                  to="/parchi/consigli-visita"
+                  className="parchi-guide-button-link"
+                >
+                  Scopri di più
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -277,22 +296,7 @@ function Parchi() {
                   <p>{parco.city}</p>
 
                   <div className="parchi-card-footer">
-                    <div className="parchi-icons">
-                      <i className="bi bi-person-wheelchair"></i>
-                      <i className="bi bi-person-wheelchair"></i>
-                      <i className="bi bi-person-wheelchair"></i>
-                      <i className="bi bi-person-wheelchair"></i>
-                      <i className="bi bi-person-wheelchair"></i>
-                    </div>
-
-                    <div className="parchi-rating">
-                      <i className="bi bi-star-fill"></i>
-                      <i className="bi bi-star-fill"></i>
-                      <i className="bi bi-star-fill"></i>
-                      <i className="bi bi-star-fill"></i>
-                      <i className="bi bi-star-half"></i>
-                      <span>{parco.rating}</span>
-                    </div>
+                    {renderWheelchairs(parco.accessibilityLevel)}
                   </div>
                 </div>
               </div>

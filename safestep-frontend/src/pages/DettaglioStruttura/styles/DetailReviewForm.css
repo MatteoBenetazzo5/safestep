@@ -98,9 +98,15 @@
 
 .review-upload-preview {
   width: 100%;
-  height: 56px;
+  min-height: 56px;
   border-radius: 14px;
   background: linear-gradient(90deg, #cfe4f2 0%, #e9f2f7 100%);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: #6d7f94;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .review-actions {
@@ -109,10 +115,9 @@
   flex-wrap: wrap;
 }
 
-.review-actions button,
+.review-submit-button,
 .review-bottom-row button,
-.reviews-pagination button,
-.review-submit-button {
+.reviews-pagination button {
   border: none;
   border-radius: 12px;
   padding: 12px 14px;
@@ -125,6 +130,14 @@
 .review-submit-button {
   background: linear-gradient(90deg, #25b7be 0%, #3dc98d 100%);
   color: white;
+}
+
+.detail-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
 }
 
 @media screen and (min-width: 768px) {

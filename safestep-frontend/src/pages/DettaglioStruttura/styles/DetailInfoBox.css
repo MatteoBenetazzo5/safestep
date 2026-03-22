@@ -16,19 +16,19 @@
   color: #2f4055;
 }
 
-.map-placeholder {
+.detail-map-box {
   width: 100%;
   height: 220px;
   border-radius: 18px;
   margin-bottom: 18px;
-  background: linear-gradient(135deg, #edf3f7, #dfe9f0);
   overflow: hidden;
+  background: linear-gradient(135deg, #edf3f7, #dfe9f0);
 }
 
-.map-placeholder-image {
+.detail-map-iframe {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  border: none;
   display: block;
 }
 
@@ -116,6 +116,14 @@
   height: 220px;
   object-fit: cover;
   border-radius: 16px;
+  display: block;
+}
+
+.detail-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
   display: block;
 }
 

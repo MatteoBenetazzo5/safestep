@@ -158,7 +158,7 @@ function UseAdminDashboardData() {
       })
 
       setTotalReviewsCount(allReviews.length)
-      setLatestReviews(allReviews.slice(0, 5))
+      setLatestReviews(allReviews.slice(0, 20))
     } catch (error) {
       console.error("Errore caricamento recensioni admin:", error)
       setTotalReviewsCount(0)

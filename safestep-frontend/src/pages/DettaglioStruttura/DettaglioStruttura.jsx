@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { getIdUtente } from "../../utils/auth"
+import { getAvatar, getIdUtente, getNomeVisualizzato } from "../../utils/auth"
 import { API_BASE_URL, getAuthHeaders } from "../../utils/api"
 import "./styles/DettaglioStrutturaLayout.css"
 import DetailHero from "./components/DetailHero"
@@ -14,6 +14,8 @@ function DettaglioStruttura() {
   const { id } = useParams()
   const navigate = useNavigate()
   const idUtente = getIdUtente()
+  const avatarUtente = getAvatar()
+  const nomeVisualizzatoUtente = getNomeVisualizzato()
 
   const [structure, setStructure] = useState(null)
   const [images, setImages] = useState([])
@@ -117,6 +119,10 @@ function DettaglioStruttura() {
     fetchStructureDetails()
   }, [fetchStructureDetails])
 
+  const navigateToWorkInProgress = () => {
+    navigate("/home-place-detail")
+  }
+
   const handleToggleSaved = async () => {
     if (!idUtente) {
       alert("Devi effettuare il login per salvare una struttura.")
@@ -168,6 +174,18 @@ function DettaglioStruttura() {
       setSavingFavorite(false)
     }
   }
+
+  const heroImage = useMemo(() => {
+    if (structure?.immagineCopertina) {
+      return structure.immagineCopertina
+    }
+
+    if (images.length > 0) {
+      return images[0].url
+    }
+
+    return placeholderImage
+  }, [structure, images, placeholderImage])
 
   const handleReviewChange = (e) => {
     const { name, value } = e.target
@@ -299,6 +317,7 @@ function DettaglioStruttura() {
 
       return {
         vote,
+        count,
         percentage,
       }
     })
@@ -395,7 +414,7 @@ function DettaglioStruttura() {
     <div className="structure-detail-page">
       <DetailHero
         structure={structure}
-        selectedImage={selectedImage}
+        heroImage={heroImage}
         placeholderImage={placeholderImage}
         navigate={navigate}
         handleToggleSaved={handleToggleSaved}
@@ -444,6 +463,9 @@ function DettaglioStruttura() {
               handleReviewSubmit={handleReviewSubmit}
               sendingReview={sendingReview}
               renderWheelchairs={renderWheelchairs}
+              avatarUtente={avatarUtente}
+              nomeVisualizzatoUtente={nomeVisualizzatoUtente}
+              navigateToWorkInProgress={navigateToWorkInProgress}
             />
 
             <DetailReviewsList
@@ -453,6 +475,7 @@ function DettaglioStruttura() {
               placeholderImage={placeholderImage}
               renderWheelchairs={renderWheelchairs}
               formatDate={formatDate}
+              navigateToWorkInProgress={navigateToWorkInProgress}
             />
           </div>
         </section>

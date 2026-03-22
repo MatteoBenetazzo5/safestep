@@ -8,12 +8,28 @@ import cardImage4 from "../assets/images/terme-card-4.jpg"
 import guideImage from "../assets/images/guida-terme.jpg"
 
 function Hotel() {
+  const renderWheelchairs = (count) => {
+    return (
+      <div className="hotel-icons">
+        {[1, 2, 3, 4, 5].map((item) => (
+          <i
+            key={item}
+            className={`bi bi-person-wheelchair ${
+              item <= count ? "is-active" : "is-muted"
+            }`}
+          ></i>
+        ))}
+      </div>
+    )
+  }
+
   const hotelPrincipali = [
     {
       id: 201,
       name: "Hotel Aurora",
       city: "Mestre",
       rating: 4.6,
+      accessibilityLevel: 4,
       image: cardImage1,
     },
     {
@@ -21,6 +37,7 @@ function Hotel() {
       name: "Grand Hotel Relax",
       city: "Milano",
       rating: 4.7,
+      accessibilityLevel: 5,
       image: cardImage2,
     },
     {
@@ -28,6 +45,7 @@ function Hotel() {
       name: "Suite Comfort",
       city: "Firenze",
       rating: 4.5,
+      accessibilityLevel: 4,
       image: cardImage3,
     },
     {
@@ -35,6 +53,7 @@ function Hotel() {
       name: "Hotel Panorama",
       city: "Torino",
       rating: 4.8,
+      accessibilityLevel: 5,
       image: cardImage4,
     },
     {
@@ -42,6 +61,7 @@ function Hotel() {
       name: "Hotel Riviera Blu",
       city: "Rimini",
       rating: 4.7,
+      accessibilityLevel: 3,
       image: cardImage1,
     },
     {
@@ -49,6 +69,7 @@ function Hotel() {
       name: "Palace Comfort",
       city: "Roma",
       rating: 4.6,
+      accessibilityLevel: 4,
       image: cardImage2,
     },
     {
@@ -56,6 +77,7 @@ function Hotel() {
       name: "Residenza Serena",
       city: "Napoli",
       rating: 4.5,
+      accessibilityLevel: 3,
       image: cardImage3,
     },
     {
@@ -63,6 +85,7 @@ function Hotel() {
       name: "Hotel Giardino",
       city: "Bologna",
       rating: 4.7,
+      accessibilityLevel: 4,
       image: cardImage4,
     },
     {
@@ -70,6 +93,7 @@ function Hotel() {
       name: "Suite Centrale",
       city: "Genova",
       rating: 4.6,
+      accessibilityLevel: 2,
       image: cardImage1,
     },
     {
@@ -77,6 +101,7 @@ function Hotel() {
       name: "Resort del Sole",
       city: "Cagliari",
       rating: 4.8,
+      accessibilityLevel: 5,
       image: cardImage2,
     },
     {
@@ -84,6 +109,7 @@ function Hotel() {
       name: "Hotel del Porto",
       city: "Trieste",
       rating: 4.5,
+      accessibilityLevel: 3,
       image: cardImage3,
     },
     {
@@ -91,6 +117,7 @@ function Hotel() {
       name: "Dimora Accessibile",
       city: "Padova",
       rating: 4.7,
+      accessibilityLevel: 5,
       image: cardImage4,
     },
     {
@@ -98,6 +125,7 @@ function Hotel() {
       name: "Grand Stay Milano",
       city: "Milano",
       rating: 4.6,
+      accessibilityLevel: 4,
       image: cardImage1,
     },
     {
@@ -105,6 +133,7 @@ function Hotel() {
       name: "Hotel Bella Vista",
       city: "Perugia",
       rating: 4.5,
+      accessibilityLevel: 2,
       image: cardImage2,
     },
   ]
@@ -115,6 +144,7 @@ function Hotel() {
       name: "Hotel Riviera",
       city: "Rimini",
       rating: 4.7,
+      accessibilityLevel: 4,
       image: cardImage1,
     },
     {
@@ -122,6 +152,7 @@ function Hotel() {
       name: "Resort del Lago",
       city: "Como",
       rating: 4.6,
+      accessibilityLevel: 3,
       image: cardImage2,
     },
     {
@@ -129,6 +160,7 @@ function Hotel() {
       name: "Hotel Centrale",
       city: "Roma",
       rating: 4.8,
+      accessibilityLevel: 5,
       image: cardImage4,
     },
   ]
@@ -172,88 +204,75 @@ function Hotel() {
           <h2>I migliori hotel accessibili</h2>
         </div>
 
-        <div className="hotel-main-layout">
-          <div className="hotel-left-content">
-            <div className="hotel-toolbar">
-              <button className="toolbar-button">
-                <i className="bi bi-sliders"></i> Filtri
-              </button>
+        <div className="hotel-scroll-area">
+          <div className="hotel-main-layout">
+            <div className="hotel-left-content">
+              <div className="hotel-toolbar">
+                <button className="toolbar-button">
+                  <i className="bi bi-sliders"></i> Filtri
+                </button>
 
-              <div className="toolbar-dropdowns">
-                <button>Più votati</button>
-                <button>Vicino a me</button>
+                <div className="toolbar-dropdowns">
+                  <button>Più votati</button>
+                  <button>Vicino a me</button>
+                </div>
               </div>
-            </div>
 
-            <div className="hotel-grid">
-              {hotelPrincipali.map((hotel) => (
-                <Link
-                  key={hotel.id}
-                  to={`/struttura/${hotel.id}`}
-                  className="hotel-card-link"
-                >
-                  <div className="hotel-card">
-                    <img src={hotel.image} alt={hotel.name} />
-                    <div className="hotel-card-body">
-                      <h3>{hotel.name}</h3>
-                      <p>{hotel.city}</p>
+              <div className="hotel-grid">
+                {hotelPrincipali.map((hotel) => (
+                  <Link
+                    key={hotel.id}
+                    to={`/struttura/${hotel.id}`}
+                    className="hotel-card-link"
+                  >
+                    <div className="hotel-card">
+                      <img src={hotel.image} alt={hotel.name} />
+                      <div className="hotel-card-body">
+                        <h3>{hotel.name}</h3>
+                        <p>{hotel.city}</p>
 
-                      <div className="hotel-card-footer">
-                        <div className="hotel-icons">
-                          <i className="bi bi-person-wheelchair"></i>
-                          <i className="bi bi-person-wheelchair"></i>
-                          <i className="bi bi-person-wheelchair"></i>
-                          <i className="bi bi-person-wheelchair"></i>
-                          <i className="bi bi-person-wheelchair"></i>
-                        </div>
-
-                        <div className="hotel-rating">
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-half"></i>
-                          <span>{hotel.rating}</span>
+                        <div className="hotel-card-footer">
+                          {renderWheelchairs(hotel.accessibilityLevel)}
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="hotel-right-content">
+              <div className="hotel-guide-card">
+                <h3>Guida all'accessibilità negli hotel</h3>
+                <p>
+                  Scopri i servizi più importanti da controllare prima di
+                  prenotare il tuo soggiorno.
+                </p>
+
+                <Link
+                  to="/hotel/guida-accessibilita"
+                  className="hotel-guide-button-link"
+                >
+                  Scopri di più
                 </Link>
-              ))}
-            </div>
-          </div>
+              </div>
 
-          <div className="hotel-right-content">
-            <div className="hotel-guide-card">
-              <h3>Guida all'accessibilità negli hotel</h3>
-              <p>
-                Scopri i servizi più importanti da controllare prima di
-                prenotare il tuo soggiorno.
-              </p>
+              <div className="hotel-guide-card image-card">
+                <img src={guideImage} alt="Guida hotel accessibili" />
+                <h3>Consigli per visitare gli hotel</h3>
+                <p>
+                  Scopri i suggerimenti utili per organizzare il soggiorno,
+                  capire cosa controllare prima di prenotare e quali domande
+                  fare alla struttura.
+                </p>
 
-              <Link
-                to="/hotel/guida-accessibilita"
-                className="terme-guide-button-link"
-              >
-                Scopri di più
-              </Link>
-            </div>
-
-            <div className="hotel-guide-card image-card">
-              <img src={guideImage} alt="Guida hotel accessibili" />
-              <h3>Consigli per visitare gli hotel</h3>
-              <p>
-                Scopri i suggerimenti utili per organizzare il soggiorno, capire
-                cosa controllare prima di prenotare e quali domande fare alla
-                struttura.
-              </p>
-
-              <Link
-                to="/hotel/consigli-visita"
-                className="terme-guide-button-link"
-              >
-                Scopri di più
-              </Link>
+                <Link
+                  to="/hotel/consigli-visita"
+                  className="hotel-guide-button-link"
+                >
+                  Scopri di più
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -278,22 +297,7 @@ function Hotel() {
                   <p>{hotel.city}</p>
 
                   <div className="hotel-card-footer">
-                    <div className="hotel-icons">
-                      <i className="bi bi-person-wheelchair"></i>
-                      <i className="bi bi-person-wheelchair"></i>
-                      <i className="bi bi-person-wheelchair"></i>
-                      <i className="bi bi-person-wheelchair"></i>
-                      <i className="bi bi-person-wheelchair"></i>
-                    </div>
-
-                    <div className="hotel-rating">
-                      <i className="bi bi-star-fill"></i>
-                      <i className="bi bi-star-fill"></i>
-                      <i className="bi bi-star-fill"></i>
-                      <i className="bi bi-star-fill"></i>
-                      <i className="bi bi-star-half"></i>
-                      <span>{hotel.rating}</span>
-                    </div>
+                    {renderWheelchairs(hotel.accessibilityLevel)}
                   </div>
                 </div>
               </div>

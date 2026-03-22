@@ -7,7 +7,12 @@ function DetailReviewsList({
   placeholderImage,
   renderWheelchairs,
   formatDate,
+  navigateToWorkInProgress,
 }) {
+  const getUserAvatar = (utente) => {
+    return utente?.avatar || ""
+  }
+
   return (
     <div className="reviews-list-box">
       <div className="reviews-pagination">
@@ -32,7 +37,15 @@ function DetailReviewsList({
             <div className="review-card-header">
               <div className="review-card-user">
                 <div className="detail-mini-review-avatar big-avatar">
-                  <i className="bi bi-person-fill"></i>
+                  {getUserAvatar(review.utente) ? (
+                    <img
+                      src={getUserAvatar(review.utente)}
+                      alt={review.utente?.nomeVisualizzato || "Utente"}
+                      className="detail-avatar-image"
+                    />
+                  ) : (
+                    <i className="bi bi-person-fill"></i>
+                  )}
                 </div>
 
                 <div>
@@ -62,12 +75,14 @@ function DetailReviewsList({
             />
 
             <div className="review-bottom-row">
-              <button type="button">
+              <button type="button" onClick={navigateToWorkInProgress}>
                 <i className="bi bi-hand-thumbs-up"></i>
-                56
+                Mi piace
               </button>
 
-              <button type="button">Rispondi</button>
+              <button type="button" onClick={navigateToWorkInProgress}>
+                Rispondi
+              </button>
             </div>
           </article>
         ))

@@ -8,6 +8,9 @@ function DetailReviewForm({
   handleReviewSubmit,
   sendingReview,
   renderWheelchairs,
+  avatarUtente,
+  nomeVisualizzatoUtente,
+  navigateToWorkInProgress,
 }) {
   return (
     <div className="review-form-box">
@@ -31,11 +34,19 @@ function DetailReviewForm({
           <div className="review-user-header">
             <div className="review-user-info">
               <div className="detail-mini-review-avatar big-avatar">
-                <i className="bi bi-person-fill"></i>
+                {avatarUtente ? (
+                  <img
+                    src={avatarUtente}
+                    alt={nomeVisualizzatoUtente || "Utente"}
+                    className="detail-avatar-image"
+                  />
+                ) : (
+                  <i className="bi bi-person-fill"></i>
+                )}
               </div>
 
               <div>
-                <h4>La tua recensione</h4>
+                <h4>{nomeVisualizzatoUtente || "La tua recensione"}</h4>
 
                 <div className="review-vote-selector">
                   <label>Voto</label>
@@ -50,7 +61,11 @@ function DetailReviewForm({
               </div>
             </div>
 
-            <button type="button" className="upload-photo-button">
+            <button
+              type="button"
+              className="upload-photo-button"
+              onClick={navigateToWorkInProgress}
+            >
               <i className="bi bi-camera-fill"></i>
               Carica foto
             </button>
@@ -64,17 +79,9 @@ function DetailReviewForm({
           ></textarea>
 
           <div className="review-form-footer">
-            <div className="review-upload-preview"></div>
+            <div className="review-upload-preview">Funzione foto in arrivo</div>
 
             <div className="review-actions">
-              <button type="button">
-                <i className="bi bi-circle-fill"></i>
-              </button>
-
-              <button type="button">
-                <i className="bi bi-hand-thumbs-up-fill"></i>
-              </button>
-
               <button
                 type="submit"
                 className="review-submit-button"

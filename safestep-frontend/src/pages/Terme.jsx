@@ -5,6 +5,95 @@ import "../styles/pages/Terme.css"
 import termeHero from "../assets/images/terme-hero.jpg"
 import guideImage from "../assets/images/guida-terme.jpg"
 
+function TermeCard({ terma, renderWheelchairs }) {
+  return (
+    <Link to={`/struttura/${terma.idStruttura}`} className="terme-card-link">
+      <article className="terme-card">
+        <img
+          src={
+            terma.immagineCopertina ||
+            "https://via.placeholder.com/800x500?text=SafeStep"
+          }
+          alt={terma.nome || "Struttura termale"}
+          className="terme-card-image"
+        />
+
+        <div className="terme-card-body">
+          <h3>{terma.nome || "Nome non disponibile"}</h3>
+          <p className="terme-card-city">
+            {terma.citta || "Città non disponibile"}
+          </p>
+
+          <div className="terme-card-bottom">{renderWheelchairs(terma)}</div>
+        </div>
+      </article>
+    </Link>
+  )
+}
+
+function TermeSmallCard({ terma, renderWheelchairs }) {
+  return (
+    <Link to={`/struttura/${terma.idStruttura}`} className="terme-card-link">
+      <article className="terme-small-card">
+        <img
+          src={
+            terma.immagineCopertina ||
+            "https://via.placeholder.com/800x500?text=SafeStep"
+          }
+          alt={terma.nome || "Struttura termale"}
+          className="terme-small-card-image"
+        />
+
+        <div className="terme-small-card-body">
+          <h3>{terma.nome || "Nome non disponibile"}</h3>
+          <p className="terme-card-city">
+            {terma.citta || "Città non disponibile"}
+          </p>
+
+          <div className="terme-card-bottom">{renderWheelchairs(terma)}</div>
+        </div>
+      </article>
+    </Link>
+  )
+}
+
+function TermeGuideCards() {
+  return (
+    <aside className="terme-side-column">
+      <div className="terme-guide-card small-guide">
+        <h3>Guida all'accessibilità nelle terme</h3>
+        <p>
+          Scopri di più sulle caratteristiche delle terme accessibili e leggi i
+          nostri consigli per pianificare la tua visita.
+        </p>
+
+        <Link
+          to="/terme/guida-accessibilita"
+          className="terme-guide-button-link"
+        >
+          Scopri di più
+        </Link>
+      </div>
+
+      <div className="terme-guide-card image-guide">
+        <img src={guideImage} alt="Guida terme accessibili" />
+
+        <div className="terme-guide-card-body">
+          <h3>Consigli per visitare le terme</h3>
+          <p>
+            Leggi i suggerimenti utili per organizzare la visita, capire cosa
+            controllare prima di partire e quali domande fare alla struttura.
+          </p>
+
+          <Link to="/terme/consigli-visita" className="terme-guide-button-link">
+            Scopri di più
+          </Link>
+        </div>
+      </div>
+    </aside>
+  )
+}
+
 function Terme() {
   const [termePrincipali, setTermePrincipali] = useState([])
   const [loading, setLoading] = useState(true)
@@ -170,13 +259,10 @@ function Terme() {
   const termeFiltrate = useMemo(() => {
     if (!Array.isArray(termePrincipali)) return []
 
-    const toRadians = (value) => {
-      return (value * Math.PI) / 180
-    }
+    const toRadians = (value) => (value * Math.PI) / 180
 
     const calculateDistance = (lat1, lon1, lat2, lon2) => {
       const earthRadius = 6371
-
       const deltaLat = toRadians(lat2 - lat1)
       const deltaLon = toRadians(lon2 - lon1)
 
@@ -188,7 +274,6 @@ function Terme() {
           Math.sin(deltaLon / 2)
 
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
       return earthRadius * c
     }
 
@@ -270,36 +355,22 @@ function Terme() {
     if (!accessibilitaPresente) {
       return (
         <div className="terme-card-accessibility">
-          <i className="bi bi-person-wheelchair"></i>
+          <i className="bi bi-person-wheelchair is-active"></i>
+          <i className="bi bi-person-wheelchair is-muted"></i>
+          <i className="bi bi-person-wheelchair is-muted"></i>
+          <i className="bi bi-person-wheelchair is-muted"></i>
+          <i className="bi bi-person-wheelchair is-muted"></i>
         </div>
       )
     }
 
     return (
       <div className="terme-card-accessibility">
-        <i className="bi bi-person-wheelchair"></i>
-        <i className="bi bi-person-wheelchair"></i>
-        <i className="bi bi-person-wheelchair"></i>
-        <i className="bi bi-person-wheelchair"></i>
-        <i className="bi bi-person-wheelchair"></i>
-      </div>
-    )
-  }
-
-  const renderStars = (terma) => {
-    const rating = getRatingValue(terma)
-    const ratingDaMostrare = rating > 0 ? rating.toFixed(1) : "4.7"
-
-    return (
-      <div className="terme-card-rating">
-        <span className="terme-stars">
-          <i className="bi bi-star-fill"></i>
-          <i className="bi bi-star-fill"></i>
-          <i className="bi bi-star-fill"></i>
-          <i className="bi bi-star-fill"></i>
-          <i className="bi bi-star-half"></i>
-        </span>
-        <span className="terme-rating-number">{ratingDaMostrare}</span>
+        <i className="bi bi-person-wheelchair is-active"></i>
+        <i className="bi bi-person-wheelchair is-active"></i>
+        <i className="bi bi-person-wheelchair is-active"></i>
+        <i className="bi bi-person-wheelchair is-active"></i>
+        <i className="bi bi-person-wheelchair is-active"></i>
       </div>
     )
   }
@@ -328,9 +399,7 @@ function Terme() {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleSearch()
-                      }
+                      if (e.key === "Enter") handleSearch()
                     }}
                   />
                 </div>
@@ -444,81 +513,24 @@ function Terme() {
           )}
 
           {!loading && !error && termeFiltrate.length > 0 && (
-            <div className="terme-main-layout">
-              <div className="terme-cards-column">
-                <div className="terme-grid">
-                  {termeFiltrate.map((terma) => {
-                    if (!terma) return null
-
-                    return (
-                      <Link
-                        key={terma.idStruttura}
-                        to={`/struttura/${terma.idStruttura}`}
-                        className="terme-card-link"
-                      >
-                        <article className="terme-card">
-                          <img
-                            src={
-                              terma.immagineCopertina ||
-                              "https://via.placeholder.com/800x500?text=SafeStep"
-                            }
-                            alt={terma.nome || "Struttura termale"}
-                            className="terme-card-image"
-                          />
-
-                          <div className="terme-card-body">
-                            <h3>{terma.nome || "Nome non disponibile"}</h3>
-                            <p className="terme-card-city">
-                              {terma.citta || "Città non disponibile"}
-                            </p>
-
-                            <div className="terme-card-bottom">
-                              {renderWheelchairs(terma)}
-                              {renderStars(terma)}
-                            </div>
-                          </div>
-                        </article>
-                      </Link>
-                    )
-                  })}
-                </div>
-              </div>
-
-              <aside className="terme-side-column">
-                <div className="terme-guide-card small-guide">
-                  <h3>Guida all'accessibilità nelle terme</h3>
-                  <p>
-                    Scopri di più sulle caratteristiche delle terme accessibili
-                    e leggi i nostri consigli per pianificare la tua visita.
-                  </p>
-
-                  <Link
-                    to="/terme/guida-accessibilita"
-                    className="terme-guide-button-link"
-                  >
-                    Scopri di più
-                  </Link>
-                </div>
-
-                <div className="terme-guide-card image-guide">
-                  <img src={guideImage} alt="Guida terme accessibili" />
-                  <div className="terme-guide-card-body">
-                    <h3>Consigli per visitare le terme</h3>
-                    <p>
-                      Leggi i suggerimenti utili per organizzare la visita,
-                      capire cosa controllare prima di partire e quali domande
-                      fare alla struttura.
-                    </p>
-
-                    <Link
-                      to="/terme/consigli-visita"
-                      className="terme-guide-button-link"
-                    >
-                      Scopri di più
-                    </Link>
+            <div className="terme-scroll-area">
+              <div className="terme-main-layout">
+                <div className="terme-cards-column">
+                  <div className="terme-grid">
+                    {termeFiltrate.map((terma) =>
+                      terma ? (
+                        <TermeCard
+                          key={terma.idStruttura}
+                          terma={terma}
+                          renderWheelchairs={renderWheelchairs}
+                        />
+                      ) : null,
+                    )}
                   </div>
                 </div>
-              </aside>
+
+                <TermeGuideCards />
+              </div>
             </div>
           )}
         </div>
@@ -532,40 +544,15 @@ function Terme() {
             </h2>
 
             <div className="terme-popular-grid">
-              {termePopolari.map((terma) => {
-                if (!terma) return null
-
-                return (
-                  <Link
+              {termePopolari.map((terma) =>
+                terma ? (
+                  <TermeSmallCard
                     key={`popular-${terma.idStruttura}`}
-                    to={`/struttura/${terma.idStruttura}`}
-                    className="terme-card-link"
-                  >
-                    <article className="terme-small-card">
-                      <img
-                        src={
-                          terma.immagineCopertina ||
-                          "https://via.placeholder.com/800x500?text=SafeStep"
-                        }
-                        alt={terma.nome || "Struttura termale"}
-                        className="terme-small-card-image"
-                      />
-
-                      <div className="terme-small-card-body">
-                        <h3>{terma.nome || "Nome non disponibile"}</h3>
-                        <p className="terme-card-city">
-                          {terma.citta || "Città non disponibile"}
-                        </p>
-
-                        <div className="terme-card-bottom">
-                          {renderWheelchairs(terma)}
-                          {renderStars(terma)}
-                        </div>
-                      </div>
-                    </article>
-                  </Link>
-                )
-              })}
+                    terma={terma}
+                    renderWheelchairs={renderWheelchairs}
+                  />
+                ) : null,
+              )}
             </div>
           </div>
         </section>

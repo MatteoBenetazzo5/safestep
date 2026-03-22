@@ -1,28 +1,50 @@
 import "../styles/AdminStructureCard.css"
 
 function AdminStructureCard({ structure, onOpen, onEdit, onDelete }) {
-  const reviews = Array.isArray(structure?.recensioni) ? structure.recensioni : []
+  const reviews = Array.isArray(structure?.recensioni)
+    ? structure.recensioni
+    : []
   const accessibilita = Array.isArray(structure?.accessibilita)
     ? structure.accessibilita
     : []
 
   const averageVote =
     reviews.length > 0
-      ? (
-          reviews.reduce((acc, review) => acc + Number(review.voto || 0), 0) /
-          reviews.length
-        ).toFixed(1)
-      : "0.0"
+      ? reviews.reduce((acc, review) => acc + Number(review.voto || 0), 0) /
+        reviews.length
+      : 0
 
-  const renderStars = () => {
-    const roundedVote = Math.round(Number(averageVote))
+  const formattedAverageVote = averageVote.toFixed(1)
 
-    return Array.from({ length: 5 }).map((_, index) => (
-      <i
-        key={index}
-        className={index < roundedVote ? "bi bi-star-fill" : "bi bi-star"}
-      ></i>
-    ))
+  const renderWheelchairs = (vote) => {
+    const safeVote = Math.max(0, Math.min(5, Number(vote) || 0))
+
+    return (
+      <div
+        className="admin-wheelchairs"
+        aria-label={`Valutazione ${safeVote} su 5`}
+      >
+        {Array.from({ length: 5 }).map((_, index) => {
+          const fillPercentage =
+            Math.max(0, Math.min(1, safeVote - index)) * 100
+
+          return (
+            <span key={index} className="admin-wheelchair-rating-item">
+              <span className="admin-wheelchair-icon-base">
+                <i className="bi bi-universal-access-circle"></i>
+              </span>
+
+              <span
+                className="admin-wheelchair-icon-fill"
+                style={{ width: `${fillPercentage}%` }}
+              >
+                <i className="bi bi-universal-access-circle-fill"></i>
+              </span>
+            </span>
+          )
+        })}
+      </div>
+    )
   }
 
   return (
@@ -37,32 +59,28 @@ function AdminStructureCard({ structure, onOpen, onEdit, onDelete }) {
 
       <div className="admin-structure-body">
         <div className="admin-structure-title-row">
-          <div>
+          <div className="admin-structure-title-block">
             <h3>{structure.nome}</h3>
             <p>{structure.citta || "Città non disponibile"}</p>
           </div>
 
-          <div className="admin-structure-stars">{renderStars()}</div>
+          <div className="admin-structure-accessibility-box">
+            {renderWheelchairs(averageVote)}
+            <span className="admin-structure-vote-text">
+              {formattedAverageVote} / 5
+            </span>
+          </div>
         </div>
 
         <div className="admin-structure-rating">
           <span>{structure.categoria}</span>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            flexWrap: "wrap",
-            marginBottom: "14px",
-            fontSize: "0.85rem",
-            color: "#617086",
-          }}
-        >
+        <div className="admin-structure-meta">
           <span>Stato: {structure.stato || "N/D"}</span>
           <span>Recensioni: {reviews.length}</span>
           <span>Accessibilità: {accessibilita.length}</span>
-          <span>Voto medio: {averageVote}</span>
+          <span>Media: {formattedAverageVote}</span>
         </div>
 
         <div className="admin-card-actions">

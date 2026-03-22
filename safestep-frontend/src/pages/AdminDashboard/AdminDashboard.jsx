@@ -166,156 +166,160 @@ function AdminDashboard() {
       />
 
       <main className="admin-page">
-        <AdminTopbar
-          nomeVisualizzato={nomeVisualizzato}
-          email={email}
-          avatar={avatar}
-          initial={initial}
-        />
+        <div className="admin-content">
+          <AdminTopbar
+            nomeVisualizzato={nomeVisualizzato}
+            email={email}
+            avatar={avatar}
+            initial={initial}
+          />
 
-        <AdminStats stats={stats} />
+          <AdminStats stats={stats} />
 
-        <section className="admin-toolbar-card">
-          <div className="admin-toolbar-search">
-            <i className="bi bi-search"></i>
-            <input
-              type="text"
-              placeholder="Cerca per nome, città, descrizione o categoria"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+          <section className="admin-toolbar-card">
+            <div className="admin-toolbar-search">
+              <i className="bi bi-search"></i>
+              <input
+                type="text"
+                placeholder="Cerca per nome, città, descrizione o categoria"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
 
-          <select
-            className="admin-toolbar-select"
-            value={filterCategoria}
-            onChange={(e) => setFilterCategoria(e.target.value)}
-          >
-            <option value="">Categorie</option>
-            <option value="TERME">Terme</option>
-            <option value="HOTEL">Hotel</option>
-            <option value="RISTORANTE">Ristorante</option>
-            <option value="PARCO">Parco</option>
-          </select>
+            <select
+              className="admin-toolbar-select"
+              value={filterCategoria}
+              onChange={(e) => setFilterCategoria(e.target.value)}
+            >
+              <option value="">Categorie</option>
+              <option value="TERME">Terme</option>
+              <option value="HOTEL">Hotel</option>
+              <option value="RISTORANTE">Ristorante</option>
+              <option value="PARCO">Parco</option>
+            </select>
 
-          <select
-            className="admin-toolbar-select"
-            value={filterAccessibilita}
-            onChange={(e) => setFilterAccessibilita(e.target.value)}
-          >
-            <option value="">Accessibilità</option>
-            <option value="accessibile">Accessibile</option>
-            <option value="non-accessibile">Non accessibile</option>
-          </select>
+            <select
+              className="admin-toolbar-select"
+              value={filterAccessibilita}
+              onChange={(e) => setFilterAccessibilita(e.target.value)}
+            >
+              <option value="">Accessibilità</option>
+              <option value="accessibile">Accessibile</option>
+              <option value="non-accessibile">Non accessibile</option>
+            </select>
 
-          <select
-            className="admin-toolbar-select"
-            value={filterStato}
-            onChange={(e) => setFilterStato(e.target.value)}
-          >
-            <option value="">Stato</option>
-            <option value="APPROVATA">APPROVATA</option>
-            <option value="BOZZA">BOZZA</option>
-            <option value="IN_REVISIONE">IN_REVISIONE</option>
-          </select>
+            <select
+              className="admin-toolbar-select"
+              value={filterStato}
+              onChange={(e) => setFilterStato(e.target.value)}
+            >
+              <option value="">Stato</option>
+              <option value="APPROVATA">APPROVATA</option>
+              <option value="BOZZA">BOZZA</option>
+              <option value="IN_REVISIONE">IN_REVISIONE</option>
+            </select>
 
-          <button
-            className="admin-toolbar-primary"
-            onClick={handleApplyFilters}
-          >
-            Filtra
-          </button>
-        </section>
+            <button
+              className="admin-toolbar-primary"
+              onClick={handleApplyFilters}
+            >
+              Filtra
+            </button>
+          </section>
 
-        <section className="admin-main-grid">
-          <div className="admin-left-column">
-            <div className="admin-section-header" ref={formSectionRef}>
-              <h2>Gestione strutture</h2>
+          <section className="admin-main-grid">
+            <div className="admin-left-column">
+              <div className="admin-section-header" ref={formSectionRef}>
+                <h2>Gestione strutture</h2>
 
-              <button
-                className="admin-add-button"
-                onClick={() => {
-                  if (showForm && editingId) {
-                    resetForm()
-                  } else if (showForm) {
-                    setShowForm(false)
-                  } else {
-                    handleOpenCreateForm()
+                <button
+                  className="admin-add-button"
+                  onClick={() => {
+                    if (showForm && editingId) {
+                      resetForm()
+                    } else if (showForm) {
+                      setShowForm(false)
+                    } else {
+                      handleOpenCreateForm()
+                    }
+                  }}
+                >
+                  <i className="bi bi-plus-lg"></i>
+                  {showForm ? "Chiudi form" : "Aggiungi nuova struttura"}
+                </button>
+              </div>
+
+              {showForm && (
+                <AdminStructureForm
+                  editingId={editingId}
+                  formData={formData}
+                  handleChange={handleChange}
+                  handleImageChange={handleImageChange}
+                  handleRemoveImage={handleRemoveImage}
+                  caratteristiche={caratteristiche}
+                  accessibilitaForm={accessibilitaForm}
+                  handleAccessibilitaChange={handleAccessibilitaChange}
+                  addAccessibilitaRow={addAccessibilitaRow}
+                  removeAccessibilitaRow={removeAccessibilitaRow}
+                  handleCreateOrUpdateStructure={handleCreateOrUpdateStructure}
+                  saving={saving}
+                  resetForm={resetForm}
+                  selectedImages={selectedImages}
+                />
+              )}
+
+              <div ref={listSectionRef}>
+                {loading ? (
+                  <p>Caricamento strutture...</p>
+                ) : filteredStructures.length === 0 ? (
+                  <p>Nessuna struttura trovata con i filtri selezionati.</p>
+                ) : (
+                  <div className="admin-cards-scroll-area">
+                    <div className="admin-cards-grid">
+                      {filteredStructures.map((structure) => (
+                        <AdminStructureCard
+                          key={structure.idStruttura}
+                          structure={structure}
+                          onOpen={() =>
+                            navigate(`/struttura/${structure.idStruttura}`)
+                          }
+                          onEdit={() => handleEditStructure(structure)}
+                          onDelete={() =>
+                            handleDeleteStructure(structure.idStruttura)
+                          }
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="admin-right-column">
+              <AdminNotesCard
+                latestReviews={latestReviews}
+                onCreateStructure={handleOpenCreateForm}
+                onAddUser={() => {
+                  alert("work in progress...")
+                }}
+                onManageCategories={() => {
+                  setFilterCategoria("")
+                  alert("work in progress...")
+                }}
+                onShowStructuresWithAccessibility={
+                  handleShowOnlyWithAccessibility
+                }
+                onResetFilters={handleResetFilters}
+                onOpenReview={(review) => {
+                  if (review?.strutturaId) {
+                    navigate(`/struttura/${review.strutturaId}`)
                   }
                 }}
-              >
-                <i className="bi bi-plus-lg"></i>
-                {showForm ? "Chiudi form" : "Aggiungi nuova struttura"}
-              </button>
-            </div>
-
-            {showForm && (
-              <AdminStructureForm
-                editingId={editingId}
-                formData={formData}
-                handleChange={handleChange}
-                handleImageChange={handleImageChange}
-                handleRemoveImage={handleRemoveImage}
-                caratteristiche={caratteristiche}
-                accessibilitaForm={accessibilitaForm}
-                handleAccessibilitaChange={handleAccessibilitaChange}
-                addAccessibilitaRow={addAccessibilitaRow}
-                removeAccessibilitaRow={removeAccessibilitaRow}
-                handleCreateOrUpdateStructure={handleCreateOrUpdateStructure}
-                saving={saving}
-                resetForm={resetForm}
-                selectedImages={selectedImages}
               />
-            )}
-
-            <div ref={listSectionRef}>
-              {loading ? (
-                <p>Caricamento strutture...</p>
-              ) : filteredStructures.length === 0 ? (
-                <p>Nessuna struttura trovata con i filtri selezionati.</p>
-              ) : (
-                <div className="admin-cards-grid">
-                  {filteredStructures.map((structure) => (
-                    <AdminStructureCard
-                      key={structure.idStruttura}
-                      structure={structure}
-                      onOpen={() =>
-                        navigate(`/struttura/${structure.idStruttura}`)
-                      }
-                      onEdit={() => handleEditStructure(structure)}
-                      onDelete={() =>
-                        handleDeleteStructure(structure.idStruttura)
-                      }
-                    />
-                  ))}
-                </div>
-              )}
             </div>
-          </div>
-
-          <div className="admin-right-column">
-            <AdminNotesCard
-              latestReviews={latestReviews}
-              onCreateStructure={handleOpenCreateForm}
-              onAddUser={() => {
-                alert("work in progress...")
-              }}
-              onManageCategories={() => {
-                setFilterCategoria("")
-                alert("work in progress...")
-              }}
-              onShowStructuresWithAccessibility={
-                handleShowOnlyWithAccessibility
-              }
-              onResetFilters={handleResetFilters}
-              onOpenReview={(review) => {
-                if (review?.strutturaId) {
-                  navigate(`/struttura/${review.strutturaId}`)
-                }
-              }}
-            />
-          </div>
-        </section>
+          </section>
+        </div>
       </main>
     </div>
   )

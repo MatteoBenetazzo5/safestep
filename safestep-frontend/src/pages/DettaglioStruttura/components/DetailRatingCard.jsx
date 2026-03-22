@@ -7,6 +7,10 @@ function DetailRatingCard({
   voteDistribution,
   renderWheelchairs,
 }) {
+  const getUserAvatar = (utente) => {
+    return utente?.avatar || ""
+  }
+
   return (
     <aside className="detail-side-column">
       <div className="detail-rating-card">
@@ -31,20 +35,26 @@ function DetailRatingCard({
                 ></div>
               </div>
 
-              <span>{item.percentage}%</span>
+              <span className="rating-count-label">
+                {item.count} {item.count === 1 ? "voto" : "voti"}
+              </span>
             </div>
           ))}
         </div>
-
-        <button type="button" className="follow-button">
-          Segui il rilievo
-        </button>
       </div>
 
       {reviews.length > 0 && (
         <div className="detail-mini-review-card">
           <div className="detail-mini-review-avatar">
-            <i className="bi bi-person-fill"></i>
+            {getUserAvatar(reviews[0]?.utente) ? (
+              <img
+                src={getUserAvatar(reviews[0]?.utente)}
+                alt={reviews[0]?.utente?.nomeVisualizzato || "Utente"}
+                className="detail-avatar-image"
+              />
+            ) : (
+              <i className="bi bi-person-fill"></i>
+            )}
           </div>
 
           <div className="detail-mini-review-content">

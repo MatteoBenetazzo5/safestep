@@ -9,17 +9,42 @@ function DetailInfoBox({
   placeholderImage,
   renderWheelchairs,
 }) {
+  const hasCoordinates =
+    structure?.latitudine !== null &&
+    structure?.latitudine !== undefined &&
+    structure?.longitudine !== null &&
+    structure?.longitudine !== undefined
+
+  const mapSrc = hasCoordinates
+    ? `https://www.google.com/maps?q=${structure.latitudine},${structure.longitudine}&z=15&output=embed`
+    : `https://www.google.com/maps?q=${encodeURIComponent(
+        [
+          structure?.nome,
+          structure?.indirizzo,
+          structure?.citta,
+          structure?.paese,
+        ]
+          .filter(Boolean)
+          .join(", "),
+      )}&z=15&output=embed`
+
+  const getUserAvatar = (utente) => {
+    return utente?.avatar || ""
+  }
+
   return (
     <>
       <div className="info-box">
         <h2>Informazioni</h2>
 
-        <div className="map-placeholder">
-          <img
-            src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80"
-            alt="Mappa della zona"
-            className="map-placeholder-image"
-          />
+        <div className="detail-map-box">
+          <iframe
+            src={mapSrc}
+            title={`Mappa di ${structure.nome}`}
+            className="detail-map-iframe"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
 
         <p className="address-line">
@@ -78,7 +103,15 @@ function DetailInfoBox({
           <div className="comment-preview-card">
             <div className="comment-user-row">
               <div className="detail-mini-review-avatar">
-                <i className="bi bi-person-fill"></i>
+                {getUserAvatar(reviews[0]?.utente) ? (
+                  <img
+                    src={getUserAvatar(reviews[0]?.utente)}
+                    alt={reviews[0]?.utente?.nomeVisualizzato || "Utente"}
+                    className="detail-avatar-image"
+                  />
+                ) : (
+                  <i className="bi bi-person-fill"></i>
+                )}
               </div>
 
               <div>

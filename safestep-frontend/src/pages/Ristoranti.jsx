@@ -8,12 +8,28 @@ import cardImage4 from "../assets/images/terme-card-4.jpg"
 import guideImage from "../assets/images/guida-terme.jpg"
 
 function Ristoranti() {
+  const renderWheelchairs = (count) => {
+    return (
+      <div className="ristoranti-icons">
+        {[1, 2, 3, 4, 5].map((item) => (
+          <i
+            key={item}
+            className={`bi bi-person-wheelchair ${
+              item <= count ? "is-active" : "is-muted"
+            }`}
+          ></i>
+        ))}
+      </div>
+    )
+  }
+
   const ristorantiPrincipali = [
     {
       id: 101,
       name: "Ristorante Laguna Blu",
       city: "Venezia",
       rating: 4.7,
+      accessibilityLevel: 4,
       image: cardImage1,
     },
     {
@@ -21,6 +37,7 @@ function Ristoranti() {
       name: "Trattoria Il Gusto",
       city: "Padova",
       rating: 4.5,
+      accessibilityLevel: 5,
       image: cardImage2,
     },
     {
@@ -28,6 +45,7 @@ function Ristoranti() {
       name: "Bistrot Senza Barriere",
       city: "Verona",
       rating: 4.8,
+      accessibilityLevel: 4,
       image: cardImage3,
     },
     {
@@ -35,6 +53,7 @@ function Ristoranti() {
       name: "Osteria del Centro",
       city: "Treviso",
       rating: 4.6,
+      accessibilityLevel: 3,
       image: cardImage4,
     },
     {
@@ -42,6 +61,7 @@ function Ristoranti() {
       name: "Ristorante Mare Chiaro",
       city: "Rimini",
       rating: 4.7,
+      accessibilityLevel: 4,
       image: cardImage1,
     },
     {
@@ -49,6 +69,7 @@ function Ristoranti() {
       name: "Locanda Bella Vista",
       city: "Bergamo",
       rating: 4.4,
+      accessibilityLevel: 2,
       image: cardImage2,
     },
     {
@@ -56,6 +77,7 @@ function Ristoranti() {
       name: "Cucina Inclusiva",
       city: "Bologna",
       rating: 4.8,
+      accessibilityLevel: 5,
       image: cardImage3,
     },
     {
@@ -63,6 +85,7 @@ function Ristoranti() {
       name: "Sapori del Borgo",
       city: "Ferrara",
       rating: 4.5,
+      accessibilityLevel: 3,
       image: cardImage4,
     },
     {
@@ -70,6 +93,7 @@ function Ristoranti() {
       name: "Ristorante La Darsena",
       city: "Trieste",
       rating: 4.6,
+      accessibilityLevel: 4,
       image: cardImage1,
     },
     {
@@ -77,6 +101,7 @@ function Ristoranti() {
       name: "Tavola Aperta",
       city: "Vicenza",
       rating: 4.7,
+      accessibilityLevel: 4,
       image: cardImage2,
     },
     {
@@ -84,6 +109,7 @@ function Ristoranti() {
       name: "Il Giardino dei Sapori",
       city: "Parma",
       rating: 4.5,
+      accessibilityLevel: 3,
       image: cardImage3,
     },
     {
@@ -91,6 +117,7 @@ function Ristoranti() {
       name: "Ristorante Porta Nuova",
       city: "Milano",
       rating: 4.8,
+      accessibilityLevel: 5,
       image: cardImage4,
     },
     {
@@ -98,6 +125,7 @@ function Ristoranti() {
       name: "Terrazza Serena",
       city: "Firenze",
       rating: 4.6,
+      accessibilityLevel: 2,
       image: cardImage1,
     },
     {
@@ -105,6 +133,7 @@ function Ristoranti() {
       name: "Bottega del Gusto",
       city: "Torino",
       rating: 4.5,
+      accessibilityLevel: 3,
       image: cardImage2,
     },
   ]
@@ -115,6 +144,7 @@ function Ristoranti() {
       name: "Sapori d'Italia",
       city: "Vicenza",
       rating: 4.8,
+      accessibilityLevel: 5,
       image: cardImage1,
     },
     {
@@ -122,6 +152,7 @@ function Ristoranti() {
       name: "Ristorante Al Porto",
       city: "Trieste",
       rating: 4.6,
+      accessibilityLevel: 3,
       image: cardImage2,
     },
     {
@@ -129,6 +160,7 @@ function Ristoranti() {
       name: "La Terrazza Accessibile",
       city: "Bologna",
       rating: 4.7,
+      accessibilityLevel: 4,
       image: cardImage4,
     },
   ]
@@ -172,88 +204,75 @@ function Ristoranti() {
           <h2>I migliori ristoranti accessibili</h2>
         </div>
 
-        <div className="ristoranti-main-layout">
-          <div className="ristoranti-left-content">
-            <div className="ristoranti-toolbar">
-              <button className="toolbar-button">
-                <i className="bi bi-sliders"></i> Filtri
-              </button>
+        <div className="ristoranti-scroll-area">
+          <div className="ristoranti-main-layout">
+            <div className="ristoranti-left-content">
+              <div className="ristoranti-toolbar">
+                <button className="toolbar-button">
+                  <i className="bi bi-sliders"></i> Filtri
+                </button>
 
-              <div className="toolbar-dropdowns">
-                <button>Più votati</button>
-                <button>Vicino a me</button>
+                <div className="toolbar-dropdowns">
+                  <button>Più votati</button>
+                  <button>Vicino a me</button>
+                </div>
               </div>
-            </div>
 
-            <div className="ristoranti-grid">
-              {ristorantiPrincipali.map((ristorante) => (
-                <Link
-                  key={ristorante.id}
-                  to={`/struttura/${ristorante.id}`}
-                  className="ristoranti-card-link"
-                >
-                  <div className="ristoranti-card">
-                    <img src={ristorante.image} alt={ristorante.name} />
-                    <div className="ristoranti-card-body">
-                      <h3>{ristorante.name}</h3>
-                      <p>{ristorante.city}</p>
+              <div className="ristoranti-grid">
+                {ristorantiPrincipali.map((ristorante) => (
+                  <Link
+                    key={ristorante.id}
+                    to={`/struttura/${ristorante.id}`}
+                    className="ristoranti-card-link"
+                  >
+                    <div className="ristoranti-card">
+                      <img src={ristorante.image} alt={ristorante.name} />
+                      <div className="ristoranti-card-body">
+                        <h3>{ristorante.name}</h3>
+                        <p>{ristorante.city}</p>
 
-                      <div className="ristoranti-card-footer">
-                        <div className="ristoranti-icons">
-                          <i className="bi bi-person-wheelchair"></i>
-                          <i className="bi bi-person-wheelchair"></i>
-                          <i className="bi bi-person-wheelchair"></i>
-                          <i className="bi bi-person-wheelchair"></i>
-                          <i className="bi bi-person-wheelchair"></i>
-                        </div>
-
-                        <div className="ristoranti-rating">
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-half"></i>
-                          <span>{ristorante.rating}</span>
+                        <div className="ristoranti-card-footer">
+                          {renderWheelchairs(ristorante.accessibilityLevel)}
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="ristoranti-right-content">
+              <div className="ristoranti-guide-card">
+                <h3>Guida all'accessibilità nei ristoranti</h3>
+                <p>
+                  Scopri cosa controllare prima di prenotare e trova locali più
+                  comodi, inclusivi e facili da raggiungere.
+                </p>
+
+                <Link
+                  to="/ristoranti/guida-accessibilita"
+                  className="ristoranti-guide-button-link"
+                >
+                  Scopri di più
                 </Link>
-              ))}
-            </div>
-          </div>
+              </div>
 
-          <div className="ristoranti-right-content">
-            <div className="ristoranti-guide-card">
-              <h3>Guida all'accessibilità nei ristoranti</h3>
-              <p>
-                Scopri cosa controllare prima di prenotare e trova locali più
-                comodi, inclusivi e facili da raggiungere.
-              </p>
+              <div className="ristoranti-guide-card image-card">
+                <img src={guideImage} alt="Guida ristoranti accessibili" />
+                <h3>Consigli per visitare i ristoranti</h3>
+                <p>
+                  Leggi i suggerimenti utili per organizzare la visita, capire
+                  cosa controllare prima di prenotare e quali domande fare al
+                  locale.
+                </p>
 
-              <Link
-                to="/ristoranti/guida-accessibilita"
-                className="terme-guide-button-link"
-              >
-                Scopri di più
-              </Link>
-            </div>
-
-            <div className="ristoranti-guide-card image-card">
-              <img src={guideImage} alt="Guida ristoranti accessibili" />
-              <h3>Consigli per visitare i ristoranti</h3>
-              <p>
-                Leggi i suggerimenti utili per organizzare la visita, capire
-                cosa controllare prima di prenotare e quali domande fare al
-                locale.
-              </p>
-
-              <Link
-                to="/ristoranti/consigli-visita"
-                className="terme-guide-button-link"
-              >
-                Scopri di più
-              </Link>
+                <Link
+                  to="/ristoranti/consigli-visita"
+                  className="ristoranti-guide-button-link"
+                >
+                  Scopri di più
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -278,22 +297,7 @@ function Ristoranti() {
                   <p>{ristorante.city}</p>
 
                   <div className="ristoranti-card-footer">
-                    <div className="ristoranti-icons">
-                      <i className="bi bi-person-wheelchair"></i>
-                      <i className="bi bi-person-wheelchair"></i>
-                      <i className="bi bi-person-wheelchair"></i>
-                      <i className="bi bi-person-wheelchair"></i>
-                      <i className="bi bi-person-wheelchair"></i>
-                    </div>
-
-                    <div className="ristoranti-rating">
-                      <i className="bi bi-star-fill"></i>
-                      <i className="bi bi-star-fill"></i>
-                      <i className="bi bi-star-fill"></i>
-                      <i className="bi bi-star-fill"></i>
-                      <i className="bi bi-star-half"></i>
-                      <span>{ristorante.rating}</span>
-                    </div>
+                    {renderWheelchairs(ristorante.accessibilityLevel)}
                   </div>
                 </div>
               </div>

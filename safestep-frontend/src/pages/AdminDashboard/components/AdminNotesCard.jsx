@@ -28,10 +28,10 @@ function AdminNotesCard({
 
   return (
     <>
-      <div className="admin-side-card">
+      <div className="admin-side-card admin-reviews-card">
         <h3>Ultime recensioni</h3>
 
-        <div className="admin-side-list">
+        <div className="admin-side-list admin-side-list-scrollable">
           {latestReviews.length === 0 ? (
             <p>Nessuna recensione trovata.</p>
           ) : (
@@ -41,21 +41,15 @@ function AdminNotesCard({
                 type="button"
                 className="admin-side-item"
                 onClick={() => onOpenReview && onOpenReview(review)}
-                style={{
-                  width: "100%",
-                  border: "none",
-                  background: "transparent",
-                  textAlign: "left",
-                }}
               >
                 <div className="admin-side-avatar">{getInitial(review)}</div>
 
-                <div>
+                <div className="admin-side-item-content">
                   <h4>{getUserName(review)}</h4>
                   <p>{review.strutturaNome || "Struttura"}</p>
                   <span>
-                    {review.testo || "Recensione"}{" "}
-                    {getReviewDate(review) ? `· ${getReviewDate(review)}` : ""}
+                    {review.testo || "Recensione"}
+                    {getReviewDate(review) ? ` · ${getReviewDate(review)}` : ""}
                   </span>
                 </div>
               </button>

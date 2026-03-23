@@ -1,17 +1,17 @@
 import "../styles/pages/Home.css"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import image1 from "../assets/images/image1.jpg"
-import image2 from "../assets/images/image2.jpg"
-import image3 from "../assets/images/image3.jpg"
-import image4 from "../assets/images/image4.jpg"
-import image5 from "../assets/images/image5.jpg"
-import image6 from "../assets/images/image6.jpg"
-import image7 from "../assets/images/image7.jpg"
-import image8 from "../assets/images/image8.jpg"
-import image9 from "../assets/images/image9.jpg"
-import image10 from "../assets/images/image10.jpg"
-import image11 from "../assets/images/image11.jpg"
+import image1 from "../assets/images/HOME/image1.jpg"
+import image2 from "../assets/images/HOME/image2.jpg"
+import image3 from "../assets/images/HOME/image3.jpg"
+import image4 from "../assets/images/HOME/image4.jpg"
+import image5 from "../assets/images/HOME/image5.jpg"
+import image6 from "../assets/images/HOME/image6.jpg"
+import image7 from "../assets/images/HOME/image7.jpg"
+import image8 from "../assets/images/HOME/image8.jpg"
+import image9 from "../assets/images/HOME/image9.jpg"
+import image10 from "../assets/images/HOME/image10.jpg"
+import image11 from "../assets/images/HOME/image11.jpg"
 
 function Home() {
   const navigate = useNavigate()
@@ -216,10 +216,10 @@ function Home() {
                 <p>{place.city}</p>
 
                 <div className="place-card-icons">
-                  <i className="bi bi-universal-access-circle"></i>
-                  <i className="bi bi-universal-access-circle"></i>
-                  <i className="bi bi-universal-access-circle"></i>
-                  <i className="bi bi-universal-access-circle"></i>
+                  <i className="bi bi-person-wheelchair"></i>
+                  <i className="bi bi-person-wheelchair"></i>
+                  <i className="bi bi-person-wheelchair"></i>
+                  <i className="bi bi-person-wheelchair"></i>
                   <i className="bi bi-person-wheelchair"></i>
                   <span>4.5</span>
                 </div>

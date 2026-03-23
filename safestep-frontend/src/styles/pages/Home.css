@@ -6,9 +6,9 @@
 
 /* HERO */
 .home-hero {
-  min-height: 700px;
+  min-height: 520px;
   position: relative;
-  background-image: url("../../assets/images/homepage.png") !important;
+  background-image: url("../../assets/images/HOME/homepage.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -16,11 +16,10 @@
 }
 
 .home-hero-overlay {
-  min-height: 700px;
-  
-  padding: 200px 1rem 4rem 1rem;
+  min-height: 520px;
+  padding: 150px 1rem 50px 1rem;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -116,11 +115,10 @@
 }
 
 /* SECTION GENERALI */
-
 .home-section {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 2.5rem 1rem;
+  padding: 1.5rem 1rem 2rem 1rem;
 }
 
 .home-section-header {
@@ -363,6 +361,12 @@
   background: linear-gradient(135deg, #eaf1f7 0%, #f7fafc 100%);
 }
 
+@media (max-width: 576px) {
+  .home-hero-overlay {
+    padding-top: 150px;
+  }
+}
+
 /* TABLET */
 @media (min-width: 768px) {
   .home-topbar {
@@ -409,27 +413,46 @@
   }
 }
 
+@media (max-width: 991px) {
+  .home-hero-overlay {
+    padding-top: 140px;
+  }
+}
+
 /* DESKTOP */
 @media (min-width: 992px) {
+  .home-hero {
+    min-height: 640px;
+  }
+
   .home-hero-overlay {
-    padding: 1.5rem 2.5rem 3.5rem 2.5rem;
-  }
-
-  .home-topbar {
-    flex-direction: row;
-    justify-content: space-between;
+    min-height: 640px;
+    padding: 210px 2rem 40px 2rem;
+    display: flex;
     align-items: flex-start;
-  }
-
-  .home-menu-box {
-    width: auto;
-    min-width: 650px;
-    justify-content: space-between;
-    padding: 0.85rem 1.1rem;
+    justify-content: center;
   }
 
   .home-hero-content {
-    margin-top: 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .home-hero-content h1 {
+    font-size: 4rem;
+    line-height: 1.1;
+  }
+
+  .home-hero-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .home-main-search {
+    max-width: 1100px;
+  }
+
+  .home-section {
+    padding: 1rem 2rem 2.5rem 2rem;
   }
 
   .home-section-header {

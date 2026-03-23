@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { API_BASE_URL, getAuthHeaders } from "../utils/api"
 import "../styles/pages/Terme.css"
-import termeHero from "../assets/images/terme-hero.jpg"
+import termeHero from "../assets/images/TERME/termehero.jpg"
 import guideImage from "../assets/images/guida-terme.jpg"
 
 function TermeCard({ terma, renderWheelchairs }) {

@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom"
 import "../styles/pages/Ristoranti.css"
-import termeHero from "../assets/images/terme-hero.jpg"
-import cardImage1 from "../assets/images/terme-card-1.jpg"
-import cardImage2 from "../assets/images/terme-card-2.jpg"
-import cardImage3 from "../assets/images/terme-card-3.jpg"
-import cardImage4 from "../assets/images/terme-card-4.jpg"
-import guideImage from "../assets/images/guida-terme.jpg"
+import termehero from "../assets/images/RISTORANTI/ristorantihero.jpg"
+import guideImage from "../assets/images/RISTORANTI/guideImage.jpg"
+import cardImage1 from "../assets/images/RISTORANTI/cardImage1.jpg"
+import cardImage2 from "../assets/images/RISTORANTI/cardImage2.jpg"
+import cardImage3 from "../assets/images/RISTORANTI/cardImage3.jpg"
+import cardImage4 from "../assets/images/RISTORANTI/cardImage4.jpg"
+import cardImage5 from "../assets/images/RISTORANTI/cardImage5.jpg"
+import cardImage6 from "../assets/images/RISTORANTI/cardImage6.jpg"
 
 function Ristoranti() {
   const renderWheelchairs = (count) => {
@@ -62,7 +64,7 @@ function Ristoranti() {
       city: "Rimini",
       rating: 4.7,
       accessibilityLevel: 4,
-      image: cardImage1,
+      image: cardImage5,
     },
     {
       id: 109,
@@ -70,95 +72,31 @@ function Ristoranti() {
       city: "Bergamo",
       rating: 4.4,
       accessibilityLevel: 2,
-      image: cardImage2,
-    },
-    {
-      id: 110,
-      name: "Cucina Inclusiva",
-      city: "Bologna",
-      rating: 4.8,
-      accessibilityLevel: 5,
-      image: cardImage3,
-    },
-    {
-      id: 111,
-      name: "Sapori del Borgo",
-      city: "Ferrara",
-      rating: 4.5,
-      accessibilityLevel: 3,
-      image: cardImage4,
-    },
-    {
-      id: 112,
-      name: "Ristorante La Darsena",
-      city: "Trieste",
-      rating: 4.6,
-      accessibilityLevel: 4,
-      image: cardImage1,
-    },
-    {
-      id: 113,
-      name: "Tavola Aperta",
-      city: "Vicenza",
-      rating: 4.7,
-      accessibilityLevel: 4,
-      image: cardImage2,
-    },
-    {
-      id: 114,
-      name: "Il Giardino dei Sapori",
-      city: "Parma",
-      rating: 4.5,
-      accessibilityLevel: 3,
-      image: cardImage3,
-    },
-    {
-      id: 115,
-      name: "Ristorante Porta Nuova",
-      city: "Milano",
-      rating: 4.8,
-      accessibilityLevel: 5,
-      image: cardImage4,
-    },
-    {
-      id: 116,
-      name: "Terrazza Serena",
-      city: "Firenze",
-      rating: 4.6,
-      accessibilityLevel: 2,
-      image: cardImage1,
-    },
-    {
-      id: 117,
-      name: "Bottega del Gusto",
-      city: "Torino",
-      rating: 4.5,
-      accessibilityLevel: 3,
-      image: cardImage2,
+      image: cardImage6,
     },
   ]
 
   const ristorantiPopolari = [
     {
       id: 105,
-      name: "Sapori d'Italia",
-      city: "Vicenza",
+      name: "Ristorante Laguna Blu",
+      city: "Venezia",
       rating: 4.8,
       accessibilityLevel: 5,
       image: cardImage1,
     },
     {
       id: 106,
-      name: "Ristorante Al Porto",
-      city: "Trieste",
+      name: "Trattoria Il Gusto",
+      city: "Padova",
       rating: 4.6,
       accessibilityLevel: 3,
       image: cardImage2,
     },
     {
       id: 107,
-      name: "La Terrazza Accessibile",
-      city: "Bologna",
+      name: "Osteria del Centro",
+      city: "Treviso",
       rating: 4.7,
       accessibilityLevel: 4,
       image: cardImage4,
@@ -169,7 +107,7 @@ function Ristoranti() {
     <div className="ristoranti-page">
       <section
         className="ristoranti-hero"
-        style={{ backgroundImage: `url(${termeHero})` }}
+        style={{ backgroundImage: `url(${termehero})` }}
       >
         <div className="ristoranti-hero-overlay">
           <div className="ristoranti-hero-content">
@@ -222,7 +160,7 @@ function Ristoranti() {
                 {ristorantiPrincipali.map((ristorante) => (
                   <Link
                     key={ristorante.id}
-                    to={`/struttura/${ristorante.id}`}
+                    to="/home-place-detail"
                     className="ristoranti-card-link"
                   >
                     <div className="ristoranti-card">
@@ -287,7 +225,7 @@ function Ristoranti() {
           {ristorantiPopolari.map((ristorante) => (
             <Link
               key={ristorante.id}
-              to={`/struttura/${ristorante.id}`}
+              to="/home-place-detail"
               className="ristoranti-card-link"
             >
               <div className="ristoranti-small-card">

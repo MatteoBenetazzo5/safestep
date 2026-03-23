@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom"
 import "../styles/pages/Parchi.css"
-import termeHero from "../assets/images/terme-hero.jpg"
-import cardImage1 from "../assets/images/terme-card-1.jpg"
-import cardImage2 from "../assets/images/terme-card-2.jpg"
-import cardImage3 from "../assets/images/terme-card-3.jpg"
-import cardImage4 from "../assets/images/terme-card-4.jpg"
-import guideImage from "../assets/images/guida-terme.jpg"
+import parchihero from "../assets/images/PARCHI/parchihero.jpg"
+import guideImage from "../assets/images/PARCHI/guideImage.jpg"
+import cardImage1 from "../assets/images/PARCHI/cardImage1.jpg"
+import cardImage2 from "../assets/images/PARCHI/cardImage2.jpg"
+import cardImage3 from "../assets/images/PARCHI/cardImage3.jpg"
+import cardImage4 from "../assets/images/PARCHI/cardImage4.jpg"
+import cardImage5 from "../assets/images/PARCHI/cardImage5.jpg"
+import cardImage6 from "../assets/images/PARCHI/cardImage6.jpg"
 
 function Parchi() {
   const renderWheelchairs = (count) => {
@@ -26,15 +28,15 @@ function Parchi() {
   const parchiPrincipali = [
     {
       id: 301,
-      name: "Parco Verde Inclusivo",
-      city: "Verona",
+      name: "Parco Giardino Sigurtà",
+      city: "Valeggio sul Mincio",
       rating: 4.8,
       accessibilityLevel: 4,
       image: cardImage1,
     },
     {
       id: 302,
-      name: "Giardino Sereno",
+      name: "Parco Iris",
       city: "Padova",
       rating: 4.6,
       accessibilityLevel: 5,
@@ -50,115 +52,51 @@ function Parchi() {
     },
     {
       id: 304,
-      name: "Oasi Cittadina",
-      city: "Parma",
+      name: "Parco nazionale dell'Asinara",
+      city: "Sardegna",
       rating: 4.7,
       accessibilityLevel: 4,
       image: cardImage4,
     },
     {
       id: 308,
-      name: "Parco del Fiume",
-      city: "Mantova",
+      name: "Parco Nazionale del Circeo",
+      city: "Terracina",
       rating: 4.6,
       accessibilityLevel: 2,
-      image: cardImage1,
+      image: cardImage5,
     },
     {
       id: 309,
-      name: "Giardino delle Rose",
-      city: "Bologna",
+      name: "Parco nazionale dello Stelvio",
+      city: "Alpi",
       rating: 4.5,
       accessibilityLevel: 3,
-      image: cardImage2,
-    },
-    {
-      id: 310,
-      name: "Parco Panorama Verde",
-      city: "Trento",
-      rating: 4.8,
-      accessibilityLevel: 5,
-      image: cardImage3,
-    },
-    {
-      id: 311,
-      name: "Area Relax Natura",
-      city: "Udine",
-      rating: 4.4,
-      accessibilityLevel: 2,
-      image: cardImage4,
-    },
-    {
-      id: 312,
-      name: "Parco del Lago",
-      city: "Como",
-      rating: 4.7,
-      accessibilityLevel: 4,
-      image: cardImage1,
-    },
-    {
-      id: 313,
-      name: "Giardino del Sole",
-      city: "Ravenna",
-      rating: 4.6,
-      accessibilityLevel: 3,
-      image: cardImage2,
-    },
-    {
-      id: 314,
-      name: "Parco Collina Aperta",
-      city: "Perugia",
-      rating: 4.5,
-      accessibilityLevel: 2,
-      image: cardImage3,
-    },
-    {
-      id: 315,
-      name: "Oasi Verde Urbana",
-      city: "Milano",
-      rating: 4.7,
-      accessibilityLevel: 4,
-      image: cardImage4,
-    },
-    {
-      id: 316,
-      name: "Parco dei Tigli",
-      city: "Vicenza",
-      rating: 4.6,
-      accessibilityLevel: 3,
-      image: cardImage1,
-    },
-    {
-      id: 317,
-      name: "Bosco Accessibile",
-      city: "Brescia",
-      rating: 4.8,
-      accessibilityLevel: 5,
-      image: cardImage2,
+      image: cardImage6,
     },
   ]
 
   const parchiPopolari = [
     {
       id: 305,
-      name: "Parco del Sole",
-      city: "Ravenna",
+      name: "Parco Giardino Sigurtà",
+      city: "Valeggio sul Mincio",
       rating: 4.7,
       accessibilityLevel: 4,
       image: cardImage1,
     },
     {
       id: 306,
-      name: "Bosco Urbano",
-      city: "Brescia",
+      name: "Parco Iris",
+      city: "Padova",
       rating: 4.6,
       accessibilityLevel: 3,
       image: cardImage2,
     },
     {
       id: 307,
-      name: "Parco Panorama",
-      city: "Trento",
+      name: "Parco nazionale dell'Asinara",
+      city: "Sardegna",
       rating: 4.8,
       accessibilityLevel: 5,
       image: cardImage4,
@@ -169,7 +107,7 @@ function Parchi() {
     <div className="parchi-page">
       <section
         className="parchi-hero"
-        style={{ backgroundImage: `url(${termeHero})` }}
+        style={{ backgroundImage: `url(${parchihero})` }}
       >
         <div className="parchi-hero-overlay">
           <div className="parchi-hero-content">
@@ -222,7 +160,7 @@ function Parchi() {
                 {parchiPrincipali.map((parco) => (
                   <Link
                     key={parco.id}
-                    to={`/struttura/${parco.id}`}
+                    to="/home-place-detail"
                     className="parchi-card-link"
                   >
                     <div className="parchi-card">
@@ -286,7 +224,7 @@ function Parchi() {
           {parchiPopolari.map((parco) => (
             <Link
               key={parco.id}
-              to={`/struttura/${parco.id}`}
+              to="/home-place-detail"
               className="parchi-card-link"
             >
               <div className="parchi-small-card">

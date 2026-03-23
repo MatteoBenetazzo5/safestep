@@ -371,7 +371,7 @@
   color: #8c6657;
 }
 
-.ristoranti-guide-card button {
+.ristoranti-guide-button-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -387,7 +387,7 @@
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.ristoranti-guide-card button:hover {
+.ristoranti-guide-button-link:hover {
   transform: translateY(-1px);
   box-shadow: 0 14px 28px rgba(240, 138, 93, 0.3);
 }
@@ -405,7 +405,7 @@
 
 .ristoranti-guide-card.image-card h3,
 .ristoranti-guide-card.image-card p,
-.ristoranti-guide-card.image-card button {
+.ristoranti-guide-card.image-card .ristoranti-guide-button-link {
   margin-left: 1.4rem;
   margin-right: 1.4rem;
 }
@@ -414,8 +414,31 @@
   margin-top: 1.35rem;
 }
 
-.ristoranti-guide-card.image-card button {
+.ristoranti-guide-card.image-card .ristoranti-guide-button-link {
   margin-bottom: 1.4rem;
+}
+
+.ristoranti-guide-button-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1rem 1.4rem;
+  border: none;
+  border-radius: 16px;
+  text-decoration: none;
+  background: linear-gradient(135deg, #f08a5d 0%, #f6a36e 100%);
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(240, 138, 93, 0.24);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.ristoranti-guide-button-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(240, 138, 93, 0.3);
 }
 
 /* POPULAR */

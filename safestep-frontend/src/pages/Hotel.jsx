@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom"
 import "../styles/pages/Hotel.css"
-import termeHero from "../assets/images/terme-hero.jpg"
-import cardImage1 from "../assets/images/terme-card-1.jpg"
-import cardImage2 from "../assets/images/terme-card-2.jpg"
-import cardImage3 from "../assets/images/terme-card-3.jpg"
-import cardImage4 from "../assets/images/terme-card-4.jpg"
-import guideImage from "../assets/images/guida-terme.jpg"
+import termehero from "../assets/images/HOTEL/termehero.jpg"
+import guideImage from "../assets/images/HOTEL/guideImage.jpg"
+import cardImage1 from "../assets/images/HOTEL/cardImage1.jpg"
+import cardImage2 from "../assets/images/HOTEL/cardImage2.jpg"
+import cardImage3 from "../assets/images/HOTEL/cardImage3.jpg"
+import cardImage4 from "../assets/images/HOTEL/cardImage4.jpg"
+import cardImage5 from "../assets/images/HOTEL/cardImage5.jpg"
+import cardImage6 from "../assets/images/HOTEL/cardImage6.jpg"
 
 function Hotel() {
   const renderWheelchairs = (count) => {
@@ -26,8 +28,8 @@ function Hotel() {
   const hotelPrincipali = [
     {
       id: 201,
-      name: "Hotel Aurora",
-      city: "Mestre",
+      name: "Grand Hotel",
+      city: "Rimini",
       rating: 4.6,
       accessibilityLevel: 4,
       image: cardImage1,
@@ -58,90 +60,26 @@ function Hotel() {
     },
     {
       id: 208,
-      name: "Hotel Riviera Blu",
-      city: "Rimini",
+      name: "Hotel Bristol Palace",
+      city: "Genova",
       rating: 4.7,
       accessibilityLevel: 3,
-      image: cardImage1,
+      image: cardImage5,
     },
     {
       id: 209,
-      name: "Palace Comfort",
-      city: "Roma",
-      rating: 4.6,
-      accessibilityLevel: 4,
-      image: cardImage2,
-    },
-    {
-      id: 210,
-      name: "Residenza Serena",
-      city: "Napoli",
-      rating: 4.5,
-      accessibilityLevel: 3,
-      image: cardImage3,
-    },
-    {
-      id: 211,
-      name: "Hotel Giardino",
-      city: "Bologna",
-      rating: 4.7,
-      accessibilityLevel: 4,
-      image: cardImage4,
-    },
-    {
-      id: 212,
-      name: "Suite Centrale",
-      city: "Genova",
-      rating: 4.6,
-      accessibilityLevel: 2,
-      image: cardImage1,
-    },
-    {
-      id: 213,
-      name: "Resort del Sole",
-      city: "Cagliari",
-      rating: 4.8,
-      accessibilityLevel: 5,
-      image: cardImage2,
-    },
-    {
-      id: 214,
-      name: "Hotel del Porto",
-      city: "Trieste",
-      rating: 4.5,
-      accessibilityLevel: 3,
-      image: cardImage3,
-    },
-    {
-      id: 215,
-      name: "Dimora Accessibile",
+      name: "DC Hotel International",
       city: "Padova",
-      rating: 4.7,
-      accessibilityLevel: 5,
-      image: cardImage4,
-    },
-    {
-      id: 216,
-      name: "Grand Stay Milano",
-      city: "Milano",
       rating: 4.6,
       accessibilityLevel: 4,
-      image: cardImage1,
-    },
-    {
-      id: 217,
-      name: "Hotel Bella Vista",
-      city: "Perugia",
-      rating: 4.5,
-      accessibilityLevel: 2,
-      image: cardImage2,
+      image: cardImage6,
     },
   ]
 
   const hotelPopolari = [
     {
       id: 205,
-      name: "Hotel Riviera",
+      name: "Grand Hotel",
       city: "Rimini",
       rating: 4.7,
       accessibilityLevel: 4,
@@ -149,16 +87,16 @@ function Hotel() {
     },
     {
       id: 206,
-      name: "Resort del Lago",
-      city: "Como",
+      name: "Grand Hotel Relax",
+      city: "Milano",
       rating: 4.6,
       accessibilityLevel: 3,
       image: cardImage2,
     },
     {
       id: 207,
-      name: "Hotel Centrale",
-      city: "Roma",
+      name: "Hotel Panorama",
+      city: "Torino",
       rating: 4.8,
       accessibilityLevel: 5,
       image: cardImage4,
@@ -169,7 +107,7 @@ function Hotel() {
     <div className="hotel-page">
       <section
         className="hotel-hero"
-        style={{ backgroundImage: `url(${termeHero})` }}
+        style={{ backgroundImage: `url(${termehero})` }}
       >
         <div className="hotel-hero-overlay">
           <div className="hotel-hero-content">
@@ -222,7 +160,7 @@ function Hotel() {
                 {hotelPrincipali.map((hotel) => (
                   <Link
                     key={hotel.id}
-                    to={`/struttura/${hotel.id}`}
+                    to="/home-place-detail"
                     className="hotel-card-link"
                   >
                     <div className="hotel-card">
@@ -287,7 +225,7 @@ function Hotel() {
           {hotelPopolari.map((hotel) => (
             <Link
               key={hotel.id}
-              to={`/struttura/${hotel.id}`}
+              to="/home-place-detail"
               className="hotel-card-link"
             >
               <div className="hotel-small-card">

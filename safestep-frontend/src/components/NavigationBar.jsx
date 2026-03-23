@@ -26,8 +26,10 @@ function NavigationBar() {
   const [searchTerm, setSearchTerm] = useState("")
   const [termeList, setTermeList] = useState([])
   const [showSearchResults, setShowSearchResults] = useState(false)
+  const [expanded, setExpanded] = useState(false)
 
   const searchRef = useRef(null)
+  const navbarRef = useRef(null)
 
   useEffect(() => {
     const fetchTerme = async () => {
@@ -58,6 +60,10 @@ function NavigationBar() {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         setShowSearchResults(false)
+      }
+
+      if (navbarRef.current && !navbarRef.current.contains(event.target)) {
+        setExpanded(false)
       }
     }
 
@@ -92,12 +98,14 @@ function NavigationBar() {
 
   const handleLogout = () => {
     logout()
+    setExpanded(false)
     navigate("/login")
   }
 
   const handleResultClick = (idStruttura) => {
     setShowSearchResults(false)
     setSearchTerm("")
+    setExpanded(false)
     navigate(`/struttura/${idStruttura}`)
   }
 
@@ -107,134 +115,181 @@ function NavigationBar() {
     }
   }
 
+  const handleNavClick = (path) => {
+    setExpanded(false)
+    navigate(path)
+  }
+
   const profileRoute = ruolo === "ADMIN" ? "/admin" : "/profilo"
 
   return (
-    <div className="navbar-overlay-wrapper">
+    <div className="navbar-overlay-wrapper" ref={navbarRef}>
       <Container className="navbar-overlay-container">
-        <NavLink to="/" className="navbar-logo-side">
-          <img src={logo} alt="SafeStep logo" />
-        </NavLink>
+        <div className="navbar-main-row">
+          <NavLink
+            to="/"
+            className="navbar-logo-side"
+            onClick={() => setExpanded(false)}
+          >
+            <img src={logo} alt="SafeStep logo" />
+          </NavLink>
 
-        <div className="navbar-pill">
-          <Navbar expand="lg" className="safestep-navbar">
-            <Navbar.Toggle aria-controls="main-navbar" />
+          <div className="navbar-pill">
+            <Navbar expand="lg" expanded={expanded} className="safestep-navbar">
+              <Navbar.Toggle
+                aria-controls="main-navbar"
+                onClick={() => setExpanded(!expanded)}
+              />
 
-            <Navbar.Collapse id="main-navbar">
-              <Nav className="navbar-menu">
-                <Nav.Link as={NavLink} to="/">
-                  Home
-                </Nav.Link>
+              <Navbar.Collapse id="main-navbar">
+                <div className="navbar-collapse-inner">
+                  <Nav className="navbar-menu">
+                    <Nav.Link
+                      as={NavLink}
+                      to="/"
+                      onClick={() => setExpanded(false)}
+                    >
+                      Home
+                    </Nav.Link>
 
-                <NavDropdown title="Esplora" id="explora-dropdown">
-                  <NavDropdown.Item as={NavLink} to="/terme">
-                    Terme
-                  </NavDropdown.Item>
+                    <NavDropdown title="Esplora" id="explora-dropdown">
+                      <NavDropdown.Item
+                        onClick={() => handleNavClick("/terme")}
+                      >
+                        Terme
+                      </NavDropdown.Item>
 
-                  <NavDropdown.Item as={NavLink} to="/ristoranti">
-                    Ristoranti
-                  </NavDropdown.Item>
+                      <NavDropdown.Item
+                        onClick={() => handleNavClick("/ristoranti")}
+                      >
+                        Ristoranti
+                      </NavDropdown.Item>
 
-                  <NavDropdown.Item as={NavLink} to="/hotel">
-                    Hotel
-                  </NavDropdown.Item>
+                      <NavDropdown.Item
+                        onClick={() => handleNavClick("/hotel")}
+                      >
+                        Hotel
+                      </NavDropdown.Item>
 
-                  <NavDropdown.Item as={NavLink} to="/parchi">
-                    Parchi
-                  </NavDropdown.Item>
-                </NavDropdown>
+                      <NavDropdown.Item
+                        onClick={() => handleNavClick("/parchi")}
+                      >
+                        Parchi
+                      </NavDropdown.Item>
+                    </NavDropdown>
 
-                <Nav.Link as={NavLink} to="/profilo">
-                  Preferiti
-                </Nav.Link>
-              </Nav>
+                    <Nav.Link
+                      as={NavLink}
+                      to="/profilo"
+                      onClick={() => setExpanded(false)}
+                    >
+                      Preferiti
+                    </Nav.Link>
+                  </Nav>
 
-              <div className="navbar-right">
-                <div className="navbar-search" ref={searchRef}>
-                  <i className="bi bi-search"></i>
-                  <input
-                    placeholder="Search"
-                    value={searchTerm}
-                    onChange={(e) => {
-                      setSearchTerm(e.target.value)
-                      setShowSearchResults(true)
-                    }}
-                    onFocus={handleSearchFocus}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && risultatiRicerca.length > 0) {
-                        handleResultClick(risultatiRicerca[0].idStruttura)
-                      }
-                    }}
-                  />
+                  <div className="navbar-right">
+                    <div className="navbar-search" ref={searchRef}>
+                      <i className="bi bi-search"></i>
 
-                  {showSearchResults && searchTerm.trim() && (
-                    <div className="navbar-search-dropdown">
-                      {risultatiRicerca.length > 0 ? (
-                        risultatiRicerca.map((terma) => (
-                          <button
-                            key={terma.idStruttura}
-                            type="button"
-                            className="navbar-search-result"
-                            onClick={() => handleResultClick(terma.idStruttura)}
-                          >
-                            <img
-                              src={
-                                terma.immagineCopertina ||
-                                "https://via.placeholder.com/120x80?text=SafeStep"
-                              }
-                              alt={terma.nome || "Struttura"}
-                              className="navbar-search-result-image"
-                            />
+                      <input
+                        placeholder="Search"
+                        value={searchTerm}
+                        onChange={(e) => {
+                          setSearchTerm(e.target.value)
+                          setShowSearchResults(true)
+                        }}
+                        onFocus={handleSearchFocus}
+                        onKeyDown={(e) => {
+                          if (
+                            e.key === "Enter" &&
+                            risultatiRicerca.length > 0
+                          ) {
+                            handleResultClick(risultatiRicerca[0].idStruttura)
+                          }
+                        }}
+                      />
 
-                            <div className="navbar-search-result-body">
-                              <h6>{terma.nome || "Nome non disponibile"}</h6>
-                              <p>{terma.citta || "Città non disponibile"}</p>
+                      {showSearchResults && searchTerm.trim() && (
+                        <div className="navbar-search-dropdown">
+                          {risultatiRicerca.length > 0 ? (
+                            risultatiRicerca.map((terma) => (
+                              <button
+                                key={terma.idStruttura}
+                                type="button"
+                                className="navbar-search-result"
+                                onClick={() =>
+                                  handleResultClick(terma.idStruttura)
+                                }
+                              >
+                                <img
+                                  src={
+                                    terma.immagineCopertina ||
+                                    "https://via.placeholder.com/120x80?text=SafeStep"
+                                  }
+                                  alt={terma.nome || "Struttura"}
+                                  className="navbar-search-result-image"
+                                />
+
+                                <div className="navbar-search-result-body">
+                                  <h6>
+                                    {terma.nome || "Nome non disponibile"}
+                                  </h6>
+                                  <p>
+                                    {terma.citta || "Città non disponibile"}
+                                  </p>
+                                </div>
+                              </button>
+                            ))
+                          ) : (
+                            <div className="navbar-search-empty">
+                              Nessuna terme trovata
                             </div>
-                          </button>
-                        ))
-                      ) : (
-                        <div className="navbar-search-empty">
-                          Nessuna terme trovata
+                          )}
                         </div>
                       )}
                     </div>
-                  )}
-                </div>
 
-                {logged ? (
-                  <div className="navbar-user-actions">
-                    <button
-                      className="navbar-logout-button"
-                      onClick={handleLogout}
-                    >
-                      Esci
-                    </button>
+                    {logged ? (
+                      <div className="navbar-user-actions">
+                        <button
+                          className="navbar-logout-button"
+                          onClick={handleLogout}
+                        >
+                          Esci
+                        </button>
 
-                    <NavLink
-                      to={profileRoute}
-                      className="navbar-profile avatar-profile"
-                    >
-                      {avatar ? (
-                        <img
-                          src={avatar}
-                          alt={nomeVisualizzato}
-                          className="navbar-avatar-image"
-                        />
-                      ) : (
-                        <span className="navbar-avatar-fallback">
-                          {initial}
-                        </span>
-                      )}
-                    </NavLink>
+                        <NavLink
+                          to={profileRoute}
+                          className="navbar-profile avatar-profile"
+                          onClick={() => setExpanded(false)}
+                        >
+                          {avatar ? (
+                            <img
+                              src={avatar}
+                              alt={nomeVisualizzato}
+                              className="navbar-avatar-image"
+                            />
+                          ) : (
+                            <span className="navbar-avatar-fallback">
+                              {initial}
+                            </span>
+                          )}
+                        </NavLink>
+                      </div>
+                    ) : (
+                      <NavLink
+                        to="/login"
+                        className="navbar-profile"
+                        onClick={() => setExpanded(false)}
+                      >
+                        <i className="bi bi-person-fill"></i>
+                      </NavLink>
+                    )}
                   </div>
-                ) : (
-                  <NavLink to="/login" className="navbar-profile">
-                    <i className="bi bi-person-fill"></i>
-                  </NavLink>
-                )}
-              </div>
-            </Navbar.Collapse>
-          </Navbar>
+                </div>
+              </Navbar.Collapse>
+            </Navbar>
+          </div>
         </div>
       </Container>
     </div>

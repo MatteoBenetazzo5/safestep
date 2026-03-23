@@ -371,7 +371,7 @@
   color: #64806f;
 }
 
-.parchi-guide-card button {
+.parchi-guide-button-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -387,7 +387,7 @@
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.parchi-guide-card button:hover {
+.parchi-guide-button-link:hover {
   transform: translateY(-1px);
   box-shadow: 0 14px 28px rgba(100, 194, 123, 0.3);
 }
@@ -405,7 +405,7 @@
 
 .parchi-guide-card.image-card h3,
 .parchi-guide-card.image-card p,
-.parchi-guide-card.image-card button {
+.parchi-guide-card.image-card .parchi-guide-button-link {
   margin-left: 1.4rem;
   margin-right: 1.4rem;
 }
@@ -414,8 +414,31 @@
   margin-top: 1.35rem;
 }
 
-.parchi-guide-card.image-card button {
+.parchi-guide-card.image-card .parchi-guide-button-link {
   margin-bottom: 1.4rem;
+}
+
+.parchi-guide-button-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1rem 1.4rem;
+  border: none;
+  border-radius: 16px;
+  text-decoration: none;
+  background: linear-gradient(135deg, #64c27b 0%, #8ddb9a 100%);
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(100, 194, 123, 0.24);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.parchi-guide-button-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(100, 194, 123, 0.3);
 }
 
 /* POPULAR */

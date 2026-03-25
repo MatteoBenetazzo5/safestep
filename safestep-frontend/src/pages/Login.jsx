@@ -51,12 +51,6 @@ function Login() {
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <div className="login-overlay">
-        <div className="login-topbar">
-          <button className="login-top-button">
-            Accedi <i className="bi bi-chevron-down ms-2"></i>
-          </button>
-        </div>
-
         <div className="login-container">
           <div className="login-logo">
             <img src={logoSafeStep} alt="SafeStep logo" />

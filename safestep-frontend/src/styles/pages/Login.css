@@ -9,6 +9,7 @@ body {
   position: relative;
   width: 100vw;
   min-height: 100vh;
+  overflow: hidden;
 
   background-size: cover;
   background-position: center;
@@ -23,23 +24,10 @@ body {
   min-height: 100vh;
   background: rgba(245, 247, 255, 0.68);
   backdrop-filter: blur(2px);
-}
-
-.login-topbar {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 2.5rem;
-}
-
-.login-top-button {
-  border: none;
-  background-color: rgba(255, 255, 255, 0.92);
-  color: #5f6983;
-  font-size: 1rem;
-  font-weight: 500;
-  border-radius: 12px;
-  padding: 0.85rem 1.25rem;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem;
 }
 
 .login-container {
@@ -59,19 +47,21 @@ body {
 
 .login-title {
   text-align: center;
-  color: #4c5674;
+  color: #000;
+  margin-bottom: 1.5rem;
 }
 
 .login-title h1 {
   font-size: 2.2rem;
   font-weight: 500;
   margin-bottom: 0.9rem;
+  color: #000;
 }
 
 .login-title p {
   font-size: 1.15rem;
   margin: 0;
-  color: #6a7390;
+  color: #000;
 }
 
 .login-title strong {
@@ -203,15 +193,11 @@ body {
 
 @media (min-width: 768px) {
   .login-overlay {
-    padding: 1.25rem 2.5rem 3rem 2.5rem;
-  }
-
-  .login-topbar {
-    margin-bottom: 2.3rem;
+    padding: 1rem 2.5rem;
   }
 
   .login-title {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 
   .login-title h1 {
@@ -276,5 +262,35 @@ body {
 
   .login-logo img {
     width: 650px;
+  }
+}
+
+@media screen and (min-height: 900px) {
+  .login-overlay {
+    align-items: center; 
+    padding-top: 0;
+  }
+
+  .login-title {
+    margin-bottom: 1rem;
+  }
+
+  .login-logo img {
+    width: 420px; 
+  }
+
+  .login-card {
+    min-height: 480px; 
+  }
+}
+
+@media screen and (min-height: 1000px) {
+  .login-overlay {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .login-container {
+    transform: translateY(-30px); 
   }
 }

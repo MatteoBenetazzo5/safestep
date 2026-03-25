@@ -31,14 +31,14 @@ function AdminStructureCard({ structure, onOpen, onEdit, onDelete }) {
           return (
             <span key={index} className="admin-wheelchair-rating-item">
               <span className="admin-wheelchair-icon-base">
-                <i className="bi bi-universal-access-circle"></i>
+                <i className="bi bi-person-wheelchair"></i>
               </span>
 
               <span
                 className="admin-wheelchair-icon-fill"
                 style={{ width: `${fillPercentage}%` }}
               >
-                <i className="bi bi-universal-access-circle-fill"></i>
+                <i className="bi bi-person-wheelchair"></i>
               </span>
             </span>
           )

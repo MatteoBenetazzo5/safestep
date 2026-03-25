@@ -8,6 +8,12 @@ function AdminNotesCard({
   onShowStructuresWithAccessibility,
   onResetFilters,
   onOpenReview,
+  showUserForm,
+  userFormData,
+  onUserFormChange,
+  onCreateUser,
+  onCancelUserForm,
+  creatingUser,
 }) {
   const getInitial = (review) => {
     const name = review?.utente?.nomeVisualizzato || "U"
@@ -73,8 +79,8 @@ function AdminNotesCard({
           </button>
 
           <button className="admin-quick-button" onClick={onManageCategories}>
-            <i className="bi bi-list-check"></i>
-            Gestisci categorie
+            <i className="bi bi-people"></i>
+            Gestisci utenti
           </button>
 
           <button
@@ -90,6 +96,83 @@ function AdminNotesCard({
             Reset filtri
           </button>
         </div>
+
+        {showUserForm && (
+          <form className="admin-user-form" onSubmit={onCreateUser}>
+            <div className="admin-user-form-field">
+              <label>Nome visualizzato</label>
+              <input
+                type="text"
+                name="nomeVisualizzato"
+                value={userFormData.nomeVisualizzato}
+                onChange={onUserFormChange}
+                placeholder="Inserisci il nome"
+              />
+            </div>
+
+            <div className="admin-user-form-field">
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                value={userFormData.email}
+                onChange={onUserFormChange}
+                placeholder="Inserisci l'email"
+              />
+            </div>
+
+            <div className="admin-user-form-field">
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                value={userFormData.password}
+                onChange={onUserFormChange}
+                placeholder="Inserisci la password"
+              />
+            </div>
+
+            <div className="admin-user-form-field">
+              <label>Telefono</label>
+              <input
+                type="text"
+                name="telefono"
+                value={userFormData.telefono}
+                onChange={onUserFormChange}
+                placeholder="Inserisci il telefono"
+              />
+            </div>
+
+            <div className="admin-user-form-field">
+              <label>Avatar URL</label>
+              <input
+                type="text"
+                name="avatar"
+                value={userFormData.avatar}
+                onChange={onUserFormChange}
+                placeholder="Inserisci URL avatar (facoltativo)"
+              />
+            </div>
+
+            <div className="admin-user-form-actions">
+              <button
+                type="button"
+                className="admin-user-cancel"
+                onClick={onCancelUserForm}
+              >
+                Annulla
+              </button>
+
+              <button
+                type="submit"
+                className="admin-user-submit"
+                disabled={creatingUser}
+              >
+                {creatingUser ? "Creazione..." : "Crea utente"}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </>
   )

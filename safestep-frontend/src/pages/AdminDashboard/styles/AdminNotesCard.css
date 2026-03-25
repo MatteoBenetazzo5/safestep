@@ -132,6 +132,86 @@
   border-color: #cfe1f3;
 }
 
+.admin-user-form {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid #e7edf5;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-user-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-user-form-field label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #44546d;
+}
+
+.admin-user-form-field input {
+  width: 100%;
+  border: 1px solid #d9e3ef;
+  border-radius: 12px;
+  background: #fff;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  color: #2f3b4f;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.admin-user-form-field input:focus {
+  border-color: #41b8de;
+  box-shadow: 0 0 0 3px rgba(65, 184, 222, 0.12);
+}
+
+.admin-user-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.admin-user-form-actions button {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  transition: all 0.2s ease;
+}
+
+.admin-user-cancel {
+  background: #eef3f8;
+  color: #5f708a;
+}
+
+.admin-user-cancel:hover {
+  background: #e2ebf3;
+}
+
+.admin-user-submit {
+  background: linear-gradient(135deg, #41b8de, #59d39a);
+  color: white;
+  box-shadow: 0 8px 20px rgba(65, 184, 222, 0.18);
+}
+
+.admin-user-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(65, 184, 222, 0.24);
+}
+
+.admin-user-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
 @media (max-width: 991px) {
   .admin-side-list-scrollable {
     max-height: 420px;

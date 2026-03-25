@@ -1,0 +1,105 @@
+.admin-users-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 22px;
+  box-shadow: 0 12px 30px rgba(24, 40, 72, 0.08);
+  border: 1px solid rgba(225, 232, 242, 0.8);
+  padding: 22px;
+}
+
+.admin-users-header {
+  margin-bottom: 18px;
+}
+
+.admin-users-header h2 {
+  margin: 0 0 6px 0;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  color: #2f3b4f;
+}
+
+.admin-users-header p {
+  margin: 0;
+  color: #6b7a92;
+  font-size: 1rem;
+}
+
+.admin-users-empty {
+  color: #68778f;
+  font-size: 0.96rem;
+  margin: 0;
+}
+
+.admin-users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-user-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #f8fbff;
+  border: 1px solid #e3ebf5;
+  transition: all 0.2s ease;
+}
+
+.admin-user-item:hover {
+  background: #f2f8ff;
+  border-color: #d3e3f3;
+}
+
+.admin-user-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #41b8de, #59d39a);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.admin-user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-user-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.admin-user-info h4 {
+  margin: 0 0 4px 0;
+  color: #24344c;
+  font-size: 1rem;
+}
+
+.admin-user-info p {
+  margin: 0;
+  color: #6b7a92;
+  font-size: 0.94rem;
+  word-break: break-word;
+}
+
+@media (max-width: 767px) {
+  .admin-users-card {
+    padding: 18px;
+  }
+
+  .admin-user-item {
+    padding: 12px;
+  }
+
+  .admin-user-avatar {
+    width: 46px;
+    height: 46px;
+  }
+}

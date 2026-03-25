@@ -106,24 +106,54 @@
   font-size: 0.95rem;
 }
 
-.admin-structure-accessibility {
+.admin-structure-accessibility-box {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: fit-content;
+}
+
+.admin-wheelchairs {
   display: flex;
   align-items: center;
-  gap: 5px;
-  flex-shrink: 0;
-  padding-top: 2px;
+  gap: 4px;
+  line-height: 1;
 }
 
-.admin-wheelchair-icon {
-  font-size: 1.25rem;
-  color: #c9d4e2;
-  opacity: 0.45;
-  transition: all 0.2s ease;
+.admin-wheelchair-rating-item {
+  position: relative;
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
 }
 
-.admin-wheelchair-icon.active {
+.admin-wheelchair-icon-base,
+.admin-wheelchair-icon-fill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.admin-wheelchair-icon-base {
+  color: #cfd9e6;
+}
+
+.admin-wheelchair-icon-fill {
   color: #22b8b2;
-  opacity: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.admin-structure-vote-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #2f3b4f;
 }
 
 .admin-structure-rating {
@@ -148,7 +178,6 @@
   gap: 10px 14px;
   margin-bottom: 18px;
   font-size: 0.9rem;
-
   color: #1f2937;
   font-weight: 500;
 }
@@ -206,4 +235,15 @@
 
 .admin-open-link:hover {
   color: #41b8de;
+}
+
+@media (max-width: 767px) {
+  .admin-structure-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-structure-accessibility-box {
+    align-items: flex-start;
+  }
 }

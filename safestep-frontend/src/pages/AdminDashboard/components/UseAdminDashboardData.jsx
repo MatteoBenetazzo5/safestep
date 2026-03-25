@@ -7,6 +7,7 @@ function UseAdminDashboardData() {
   const [latestReviews, setLatestReviews] = useState([])
   const [loading, setLoading] = useState(true)
   const [usersCount, setUsersCount] = useState(0)
+  const [users, setUsers] = useState([])
   const [savedCount, setSavedCount] = useState(0)
   const [totalReviewsCount, setTotalReviewsCount] = useState(0)
 
@@ -29,7 +30,58 @@ function UseAdminDashboardData() {
       }
 
       const data = await response.json()
-      setStructures(Array.isArray(data) ? data : [])
+      const safeStructures = Array.isArray(data) ? data : []
+
+      const structuresWithReviews = await Promise.all(
+        safeStructures.map(async (structure) => {
+          try {
+            const [reviewsResponse, accessibilitaResponse] = await Promise.all([
+              fetch(
+                `${API_BASE_URL}/recensioni/struttura/${structure.idStruttura}`,
+                {
+                  headers: getAuthHeaders(),
+                },
+              ),
+              fetch(
+                `${API_BASE_URL}/accessibilita/struttura/${structure.idStruttura}`,
+                {
+                  headers: getAuthHeaders(),
+                },
+              ),
+            ])
+
+            const reviewsData = reviewsResponse.ok
+              ? await reviewsResponse.json()
+              : []
+
+            const accessibilitaData = accessibilitaResponse.ok
+              ? await accessibilitaResponse.json()
+              : []
+
+            return {
+              ...structure,
+              recensioni: Array.isArray(reviewsData) ? reviewsData : [],
+              accessibilita: Array.isArray(accessibilitaData)
+                ? accessibilitaData
+                : [],
+            }
+          } catch (error) {
+            console.error(
+              "Errore caricamento dati struttura:",
+              structure.idStruttura,
+              error,
+            )
+
+            return {
+              ...structure,
+              recensioni: [],
+              accessibilita: [],
+            }
+          }
+        }),
+      )
+
+      setStructures(structuresWithReviews)
     } catch (error) {
       console.error("Errore caricamento strutture:", error)
       alert("Errore nel caricamento delle strutture")
@@ -57,18 +109,50 @@ function UseAdminDashboardData() {
     }
   }
 
-  const fetchUsersCount = async () => {
+  const fetchUsers = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/utenti/count`, {
+      const response = await fetch(`${API_BASE_URL}/utenti`, {
         headers: getAuthHeaders(),
       })
 
-      if (response.ok) {
-        const data = await response.json()
-        setUsersCount(data.count || 0)
-      } else {
-        setUsersCount(0)
+      if (!response.ok) {
+        throw new Error("Errore nel recupero utenti")
       }
+
+      const data = await response.json()
+      const safeUsers = Array.isArray(data) ? data : []
+
+      setUsers(safeUsers)
+      setUsersCount(safeUsers.length)
+    } catch (error) {
+      console.error("Errore caricamento utenti:", error)
+      setUsers([])
+      setUsersCount(0)
+    }
+  }
+
+  const fetchUsersCount = async () => {
+    try {
+      const countResponse = await fetch(`${API_BASE_URL}/utenti/count`, {
+        headers: getAuthHeaders(),
+      })
+
+      if (countResponse.ok) {
+        const data = await countResponse.json()
+        setUsersCount(Number(data.count) || 0)
+        return
+      }
+
+      const usersResponse = await fetch(`${API_BASE_URL}/utenti`, {
+        headers: getAuthHeaders(),
+      })
+
+      if (!usersResponse.ok) {
+        throw new Error("Errore nel recupero utenti")
+      }
+
+      const usersData = await usersResponse.json()
+      setUsersCount(Array.isArray(usersData) ? usersData.length : 0)
     } catch (error) {
       console.error("Errore caricamento numero utenti:", error)
       setUsersCount(0)
@@ -170,6 +254,7 @@ function UseAdminDashboardData() {
     await Promise.all([
       fetchStructures(),
       fetchCaratteristiche(),
+      fetchUsers(),
       fetchUsersCount(),
       fetchSavedCount(),
       fetchReviewsData(),
@@ -186,6 +271,7 @@ function UseAdminDashboardData() {
     latestReviews,
     loading,
     usersCount,
+    users,
     savedCount,
     totalReviewsCount,
     refreshDashboardData,

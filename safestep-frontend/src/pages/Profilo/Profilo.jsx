@@ -7,7 +7,6 @@ import {
   getNomeVisualizzato,
   logout,
 } from "../../utils/auth"
-import { API_BASE_URL, getAuthHeaders } from "../../utils/api"
 
 import ProfileHeader from "./components/ProfileHeader"
 import AccountForm from "./components/AccountForm"
@@ -15,6 +14,16 @@ import AccessibilityProfileForm from "./components/AccessibilityProfileForm"
 import PreferencesForm from "./components/PreferencesForm"
 import PreferencesList from "./components/PreferencesList"
 import SavedPlaces from "./components/SavedPlaces"
+
+import {
+  createPreference,
+  createProfile,
+  deletePreferenceById,
+  getCompleteProfileData,
+  removeSavedPlaceByUserAndStructure,
+  updateProfileById,
+  updateUserById,
+} from "../../services/profileService"
 
 import "./styles/ProfiloLayout.css"
 
@@ -69,75 +78,38 @@ function Profilo() {
     try {
       setLoading(true)
 
-      const responses = await Promise.all([
-        fetch(`${API_BASE_URL}/utenti/${idUtente}`, {
-          headers: getAuthHeaders(),
-        }),
-        fetch(`${API_BASE_URL}/profili/utente/${idUtente}`, {
-          headers: getAuthHeaders(),
-        }),
-        fetch(`${API_BASE_URL}/preferenze/utente/${idUtente}`, {
-          headers: getAuthHeaders(),
-        }),
-        fetch(`${API_BASE_URL}/strutture-salvate/utente/${idUtente}`, {
-          headers: getAuthHeaders(),
-        }),
-        fetch(`${API_BASE_URL}/caratteristiche`, {
-          headers: getAuthHeaders(),
-        }),
-      ])
+      const data = await getCompleteProfileData(idUtente)
 
-      const userResponse = responses[0]
-      const profileResponse = responses[1]
-      const preferencesResponse = responses[2]
-      const savedResponse = responses[3]
-      const caratteristicheResponse = responses[4]
+      setUtente(data.utente)
 
-      if (userResponse.ok) {
-        const userData = await userResponse.json()
-        setUtente(userData)
+      setUserForm({
+        nomeVisualizzato: data.utente?.nomeVisualizzato || initialNome,
+        email: data.utente?.email || initialEmail,
+        telefono: data.utente?.telefono || "",
+        avatar: data.utente?.avatar || initialAvatar,
+      })
 
-        setUserForm({
-          nomeVisualizzato: userData.nomeVisualizzato || initialNome,
-          email: userData.email || initialEmail,
-          telefono: userData.telefono || "",
-          avatar: userData.avatar || initialAvatar,
-        })
-      }
+      setProfilo(data.profilo)
 
-      if (profileResponse.ok) {
-        const profileData = await profileResponse.json()
-        setProfilo(profileData)
-
+      if (data.profilo) {
         setProfileForm({
-          tipoMobilita: profileData.tipoMobilita || "",
-          note: profileData.note || "",
-          coloreTema: profileData.coloreTema || "",
+          tipoMobilita: data.profilo.tipoMobilita || "",
+          note: data.profilo.note || "",
+          coloreTema: data.profilo.coloreTema || "",
         })
       } else {
-        setProfilo(null)
+        setProfileForm({
+          tipoMobilita: "",
+          note: "",
+          coloreTema: "",
+        })
       }
 
-      if (preferencesResponse.ok) {
-        const preferencesData = await preferencesResponse.json()
-        setPreferenze(preferencesData)
-      } else {
-        setPreferenze([])
-      }
-
-      if (savedResponse.ok) {
-        const savedData = await savedResponse.json()
-        setSavedPlaces(savedData)
-      } else {
-        setSavedPlaces([])
-      }
-
-      if (caratteristicheResponse.ok) {
-        const caratteristicheData = await caratteristicheResponse.json()
-        setCaratteristiche(caratteristicheData)
-      } else {
-        setCaratteristiche([])
-      }
+      setPreferenze(Array.isArray(data.preferenze) ? data.preferenze : [])
+      setSavedPlaces(Array.isArray(data.savedPlaces) ? data.savedPlaces : [])
+      setCaratteristiche(
+        Array.isArray(data.caratteristiche) ? data.caratteristiche : [],
+      )
     } catch (error) {
       console.error("Errore caricamento profilo:", error)
       alert("Errore nel caricamento del profilo")
@@ -180,25 +152,13 @@ function Profilo() {
     try {
       setSavingUser(true)
 
-      const response = await fetch(`${API_BASE_URL}/utenti/${idUtente}`, {
-        method: "PUT",
-        headers: getAuthHeaders(),
-        body: JSON.stringify({
-          email: userForm.email,
-          nomeVisualizzato: userForm.nomeVisualizzato,
-          telefono: userForm.telefono,
-          avatar: userForm.avatar,
-        }),
+      const updatedUser = await updateUserById(idUtente, {
+        email: userForm.email,
+        nomeVisualizzato: userForm.nomeVisualizzato,
+        telefono: userForm.telefono,
+        avatar: userForm.avatar,
       })
 
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error("Errore aggiornamento utente:", errorText)
-        alert("Aggiornamento utente non riuscito")
-        return
-      }
-
-      const updatedUser = await response.json()
       setUtente(updatedUser)
 
       localStorage.setItem("email", updatedUser.email || "")
@@ -211,7 +171,7 @@ function Profilo() {
       alert("Dati account aggiornati con successo!")
     } catch (error) {
       console.error("Errore aggiornamento utente:", error)
-      alert("Errore durante l'aggiornamento utente")
+      alert(error.message || "Errore durante l'aggiornamento utente")
     } finally {
       setSavingUser(false)
     }
@@ -228,45 +188,29 @@ function Profilo() {
     try {
       setSavingProfile(true)
 
-      let response
+      let updatedProfile
 
       if (profilo?.idProfilo) {
-        response = await fetch(`${API_BASE_URL}/profili/${profilo.idProfilo}`, {
-          method: "PUT",
-          headers: getAuthHeaders(),
-          body: JSON.stringify({
-            tipoMobilita: profileForm.tipoMobilita,
-            note: profileForm.note,
-            coloreTema: profileForm.coloreTema,
-          }),
+        updatedProfile = await updateProfileById(profilo.idProfilo, {
+          tipoMobilita: profileForm.tipoMobilita,
+          note: profileForm.note,
+          coloreTema: profileForm.coloreTema,
         })
       } else {
-        response = await fetch(`${API_BASE_URL}/profili`, {
-          method: "POST",
-          headers: getAuthHeaders(),
-          body: JSON.stringify({
-            utenteId: idUtente,
-            tipoMobilita: profileForm.tipoMobilita,
-            note: profileForm.note,
-            coloreTema: profileForm.coloreTema,
-          }),
+        updatedProfile = await createProfile({
+          utenteId: idUtente,
+          tipoMobilita: profileForm.tipoMobilita,
+          note: profileForm.note,
+          coloreTema: profileForm.coloreTema,
         })
       }
 
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error("Errore salvataggio profilo:", errorText)
-        alert("Salvataggio profilo non riuscito")
-        return
-      }
-
-      const updatedProfile = await response.json()
       setProfilo(updatedProfile)
 
       alert("Profilo salvato con successo!")
     } catch (error) {
       console.error("Errore salvataggio profilo:", error)
-      alert("Errore durante il salvataggio del profilo")
+      alert(error.message || "Errore durante il salvataggio del profilo")
     } finally {
       setSavingProfile(false)
     }
@@ -283,22 +227,11 @@ function Profilo() {
     try {
       setSavingPreference(true)
 
-      const response = await fetch(`${API_BASE_URL}/preferenze`, {
-        method: "POST",
-        headers: getAuthHeaders(),
-        body: JSON.stringify({
-          utenteId: idUtente,
-          caratteristicaId: preferenceForm.caratteristicaId,
-          livelloPreferenza: preferenceForm.livelloPreferenza,
-        }),
+      await createPreference({
+        utenteId: idUtente,
+        caratteristicaId: preferenceForm.caratteristicaId,
+        livelloPreferenza: preferenceForm.livelloPreferenza,
       })
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error("Errore creazione preferenza:", errorText)
-        alert("Preferenza non aggiunta")
-        return
-      }
 
       alert("Preferenza aggiunta con successo!")
 
@@ -310,7 +243,7 @@ function Profilo() {
       fetchProfileData()
     } catch (error) {
       console.error("Errore creazione preferenza:", error)
-      alert("Errore durante l'aggiunta della preferenza")
+      alert(error.message || "Errore durante l'aggiunta della preferenza")
     } finally {
       setSavingPreference(false)
     }
@@ -322,51 +255,25 @@ function Profilo() {
     if (!conferma) return
 
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/preferenze/${idPreferenza}`,
-        {
-          method: "DELETE",
-          headers: getAuthHeaders(),
-        },
-      )
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error("Errore eliminazione preferenza:", errorText)
-        alert("Eliminazione preferenza non riuscita")
-        return
-      }
+      await deletePreferenceById(idPreferenza)
 
       alert("Preferenza eliminata")
       fetchProfileData()
     } catch (error) {
       console.error("Errore eliminazione preferenza:", error)
-      alert("Errore durante l'eliminazione della preferenza")
+      alert(error.message || "Errore durante l'eliminazione della preferenza")
     }
   }
 
   const handleRemoveSavedPlace = async (idStruttura) => {
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/strutture-salvate/utente/${idUtente}/struttura/${idStruttura}`,
-        {
-          method: "DELETE",
-          headers: getAuthHeaders(),
-        },
-      )
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error("Errore rimozione preferito:", errorText)
-        alert("Rimozione dai preferiti non riuscita")
-        return
-      }
+      await removeSavedPlaceByUserAndStructure(idUtente, idStruttura)
 
       alert("Struttura rimossa dai preferiti")
       fetchProfileData()
     } catch (error) {
       console.error("Errore rimozione preferito:", error)
-      alert("Errore durante la rimozione dai preferiti")
+      alert(error.message || "Errore durante la rimozione dai preferiti")
     }
   }
 

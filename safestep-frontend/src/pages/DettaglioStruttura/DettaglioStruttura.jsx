@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { getAvatar, getIdUtente, getNomeVisualizzato } from "../../utils/auth"
-import { API_BASE_URL, getAuthHeaders } from "../../utils/api"
 import "./styles/DettaglioStrutturaLayout.css"
 import DetailHero from "./components/DetailHero"
 import DetailGallery from "./components/DetailGallery"
@@ -9,6 +8,12 @@ import DetailRatingCard from "./components/DetailRatingCard"
 import DetailInfoBox from "./components/DetailInfoBox"
 import DetailReviewForm from "./components/DetailReviewForm"
 import DetailReviewsList from "./components/DetailReviewsList"
+import {
+  addToFavorites,
+  createReview,
+  getCompleteStructureDetails,
+  removeFromFavorites,
+} from "../../services/structureDetailService"
 
 function DettaglioStruttura() {
   const { id } = useParams()
@@ -41,47 +46,15 @@ function DettaglioStruttura() {
       setLoading(true)
       setError("")
 
-      const requests = [
-        fetch(`${API_BASE_URL}/strutture/${id}`, {
-          headers: getAuthHeaders(),
-        }),
-        fetch(`${API_BASE_URL}/immagini-struttura/struttura/${id}`, {
-          headers: getAuthHeaders(),
-        }),
-        fetch(`${API_BASE_URL}/recensioni/struttura/${id}`, {
-          headers: getAuthHeaders(),
-        }),
-        fetch(`${API_BASE_URL}/accessibilita/struttura/${id}`, {
-          headers: getAuthHeaders(),
-        }),
-      ]
+      const data = await getCompleteStructureDetails(id, idUtente)
 
-      if (idUtente) {
-        requests.push(
-          fetch(`${API_BASE_URL}/strutture-salvate/utente/${idUtente}`, {
-            headers: getAuthHeaders(),
-          }),
-        )
-      }
-
-      const responses = await Promise.all(requests)
-
-      const structureResponse = responses[0]
-      const imagesResponse = responses[1]
-      const reviewsResponse = responses[2]
-      const accessibilitaResponse = responses[3]
-      const savedResponse = responses[4]
-
-      if (!structureResponse.ok) {
-        throw new Error("Errore nel caricamento della struttura")
-      }
-
-      const structureData = await structureResponse.json()
-      const imagesData = imagesResponse.ok ? await imagesResponse.json() : []
-      const reviewsData = reviewsResponse.ok ? await reviewsResponse.json() : []
-      const accessibilitaData = accessibilitaResponse.ok
-        ? await accessibilitaResponse.json()
+      const structureData = data.struttura
+      const imagesData = Array.isArray(data.immagini) ? data.immagini : []
+      const reviewsData = Array.isArray(data.recensioni) ? data.recensioni : []
+      const accessibilitaData = Array.isArray(data.accessibilita)
+        ? data.accessibilita
         : []
+      const savedData = Array.isArray(data.salvate) ? data.salvate : []
 
       setStructure(structureData)
       setImages(imagesData)
@@ -96,9 +69,7 @@ function DettaglioStruttura() {
         setSelectedImage(placeholderImage)
       }
 
-      if (savedResponse && savedResponse.ok) {
-        const savedData = await savedResponse.json()
-
+      if (idUtente) {
         const alreadySaved = savedData.some(
           (item) => item.struttura?.idStruttura === structureData.idStruttura,
         )
@@ -134,36 +105,11 @@ function DettaglioStruttura() {
       setSavingFavorite(true)
 
       if (isSaved) {
-        const response = await fetch(
-          `${API_BASE_URL}/strutture-salvate/utente/${idUtente}/struttura/${id}`,
-          {
-            method: "DELETE",
-            headers: getAuthHeaders(),
-          },
-        )
-
-        if (!response.ok) {
-          throw new Error("Errore nella rimozione dai preferiti")
-        }
-
+        await removeFromFavorites(idUtente, id)
         setIsSaved(false)
         alert("Struttura rimossa dai preferiti.")
       } else {
-        const response = await fetch(`${API_BASE_URL}/strutture-salvate`, {
-          method: "POST",
-          headers: getAuthHeaders(),
-          body: JSON.stringify({
-            utenteId: idUtente,
-            strutturaId: id,
-          }),
-        })
-
-        if (!response.ok) {
-          const errorText = await response.text()
-          console.error("Errore salvataggio preferiti:", errorText)
-          throw new Error("Errore nel salvataggio della struttura")
-        }
-
+        await addToFavorites(idUtente, id)
         setIsSaved(true)
         alert("Struttura salvata nei preferiti.")
       }
@@ -213,25 +159,12 @@ function DettaglioStruttura() {
     try {
       setSendingReview(true)
 
-      const response = await fetch(`${API_BASE_URL}/recensioni`, {
-        method: "POST",
-        headers: getAuthHeaders(),
-        body: JSON.stringify({
-          strutturaId: id,
-          utenteId: idUtente,
-          voto: Number(reviewForm.voto),
-          testo: reviewForm.testo.trim(),
-        }),
+      await createReview({
+        strutturaId: id,
+        utenteId: idUtente,
+        voto: Number(reviewForm.voto),
+        testo: reviewForm.testo.trim(),
       })
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error("Errore invio recensione:", errorText)
-        alert(
-          "Recensione non inviata. Potresti aver già recensito questa struttura.",
-        )
-        return
-      }
 
       alert("Recensione inviata con successo!")
 
@@ -243,7 +176,9 @@ function DettaglioStruttura() {
       fetchStructureDetails()
     } catch (error) {
       console.error("Errore invio recensione:", error)
-      alert("Errore durante l'invio della recensione.")
+      alert(
+        "Recensione non inviata. Potresti aver già recensito questa struttura.",
+      )
     } finally {
       setSendingReview(false)
     }

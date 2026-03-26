@@ -1,5 +1,13 @@
 import { useCallback, useEffect, useState } from "react"
-import { API_BASE_URL, getAuthHeaders } from "../../../utils/api"
+import {
+  fetchCaratteristiche,
+  fetchSavedStructures,
+  fetchStructureAccessibilita,
+  fetchStructureReviews,
+  fetchStructuresWithFallback,
+  fetchUsers,
+  fetchUsersCount,
+} from "../../../services/adminDashboardService"
 
 function UseAdminDashboardData() {
   const [structures, setStructures] = useState([])
@@ -15,15 +23,7 @@ function UseAdminDashboardData() {
     try {
       setLoading(true)
 
-      let response = await fetch(`${API_BASE_URL}/strutture`, {
-        headers: getAuthHeaders(),
-      })
-
-      if (!response.ok) {
-        response = await fetch(`${API_BASE_URL}/strutture/categoria/TERME`, {
-          headers: getAuthHeaders(),
-        })
-      }
+      const response = await fetchStructuresWithFallback()
 
       if (!response.ok) {
         throw new Error("Errore nel recupero delle strutture")
@@ -36,18 +36,8 @@ function UseAdminDashboardData() {
         safeStructures.map(async (structure) => {
           try {
             const [reviewsResponse, accessibilitaResponse] = await Promise.all([
-              fetch(
-                `${API_BASE_URL}/recensioni/struttura/${structure.idStruttura}`,
-                {
-                  headers: getAuthHeaders(),
-                },
-              ),
-              fetch(
-                `${API_BASE_URL}/accessibilita/struttura/${structure.idStruttura}`,
-                {
-                  headers: getAuthHeaders(),
-                },
-              ),
+              fetchStructureReviews(structure.idStruttura),
+              fetchStructureAccessibilita(structure.idStruttura),
             ])
 
             const reviewsData = reviewsResponse.ok
@@ -91,11 +81,9 @@ function UseAdminDashboardData() {
     }
   }
 
-  const fetchCaratteristiche = async () => {
+  const getCaratteristiche = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/caratteristiche`, {
-        headers: getAuthHeaders(),
-      })
+      const response = await fetchCaratteristiche()
 
       if (!response.ok) {
         throw new Error("Errore nel recupero delle caratteristiche")
@@ -109,11 +97,9 @@ function UseAdminDashboardData() {
     }
   }
 
-  const fetchUsers = async () => {
+  const getUsers = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/utenti`, {
-        headers: getAuthHeaders(),
-      })
+      const response = await fetchUsers()
 
       if (!response.ok) {
         throw new Error("Errore nel recupero utenti")
@@ -131,11 +117,9 @@ function UseAdminDashboardData() {
     }
   }
 
-  const fetchUsersCount = async () => {
+  const getUsersCount = async () => {
     try {
-      const countResponse = await fetch(`${API_BASE_URL}/utenti/count`, {
-        headers: getAuthHeaders(),
-      })
+      const countResponse = await fetchUsersCount()
 
       if (countResponse.ok) {
         const data = await countResponse.json()
@@ -143,9 +127,7 @@ function UseAdminDashboardData() {
         return
       }
 
-      const usersResponse = await fetch(`${API_BASE_URL}/utenti`, {
-        headers: getAuthHeaders(),
-      })
+      const usersResponse = await fetchUsers()
 
       if (!usersResponse.ok) {
         throw new Error("Errore nel recupero utenti")
@@ -159,11 +141,9 @@ function UseAdminDashboardData() {
     }
   }
 
-  const fetchSavedCount = async () => {
+  const getSavedCount = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/strutture-salvate`, {
-        headers: getAuthHeaders(),
-      })
+      const response = await fetchSavedStructures()
 
       if (!response.ok) {
         throw new Error("Errore nel recupero delle strutture salvate")
@@ -179,18 +159,7 @@ function UseAdminDashboardData() {
 
   const fetchReviewsData = async () => {
     try {
-      let structuresResponse = await fetch(`${API_BASE_URL}/strutture`, {
-        headers: getAuthHeaders(),
-      })
-
-      if (!structuresResponse.ok) {
-        structuresResponse = await fetch(
-          `${API_BASE_URL}/strutture/categoria/TERME`,
-          {
-            headers: getAuthHeaders(),
-          },
-        )
-      }
+      const structuresResponse = await fetchStructuresWithFallback()
 
       if (!structuresResponse.ok) {
         throw new Error("Errore nel recupero strutture per recensioni")
@@ -202,12 +171,7 @@ function UseAdminDashboardData() {
       const reviewResponses = await Promise.all(
         safeStructures.map(async (structure) => {
           try {
-            const response = await fetch(
-              `${API_BASE_URL}/recensioni/struttura/${structure.idStruttura}`,
-              {
-                headers: getAuthHeaders(),
-              },
-            )
+            const response = await fetchStructureReviews(structure.idStruttura)
 
             if (!response.ok) {
               return []
@@ -253,10 +217,10 @@ function UseAdminDashboardData() {
   const refreshDashboardData = useCallback(async () => {
     await Promise.all([
       fetchStructures(),
-      fetchCaratteristiche(),
-      fetchUsers(),
-      fetchUsersCount(),
-      fetchSavedCount(),
+      getCaratteristiche(),
+      getUsers(),
+      getUsersCount(),
+      getSavedCount(),
       fetchReviewsData(),
     ])
   }, [])

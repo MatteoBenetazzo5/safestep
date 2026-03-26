@@ -7,7 +7,6 @@ import {
   getNomeVisualizzato,
   logout,
 } from "../../utils/auth"
-import { API_BASE_URL } from "../../utils/api"
 import "./styles/AdminDashboardLayout.css"
 import AdminSidebar from "./components/AdminSidebar"
 import AdminTopbar from "./components/AdminTopbar"
@@ -20,6 +19,7 @@ import UseAdminDashboardData from "./components/useAdminDashboardData"
 import UseAdminDashboardFilters from "./components/UseAdminDashboardFilters"
 import UseAdminDashboardForm from "./components/UseAdminDashboardForm"
 import { scrollToElement } from "./components/adminDashboardHelpers"
+import { registerAdminUser } from "../../services/adminDashboardService"
 
 function AdminDashboard() {
   const navigate = useNavigate()
@@ -150,19 +150,7 @@ function AdminDashboard() {
     try {
       setCreatingUser(true)
 
-      const response = await fetch(`${API_BASE_URL}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nomeVisualizzato: userFormData.nomeVisualizzato.trim(),
-          email: userFormData.email.trim(),
-          password: userFormData.password,
-          telefono: userFormData.telefono.trim(),
-          avatar: userFormData.avatar.trim(),
-        }),
-      })
+      const response = await registerAdminUser(userFormData)
 
       if (!response.ok) {
         const errorText = await response.text()

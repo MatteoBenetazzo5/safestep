@@ -2,7 +2,7 @@ import "../styles/pages/Register.css"
 import backgroundImage from "../assets/images/bg-login.jpg"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { API_BASE_URL } from "../utils/api"
+import { registerUser } from "../services/authService"
 
 function Register() {
   const navigate = useNavigate()
@@ -15,32 +15,19 @@ function Register() {
 
   const handleRegister = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nomeVisualizzato,
-          email,
-          password,
-          telefono,
-          avatar,
-        }),
+      await registerUser({
+        nomeVisualizzato,
+        email,
+        password,
+        telefono,
+        avatar,
       })
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error("Errore registrazione:", errorText)
-        alert("Registrazione non riuscita")
-        return
-      }
 
       alert("Registrazione completata con successo!")
       navigate("/login")
     } catch (error) {
       console.error("Errore registrazione:", error)
-      alert("Errore durante la registrazione")
+      alert(error.message || "Errore durante la registrazione")
     }
   }
 

@@ -1,98 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Link } from "react-router-dom"
-import { API_BASE_URL, getAuthHeaders } from "../utils/api"
-import "../styles/pages/Terme.css"
-import termeHero from "../assets/images/TERME/termehero.jpg"
-import guideImage from "../assets/images/guida-terme.jpg"
-
-function TermeCard({ terma, renderWheelchairs }) {
-  return (
-    <Link to={`/struttura/${terma.idStruttura}`} className="terme-card-link">
-      <article className="terme-card">
-        <img
-          src={
-            terma.immagineCopertina ||
-            "https://via.placeholder.com/800x500?text=SafeStep"
-          }
-          alt={terma.nome || "Struttura termale"}
-          className="terme-card-image"
-        />
-
-        <div className="terme-card-body">
-          <h3>{terma.nome || "Nome non disponibile"}</h3>
-          <p className="terme-card-city">
-            {terma.citta || "Città non disponibile"}
-          </p>
-
-          <div className="terme-card-bottom">{renderWheelchairs(terma)}</div>
-        </div>
-      </article>
-    </Link>
-  )
-}
-
-function TermeSmallCard({ terma, renderWheelchairs }) {
-  return (
-    <Link to={`/struttura/${terma.idStruttura}`} className="terme-card-link">
-      <article className="terme-small-card">
-        <img
-          src={
-            terma.immagineCopertina ||
-            "https://via.placeholder.com/800x500?text=SafeStep"
-          }
-          alt={terma.nome || "Struttura termale"}
-          className="terme-small-card-image"
-        />
-
-        <div className="terme-small-card-body">
-          <h3>{terma.nome || "Nome non disponibile"}</h3>
-          <p className="terme-card-city">
-            {terma.citta || "Città non disponibile"}
-          </p>
-
-          <div className="terme-card-bottom">{renderWheelchairs(terma)}</div>
-        </div>
-      </article>
-    </Link>
-  )
-}
-
-function TermeGuideCards() {
-  return (
-    <aside className="terme-side-column">
-      <div className="terme-guide-card small-guide">
-        <h3>Guida all'accessibilità nelle terme</h3>
-        <p>
-          Scopri di più sulle caratteristiche delle terme accessibili e leggi i
-          nostri consigli per pianificare la tua visita.
-        </p>
-
-        <Link
-          to="/terme/guida-accessibilita"
-          className="terme-guide-button-link"
-        >
-          Scopri di più
-        </Link>
-      </div>
-
-      <div className="terme-guide-card image-guide">
-        <img src={guideImage} alt="Guida terme accessibili" />
-
-        <div className="terme-guide-card-body">
-          <h3>Consigli per visitare le terme</h3>
-          <p>
-            Leggi i suggerimenti utili per organizzare la visita, capire cosa
-            controllare prima di partire e quali domande fare alla struttura.
-          </p>
-
-          <Link to="/terme/consigli-visita" className="terme-guide-button-link">
-            Scopri di più
-          </Link>
-        </div>
-      </div>
-    </aside>
-  )
-}
+import "./styles/Terme.css"
+import termeHero from "../../assets/images/TERME/termehero.jpg"
+import { getStruttureByCategoria } from "../../services/struttureService"
+import TermeCard from "./components/TermeCard"
+import TermeSmallCard from "./components/TermeSmallCard"
+import TermeGuideCards from "./components/TermeGuideCards"
+import {
+  getRatingValue,
+  hasAccessibilityInfo,
+  hasCoordinates,
+  getDistanceFromUser,
+} from "../../services/termeHelpers"
 
 function Terme() {
   const [termePrincipali, setTermePrincipali] = useState([])
@@ -109,24 +27,13 @@ function Terme() {
   const filtersRef = useRef(null)
 
   useEffect(() => {
-    const fetchTerme = async () => {
+    const loadTerme = async () => {
       try {
         setLoading(true)
         setError("")
 
-        const response = await fetch(
-          `${API_BASE_URL}/strutture/categoria/TERME`,
-          {
-            headers: getAuthHeaders(),
-          },
-        )
-
-        if (!response.ok) {
-          throw new Error("Errore nel recupero delle terme")
-        }
-
-        const data = await response.json()
-        setTermePrincipali(Array.isArray(data) ? data : [])
+        const data = await getStruttureByCategoria("TERME")
+        setTermePrincipali(data)
       } catch (error) {
         console.error("Errore caricamento terme:", error)
         setError("Non è stato possibile caricare le terme.")
@@ -136,7 +43,7 @@ function Terme() {
       }
     }
 
-    fetchTerme()
+    loadTerme()
   }, [])
 
   useEffect(() => {
@@ -152,54 +59,6 @@ function Terme() {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [])
-
-  const getRatingValue = (terma) => {
-    if (!terma) return 0
-
-    return Number(
-      terma.ratingMedio ||
-        terma.mediaVoti ||
-        terma.mediaRecensioni ||
-        terma.votoMedio ||
-        terma.rating ||
-        0,
-    )
-  }
-
-  const hasAccessibilityInfo = (terma) => {
-    if (!terma) return false
-
-    if (terma.accessibile === true) return true
-    if (terma.accessibilitaStruttura === true) return true
-    if (terma.rampe === true) return true
-    if (terma.parcheggioDisabili === true) return true
-    if (terma.bagnoAccessibile === true) return true
-
-    if (
-      Array.isArray(terma.caratteristicheAccessibilita) &&
-      terma.caratteristicheAccessibilita.length > 0
-    ) {
-      return true
-    }
-
-    if (Array.isArray(terma.accessibilita) && terma.accessibilita.length > 0) {
-      return true
-    }
-
-    const noteDisabili = terma.noteDisabili?.trim() || ""
-    const accessibilitaNote = terma.accessibilitaNote?.trim() || ""
-
-    return Boolean(noteDisabili || accessibilitaNote)
-  }
-
-  const hasCoordinates = (terma) => {
-    if (!terma) return false
-
-    const latitudine = Number(terma.latitudine)
-    const longitudine = Number(terma.longitudine)
-
-    return !Number.isNaN(latitudine) && !Number.isNaN(longitudine)
-  }
 
   const scrollToResults = () => {
     if (risultatiRef.current) {
@@ -259,45 +118,6 @@ function Terme() {
   const termeFiltrate = useMemo(() => {
     if (!Array.isArray(termePrincipali)) return []
 
-    const toRadians = (value) => (value * Math.PI) / 180
-
-    const calculateDistance = (lat1, lon1, lat2, lon2) => {
-      const earthRadius = 6371
-      const deltaLat = toRadians(lat2 - lat1)
-      const deltaLon = toRadians(lon2 - lon1)
-
-      const a =
-        Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
-        Math.cos(toRadians(lat1)) *
-          Math.cos(toRadians(lat2)) *
-          Math.sin(deltaLon / 2) *
-          Math.sin(deltaLon / 2)
-
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-      return earthRadius * c
-    }
-
-    const getDistanceFromUser = (terma) => {
-      if (!posizioneUtente || !terma) return Number.POSITIVE_INFINITY
-
-      const latitudineStruttura = Number(terma.latitudine)
-      const longitudineStruttura = Number(terma.longitudine)
-
-      if (
-        Number.isNaN(latitudineStruttura) ||
-        Number.isNaN(longitudineStruttura)
-      ) {
-        return Number.POSITIVE_INFINITY
-      }
-
-      return calculateDistance(
-        posizioneUtente.latitude,
-        posizioneUtente.longitude,
-        latitudineStruttura,
-        longitudineStruttura,
-      )
-    }
-
     let lista = [...termePrincipali]
 
     if (searchTerm.trim()) {
@@ -331,7 +151,12 @@ function Terme() {
     }
 
     if (ordinamento === "distance" && posizioneUtente) {
-      lista.sort((a, b) => getDistanceFromUser(a) - getDistanceFromUser(b))
+      lista.sort((a, b) => {
+        return (
+          getDistanceFromUser(a, posizioneUtente) -
+          getDistanceFromUser(b, posizioneUtente)
+        )
+      })
     }
 
     return lista

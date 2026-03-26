@@ -3,8 +3,8 @@ import logoSafeStep from "../assets/logos/SAFESTEP_LOGO.png"
 import backgroundImage from "../assets/images/bg-login.jpg"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { API_BASE_URL } from "../utils/api"
 import { saveAuthData } from "../utils/auth"
+import { loginUser } from "../services/authService"
 
 function Login() {
   const navigate = useNavigate()
@@ -14,23 +14,7 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      })
-
-      if (!response.ok) {
-        alert("Credenziali non valide")
-        return
-      }
-
-      const data = await response.json()
+      const data = await loginUser(email, password)
 
       saveAuthData(data)
 
@@ -41,7 +25,7 @@ function Login() {
       }
     } catch (error) {
       console.error("Errore login:", error)
-      alert("Errore durante il login")
+      alert(error.message || "Errore durante il login")
     }
   }
 

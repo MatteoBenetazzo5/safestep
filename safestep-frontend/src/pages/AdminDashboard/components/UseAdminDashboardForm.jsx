@@ -1,10 +1,20 @@
 import { useState } from "react"
-import { API_BASE_URL, getAuthHeaders } from "../../../utils/api"
 import {
   getInitialAccessibilitaRow,
   getInitialFormData,
 } from "./adminDashboardInitialState"
 import { scrollToElement } from "./adminDashboardHelpers"
+import {
+  createAccessibilita,
+  createStructure,
+  createStructureImage,
+  deleteAccessibilita,
+  deleteStructure,
+  fetchAccessibilitaByStruttura,
+  updateAccessibilita,
+  updateStructure,
+  uploadStructureImage,
+} from "../../../services/adminDashboardService"
 
 function UseAdminDashboardForm({
   idUtente,
@@ -95,16 +105,7 @@ function UseAdminDashboardForm({
       }
 
       try {
-        const data = new FormData()
-        data.append("file", image)
-
-        const response = await fetch(`${API_BASE_URL}/upload/image`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: data,
-        })
+        const response = await uploadStructureImage(image)
 
         if (!response.ok) {
           const errorText = await response.text()
@@ -129,10 +130,7 @@ function UseAdminDashboardForm({
   const syncAccessibilita = async (strutturaIdFinale) => {
     for (const accessibilitaId of removedAccessibilitaIds) {
       try {
-        await fetch(`${API_BASE_URL}/accessibilita/${accessibilitaId}`, {
-          method: "DELETE",
-          headers: getAuthHeaders(),
-        })
+        await deleteAccessibilita(accessibilitaId)
       } catch (error) {
         console.error("Errore eliminazione accessibilità:", error)
       }
@@ -145,15 +143,11 @@ function UseAdminDashboardForm({
     for (const item of accessibilitaValide) {
       try {
         if (item.idAccessibilita) {
-          const updateResponse = await fetch(
-            `${API_BASE_URL}/accessibilita/${item.idAccessibilita}`,
+          const updateResponse = await updateAccessibilita(
+            item.idAccessibilita,
             {
-              method: "PUT",
-              headers: getAuthHeaders(),
-              body: JSON.stringify({
-                valore: item.valore,
-                nota: item.nota,
-              }),
+              valore: item.valore,
+              nota: item.nota,
             },
           )
 
@@ -162,15 +156,11 @@ function UseAdminDashboardForm({
             console.error("Errore aggiornamento accessibilità:", errorText)
           }
         } else {
-          const createResponse = await fetch(`${API_BASE_URL}/accessibilita`, {
-            method: "POST",
-            headers: getAuthHeaders(),
-            body: JSON.stringify({
-              strutturaId: strutturaIdFinale,
-              caratteristicaId: item.caratteristicaId,
-              valore: item.valore,
-              nota: item.nota,
-            }),
+          const createResponse = await createAccessibilita({
+            strutturaId: strutturaIdFinale,
+            caratteristicaId: item.caratteristicaId,
+            valore: item.valore,
+            nota: item.nota,
           })
 
           if (!createResponse.ok) {
@@ -211,19 +201,11 @@ function UseAdminDashboardForm({
       let response
 
       if (editingId) {
-        response = await fetch(`${API_BASE_URL}/strutture/${editingId}`, {
-          method: "PUT",
-          headers: getAuthHeaders(),
-          body: JSON.stringify(body),
-        })
+        response = await updateStructure(editingId, body)
       } else {
-        response = await fetch(`${API_BASE_URL}/strutture`, {
-          method: "POST",
-          headers: getAuthHeaders(),
-          body: JSON.stringify({
-            ...body,
-            creataDaId: idUtente,
-          }),
+        response = await createStructure({
+          ...body,
+          creataDaId: idUtente,
         })
       }
 
@@ -240,15 +222,11 @@ function UseAdminDashboardForm({
       if (imageUrls.length > 1) {
         for (let i = 1; i < imageUrls.length; i++) {
           try {
-            await fetch(`${API_BASE_URL}/immagini-struttura`, {
-              method: "POST",
-              headers: getAuthHeaders(),
-              body: JSON.stringify({
-                strutturaId: strutturaIdFinale,
-                url: imageUrls[i],
-                ordineVisualizzazione: i,
-                copertina: false,
-              }),
+            await createStructureImage({
+              strutturaId: strutturaIdFinale,
+              url: imageUrls[i],
+              ordineVisualizzazione: i,
+              copertina: false,
             })
           } catch (error) {
             console.error("Errore salvataggio immagine galleria:", error)
@@ -297,11 +275,8 @@ function UseAdminDashboardForm({
     })
 
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/accessibilita/struttura/${structure.idStruttura}`,
-        {
-          headers: getAuthHeaders(),
-        },
+      const response = await fetchAccessibilitaByStruttura(
+        structure.idStruttura,
       )
 
       let accessibilitaData = []
@@ -345,10 +320,7 @@ function UseAdminDashboardForm({
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/strutture/${idStruttura}`, {
-        method: "DELETE",
-        headers: getAuthHeaders(),
-      })
+      const response = await deleteStructure(idStruttura)
 
       if (!response.ok) {
         const errorText = await response.text()

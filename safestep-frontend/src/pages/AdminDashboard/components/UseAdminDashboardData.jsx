@@ -6,7 +6,6 @@ import {
   fetchStructureReviews,
   fetchStructuresWithFallback,
   fetchUsers,
-  fetchUsersCount,
 } from "../../../services/adminDashboardService"
 
 function UseAdminDashboardData() {
@@ -117,30 +116,6 @@ function UseAdminDashboardData() {
     }
   }
 
-  const getUsersCount = async () => {
-    try {
-      const countResponse = await fetchUsersCount()
-
-      if (countResponse.ok) {
-        const data = await countResponse.json()
-        setUsersCount(Number(data.count) || 0)
-        return
-      }
-
-      const usersResponse = await fetchUsers()
-
-      if (!usersResponse.ok) {
-        throw new Error("Errore nel recupero utenti")
-      }
-
-      const usersData = await usersResponse.json()
-      setUsersCount(Array.isArray(usersData) ? usersData.length : 0)
-    } catch (error) {
-      console.error("Errore caricamento numero utenti:", error)
-      setUsersCount(0)
-    }
-  }
-
   const getSavedCount = async () => {
     try {
       const response = await fetchSavedStructures()
@@ -219,7 +194,6 @@ function UseAdminDashboardData() {
       fetchStructures(),
       getCaratteristiche(),
       getUsers(),
-      getUsersCount(),
       getSavedCount(),
       fetchReviewsData(),
     ])

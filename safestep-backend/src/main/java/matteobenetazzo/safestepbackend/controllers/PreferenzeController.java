@@ -23,9 +23,19 @@ public class PreferenzeController {
         return this.preferenzeService.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Preferenza findById(@PathVariable UUID id) {
+        return this.preferenzeService.findById(id);
+    }
+
     @GetMapping("/utente/{idUtente}")
     public List<Preferenza> findByUtente(@PathVariable UUID idUtente) {
         return this.preferenzeService.findByUtente(idUtente);
+    }
+
+    @GetMapping("/mie")
+    public List<Preferenza> findMine() {
+        return this.preferenzeService.findMine();
     }
 
     @PostMapping

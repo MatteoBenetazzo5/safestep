@@ -6,6 +6,7 @@ import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
 import matteobenetazzo.safestepbackend.payloads.StrutturaCreateDTO;
 import matteobenetazzo.safestepbackend.payloads.StrutturaUpdateDTO;
 import matteobenetazzo.safestepbackend.repositories.StrutturaRepository;
+import matteobenetazzo.safestepbackend.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class StruttureService {
 
     @Autowired
     private UtentiService utentiService;
+
+    @Autowired
+    private SecurityUtils securityUtils;
 
     public List<Struttura> findAll() {
         return this.strutturaRepository.findAll();
@@ -47,7 +51,7 @@ public class StruttureService {
             throw new IllegalArgumentException("Esiste gia una struttura con questo nome e indirizzo");
         }
 
-        Utente creatore = this.utentiService.findById(body.creataDaId());
+        Utente creatore = this.securityUtils.getCurrentAuthenticatedUser();
 
         Struttura nuovaStruttura = new Struttura(
                 body.categoria(),

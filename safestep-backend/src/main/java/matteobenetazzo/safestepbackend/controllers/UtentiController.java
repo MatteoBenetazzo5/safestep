@@ -28,9 +28,9 @@ public class UtentiController {
         return this.utentiService.findById(id);
     }
 
-    @GetMapping("/email/{email}")
-    public Utente findByEmail(@PathVariable String email) {
-        return this.utentiService.findByEmail(email);
+    @GetMapping("/me")
+    public Utente findMe() {
+        return this.utentiService.findMe();
     }
 
     @PutMapping("/{id}")

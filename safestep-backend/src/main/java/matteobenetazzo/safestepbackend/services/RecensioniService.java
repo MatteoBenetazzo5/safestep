@@ -7,6 +7,7 @@ import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
 import matteobenetazzo.safestepbackend.payloads.RecensioneCreateDTO;
 import matteobenetazzo.safestepbackend.payloads.RecensioneUpdateDTO;
 import matteobenetazzo.safestepbackend.repositories.RecensioneRepository;
+import matteobenetazzo.safestepbackend.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,9 @@ public class RecensioniService {
 
     @Autowired
     private UtentiService utentiService;
+
+    @Autowired
+    private SecurityUtils securityUtils;
 
     public List<Recensione> findAll() {
         return this.recensioneRepository.findAll();
@@ -43,16 +47,20 @@ public class RecensioniService {
     }
 
     public Recensione save(RecensioneCreateDTO body) {
-        if (this.recensioneRepository.existsByUtente_IdUtenteAndStruttura_IdStruttura(body.utenteId(), body.strutturaId())) {
+        Utente utenteAutenticato = this.securityUtils.getCurrentAuthenticatedUser();
+
+        if (this.recensioneRepository.existsByUtente_IdUtenteAndStruttura_IdStruttura(
+                utenteAutenticato.getIdUtente(),
+                body.strutturaId()
+        )) {
             throw new IllegalArgumentException("L'utente ha gia recensito questa struttura");
         }
 
         Struttura struttura = this.struttureService.findById(body.strutturaId());
-        Utente utente = this.utentiService.findById(body.utenteId());
 
         Recensione nuovaRecensione = new Recensione(
                 struttura,
-                utente,
+                utenteAutenticato,
                 body.voto(),
                 body.testo()
         );
@@ -63,6 +71,8 @@ public class RecensioniService {
     public Recensione findByIdAndUpdate(UUID idRecensione, RecensioneUpdateDTO body) {
         Recensione found = this.findById(idRecensione);
 
+        this.securityUtils.checkOwnerOrAdmin(found.getUtente());
+
         found.setVoto(body.voto());
         found.setTesto(body.testo());
 
@@ -71,6 +81,9 @@ public class RecensioniService {
 
     public void findByIdAndDelete(UUID idRecensione) {
         Recensione found = this.findById(idRecensione);
+
+        this.securityUtils.checkOwnerOrAdmin(found.getUtente());
+
         this.recensioneRepository.delete(found);
     }
 }

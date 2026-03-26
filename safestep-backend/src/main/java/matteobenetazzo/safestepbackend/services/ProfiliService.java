@@ -6,6 +6,7 @@ import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
 import matteobenetazzo.safestepbackend.payloads.ProfiloCreateDTO;
 import matteobenetazzo.safestepbackend.repositories.ProfiloRepository;
 import matteobenetazzo.safestepbackend.repositories.UtenteRepository;
+import matteobenetazzo.safestepbackend.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,32 +22,50 @@ public class ProfiliService {
     @Autowired
     private UtenteRepository utenteRepository;
 
+    @Autowired
+    private SecurityUtils securityUtils;
+
     public List<Profilo> findAll() {
         return this.profiloRepository.findAll();
     }
 
     public Profilo findById(UUID idProfilo) {
-        return this.profiloRepository.findById(idProfilo)
+        Profilo found = this.profiloRepository.findById(idProfilo)
                 .orElseThrow(() -> new NotFoundException("Profilo con id " + idProfilo + " non trovato"));
+
+        this.securityUtils.checkOwnerOrAdmin(found.getUtente());
+
+        return found;
     }
 
     public Profilo findByUtente(UUID idUtente) {
+        Utente utente = this.utenteRepository.findById(idUtente)
+                .orElseThrow(() -> new NotFoundException("Utente non trovato"));
+
+        this.securityUtils.checkOwnerOrAdmin(utente);
+
         return this.profiloRepository.findByUtente_IdUtente(idUtente)
                 .orElseThrow(() -> new NotFoundException("Profilo utente non trovato"));
     }
 
-    public Profilo save(ProfiloCreateDTO body) {
-        Utente utente = this.utenteRepository.findById(body.utenteId())
-                .orElseThrow(() -> new NotFoundException("Utente non trovato"));
+    public Profilo findMine() {
+        Utente utenteAutenticato = this.securityUtils.getCurrentAuthenticatedUser();
 
-        boolean esisteGia = this.profiloRepository.existsByUtente_IdUtente(body.utenteId());
+        return this.profiloRepository.findByUtente_IdUtente(utenteAutenticato.getIdUtente())
+                .orElseThrow(() -> new NotFoundException("Profilo utente non trovato"));
+    }
+
+    public Profilo save(ProfiloCreateDTO body) {
+        Utente utenteAutenticato = this.securityUtils.getCurrentAuthenticatedUser();
+
+        boolean esisteGia = this.profiloRepository.existsByUtente_IdUtente(utenteAutenticato.getIdUtente());
 
         if (esisteGia) {
             throw new IllegalArgumentException("Questo utente ha gia un profilo");
         }
 
         Profilo nuovoProfilo = new Profilo(
-                utente,
+                utenteAutenticato,
                 body.tipoMobilita(),
                 body.note()
         );
@@ -59,6 +78,8 @@ public class ProfiliService {
     public Profilo findByIdAndUpdate(UUID idProfilo, Profilo body) {
         Profilo found = this.findById(idProfilo);
 
+        this.securityUtils.checkOwnerOrAdmin(found.getUtente());
+
         found.setTipoMobilita(body.getTipoMobilita());
         found.setNote(body.getNote());
         found.setColoreTema(body.getColoreTema());
@@ -68,6 +89,9 @@ public class ProfiliService {
 
     public void findByIdAndDelete(UUID idProfilo) {
         Profilo found = this.findById(idProfilo);
+
+        this.securityUtils.checkOwnerOrAdmin(found.getUtente());
+
         this.profiloRepository.delete(found);
     }
 }

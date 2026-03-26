@@ -33,6 +33,11 @@ public class StruttureSalvateController {
         return this.struttureSalvateService.findByUtente(idUtente);
     }
 
+    @GetMapping("/mie")
+    public List<StrutturaSalvata> findMine() {
+        return this.struttureSalvateService.findMine();
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public StrutturaSalvata create(@RequestBody @Valid StrutturaSalvataCreateDTO body) {
@@ -49,5 +54,11 @@ public class StruttureSalvateController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeByUtenteAndStruttura(@PathVariable UUID idUtente, @PathVariable UUID idStruttura) {
         this.struttureSalvateService.removeByUtenteAndStruttura(idUtente, idStruttura);
+    }
+
+    @DeleteMapping("/mie/struttura/{idStruttura}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeMineByStruttura(@PathVariable UUID idStruttura) {
+        this.struttureSalvateService.removeMineByStruttura(idStruttura);
     }
 }

@@ -33,6 +33,11 @@ public class ProfiliController {
         return this.profiliService.findByUtente(idUtente);
     }
 
+    @GetMapping("/mio")
+    public Profilo findMine() {
+        return this.profiliService.findMine();
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Profilo create(@RequestBody @Valid ProfiloCreateDTO body) {

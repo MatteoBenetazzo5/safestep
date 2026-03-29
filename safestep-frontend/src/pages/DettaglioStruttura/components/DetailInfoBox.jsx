@@ -37,6 +37,10 @@ function DetailInfoBox({
       <div className="info-box">
         <h2>Informazioni</h2>
 
+        {structure?.descrizione && (
+          <p className="detail-description">{structure.descrizione}</p>
+        )}
+
         <div className="detail-map-box">
           <iframe
             src={mapSrc}

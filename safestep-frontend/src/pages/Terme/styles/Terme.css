@@ -454,6 +454,13 @@
   z-index: 30;
 }
 
+.terme-rating-number {
+  margin-left: 6px;
+  font-weight: 600;
+  color: #4f6c7f;
+  font-size: 0.95rem;
+}
+
 /* RESPONSIVE */
 @media screen and (min-width: 768px) {
   .terme-hero-inner {

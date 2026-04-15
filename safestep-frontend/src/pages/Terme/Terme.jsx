@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import "./styles/Terme.css"
 import termeHero from "../../assets/images/TERME/termehero.jpg"
 import { getStruttureByCategoria } from "../../services/struttureService"
+import { getStructureReviews } from "../../services/structureDetailService"
 import TermeCard from "./components/TermeCard"
 import TermeSmallCard from "./components/TermeSmallCard"
 import TermeGuideCards from "./components/TermeGuideCards"
@@ -33,7 +34,46 @@ function Terme() {
         setError("")
 
         const data = await getStruttureByCategoria("TERME")
-        setTermePrincipali(data)
+
+        const termeConRating = await Promise.all(
+          data.map(async (terma) => {
+            try {
+              const recensioni = await getStructureReviews(terma.idStruttura)
+
+              const recensioniSicure = Array.isArray(recensioni)
+                ? recensioni
+                : []
+
+              const ratingMedio =
+                recensioniSicure.length > 0
+                  ? recensioniSicure.reduce(
+                      (totale, recensione) =>
+                        totale + Number(recensione.voto || 0),
+                      0,
+                    ) / recensioniSicure.length
+                  : 0
+
+              return {
+                ...terma,
+                ratingMedio,
+              }
+            } catch (error) {
+              console.error(
+                "Errore recensioni terma:",
+                terma.idStruttura,
+                error,
+              )
+
+              return {
+                ...terma,
+                ratingMedio: 0,
+              }
+            }
+          }),
+        )
+
+        console.log("TERME DATA", termeConRating)
+        setTermePrincipali(termeConRating)
       } catch (error) {
         console.error("Errore caricamento terme:", error)
         setError("Non è stato possibile caricare le terme.")
@@ -175,27 +215,28 @@ function Terme() {
   }, [termeFiltrate])
 
   const renderWheelchairs = (terma) => {
-    const accessibilitaPresente = hasAccessibilityInfo(terma)
-
-    if (!accessibilitaPresente) {
-      return (
-        <div className="terme-card-accessibility">
-          <i className="bi bi-person-wheelchair is-active"></i>
-          <i className="bi bi-person-wheelchair is-muted"></i>
-          <i className="bi bi-person-wheelchair is-muted"></i>
-          <i className="bi bi-person-wheelchair is-muted"></i>
-          <i className="bi bi-person-wheelchair is-muted"></i>
-        </div>
-      )
-    }
+    const ratingValue = getRatingValue(terma)
+    const rating = Math.round(ratingValue)
 
     return (
       <div className="terme-card-accessibility">
-        <i className="bi bi-person-wheelchair is-active"></i>
-        <i className="bi bi-person-wheelchair is-active"></i>
-        <i className="bi bi-person-wheelchair is-active"></i>
-        <i className="bi bi-person-wheelchair is-active"></i>
-        <i className="bi bi-person-wheelchair is-active"></i>
+        <i
+          className={`bi bi-person-wheelchair ${rating >= 1 ? "is-active" : "is-muted"}`}
+        ></i>
+        <i
+          className={`bi bi-person-wheelchair ${rating >= 2 ? "is-active" : "is-muted"}`}
+        ></i>
+        <i
+          className={`bi bi-person-wheelchair ${rating >= 3 ? "is-active" : "is-muted"}`}
+        ></i>
+        <i
+          className={`bi bi-person-wheelchair ${rating >= 4 ? "is-active" : "is-muted"}`}
+        ></i>
+        <i
+          className={`bi bi-person-wheelchair ${rating >= 5 ? "is-active" : "is-muted"}`}
+        ></i>
+
+        <span className="terme-rating-number">{ratingValue.toFixed(1)}</span>
       </div>
     )
   }

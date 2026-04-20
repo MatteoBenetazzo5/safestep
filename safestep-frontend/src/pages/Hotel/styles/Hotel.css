@@ -1,49 +1,49 @@
-.parchi-page {
+.hotel-page {
   min-height: 100vh;
-  background: #f4fbf6;
-  color: #234b33;
+  background: #f4f8fc;
+  color: #1f3552;
 }
 
 /* HERO */
 
-.parchi-hero {
+.hotel-hero {
   min-height: 700px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.parchi-hero-overlay {
+.hotel-hero-overlay {
   min-height: 700px;
-  background: rgba(244, 251, 246, 0.78);
+  background: rgba(244, 248, 252, 0.78);
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 180px 20px 70px;
 }
 
-.parchi-hero-content {
+.hotel-hero-content {
   width: 100%;
   max-width: 1050px;
   text-align: center;
 }
 
-.parchi-hero-content h1 {
+.hotel-hero-content h1 {
   margin: 0 0 1rem 0;
   font-size: 3.4rem;
   line-height: 1.1;
   font-weight: 800;
-  color: #25543a;
+  color: #163a63;
 }
 
-.parchi-hero-content p {
+.hotel-hero-content p {
   margin: 0 0 2rem 0;
   font-size: 1.18rem;
   line-height: 1.6;
-  color: #5e8a6d;
+  color: #4c7097;
 }
 
-.parchi-search-bar {
+.hotel-search-bar {
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
@@ -52,64 +52,64 @@
   align-items: center;
   gap: 12px;
   background: rgba(255, 255, 255, 0.96);
-  border: 1px solid rgba(206, 233, 214, 0.95);
+  border: 1px solid rgba(191, 214, 239, 0.95);
   border-radius: 22px;
-  box-shadow: 0 16px 34px rgba(64, 134, 88, 0.1);
+  box-shadow: 0 16px 34px rgba(41, 92, 145, 0.1);
 }
 
-.parchi-search-input {
+.hotel-search-input {
   min-height: 62px;
   flex: 1;
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 0 20px;
-  background: #f9fdf9;
-  border: 1px solid #dceedd;
+  background: #f8fbff;
+  border: 1px solid #d6e6f7;
   border-radius: 16px;
 }
 
-.parchi-search-input i {
+.hotel-search-input i {
   font-size: 1.35rem;
-  color: #59b66d;
+  color: #2e8fff;
   flex-shrink: 0;
 }
 
-.parchi-search-input input {
+.hotel-search-input input {
   width: 100%;
   border: none;
   outline: none;
   background: transparent;
-  color: #426850;
+  color: #355170;
   font-size: 1.05rem;
   font-weight: 500;
 }
 
-.parchi-search-input input::placeholder {
-  color: #81a18c;
+.hotel-search-input input::placeholder {
+  color: #7b93af;
 }
 
-.parchi-search-bar button {
+.hotel-search-bar button {
   min-width: 150px;
   min-height: 62px;
   padding: 0 30px;
   border: none;
   border-radius: 16px;
-  background: linear-gradient(135deg, #64c27b 0%, #8ddb9a 100%);
+  background: linear-gradient(135deg, #1f8fff 0%, #4dc0ff 100%);
   color: #ffffff;
   font-size: 1.02rem;
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
-  box-shadow: 0 10px 24px rgba(100, 194, 123, 0.25);
+  box-shadow: 0 10px 24px rgba(31, 143, 255, 0.25);
 }
 
-.parchi-search-bar button:hover {
+.hotel-search-bar button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 26px rgba(100, 194, 123, 0.32);
+  box-shadow: 0 14px 26px rgba(31, 143, 255, 0.32);
 }
 
-.parchi-filters-pill {
+.hotel-filters-pill {
   margin-top: 1.5rem;
   display: inline-flex;
   flex-wrap: wrap;
@@ -118,83 +118,83 @@
   gap: 0.45rem;
   padding: 0.45rem;
   background: rgba(255, 255, 255, 0.96);
-  border: 1px solid #e0f0e3;
+  border: 1px solid #dbe9f8;
   border-radius: 999px;
-  box-shadow: 0 12px 30px rgba(76, 130, 91, 0.08);
+  box-shadow: 0 12px 30px rgba(42, 90, 140, 0.08);
 }
 
-.parchi-filters-pill span {
+.hotel-filters-pill span {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
   padding: 0.82rem 1.2rem;
   border-radius: 999px;
-  color: #557364;
+  color: #4d6787;
   font-size: 0.96rem;
   font-weight: 600;
 }
 
-.parchi-filters-pill span:first-child {
-  background: #edf8ef;
-  color: #49a95f;
+.hotel-filters-pill span:first-child {
+  background: #eaf4ff;
+  color: #1f8fff;
 }
 
 /* MAIN */
 
-.parchi-main-section {
+.hotel-main-section {
   max-width: 1360px;
   margin: 0 auto;
   padding: 3rem 1.5rem;
 }
 
-.parchi-main-header {
+.hotel-main-header {
   margin-bottom: 1.8rem;
 }
 
-.parchi-main-header h2 {
+.hotel-main-header h2 {
   margin: 0;
   font-size: 2.8rem;
   line-height: 1.1;
   font-weight: 800;
-  color: #25543a;
+  color: #163a63;
 }
 
-.parchi-scroll-area {
+.hotel-scroll-area {
   max-height: 1280px;
   overflow-y: auto;
   padding-right: 10px;
 }
 
-.parchi-scroll-area::-webkit-scrollbar {
+.hotel-scroll-area::-webkit-scrollbar {
   width: 10px;
 }
 
-.parchi-scroll-area::-webkit-scrollbar-track {
+.hotel-scroll-area::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.5);
   border-radius: 999px;
 }
 
-.parchi-scroll-area::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #64c27b 0%, #8ddb9a 100%);
+.hotel-scroll-area::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1f8fff 0%, #4dc0ff 100%);
   border-radius: 999px;
 }
 
-.parchi-scroll-area::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #4dae66 0%, #78d488 100%);
+.hotel-scroll-area::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #1a7be0 0%, #34b5ff 100%);
 }
 
-.parchi-main-layout {
+.hotel-main-layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
   align-items: start;
 }
 
-.parchi-left-content {
+.hotel-left-content {
   min-width: 0;
 }
 
-.parchi-right-content {
+.hotel-right-content {
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -203,7 +203,7 @@
 
 /* TOOLBAR */
 
-.parchi-toolbar {
+.hotel-toolbar {
   margin-bottom: 1.7rem;
   display: flex;
   align-items: center;
@@ -212,10 +212,10 @@
   flex-wrap: wrap;
 }
 
-.parchi-page .toolbar-button {
+.hotel-page .toolbar-button {
   border: none;
-  background: #edf8ef;
-  color: #49a95f;
+  background: #eaf4ff;
+  color: #1f8fff;
   border-radius: 14px;
   padding: 0.95rem 1.2rem;
   font-size: 0.98rem;
@@ -224,21 +224,21 @@
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.parchi-page .toolbar-button:hover {
+.hotel-page .toolbar-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(100, 194, 123, 0.14);
+  box-shadow: 0 8px 18px rgba(31, 143, 255, 0.14);
 }
 
-.parchi-page .toolbar-dropdowns {
+.hotel-page .toolbar-dropdowns {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
 }
 
-.parchi-page .toolbar-dropdowns button {
+.hotel-page .toolbar-dropdowns button {
   border: none;
-  background: #f1fbf3;
-  color: #5b8a68;
+  background: #edf6ff;
+  color: #3473b4;
   border-radius: 14px;
   padding: 0.95rem 1.2rem;
   font-size: 0.98rem;
@@ -247,75 +247,79 @@
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.parchi-page .toolbar-dropdowns button:hover {
+.hotel-page .toolbar-dropdowns button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(100, 194, 123, 0.12);
+  box-shadow: 0 8px 18px rgba(31, 143, 255, 0.12);
 }
 
 /* GRID */
 
-.parchi-grid {
+.hotel-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
 }
 
-.parchi-card-link {
+.hotel-card-link {
   display: block;
   text-decoration: none;
   color: inherit;
   min-width: 0;
 }
 
-.parchi-card,
-.parchi-small-card,
-.parchi-guide-card {
+.hotel-card,
+.hotel-small-card,
+.hotel-guide-card {
   position: relative;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.97);
-  border: 1.5px solid rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
   border-radius: 24px;
-  box-shadow: 0 12px 28px rgba(58, 110, 74, 0.08);
+  box-shadow: 0 12px 28px rgba(34, 79, 128, 0.08);
 }
 
-.parchi-card,
-.parchi-small-card {
+.hotel-card {
   height: 100%;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.parchi-card:hover,
-.parchi-small-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 34px rgba(58, 110, 74, 0.14);
+.hotel-small-card {
+  height: 100%;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.parchi-card img {
+.hotel-card:hover,
+.hotel-small-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 34px rgba(34, 79, 128, 0.14);
+}
+
+.hotel-card img {
   width: 100%;
   height: 245px;
   object-fit: cover;
   display: block;
 }
 
-.parchi-card-body {
+.hotel-card-body {
   padding: 1.25rem 1.25rem 1.35rem;
 }
 
-.parchi-card-body h3 {
+.hotel-card-body h3 {
   margin: 0 0 0.35rem 0;
   font-size: 1.15rem;
   line-height: 1.3;
   font-weight: 800;
-  color: #25543a;
+  color: #163a63;
 }
 
-.parchi-card-body p {
+.hotel-card-body p {
   margin: 0 0 0.9rem 0;
   font-size: 1rem;
-  color: #769381;
+  color: #6a86a4;
 }
 
-.parchi-card-footer {
+.hotel-card-footer {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -323,7 +327,7 @@
   flex-wrap: wrap;
 }
 
-.parchi-icons {
+.hotel-icons {
   display: flex;
   align-items: center;
   gap: 0.32rem;
@@ -331,47 +335,47 @@
   font-size: 1.05rem;
 }
 
-.parchi-icons .is-active,
-.parchi-icons i {
-  color: #64c27b;
+.hotel-icons .is-active,
+.hotel-icons i {
+  color: #1f8fff;
 }
 
-.parchi-icons .is-muted {
-  color: #d4e9da;
+.hotel-icons .is-muted {
+  color: #c8d7ea;
 }
 
-.parchi-rating {
+.hotel-rating {
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #2f9a53;
+  color: #2f74c5;
   font-size: 1rem;
   font-weight: 700;
 }
 
 /* RIGHT CARDS */
 
-.parchi-guide-card {
+.hotel-guide-card {
   padding: 1.6rem;
-  box-shadow: 0 12px 26px rgba(58, 110, 74, 0.07);
+  box-shadow: 0 12px 26px rgba(34, 79, 128, 0.07);
 }
 
-.parchi-guide-card h3 {
+.hotel-guide-card h3 {
   margin: 0 0 0.9rem 0;
   font-size: 1.95rem;
   line-height: 1.15;
   font-weight: 800;
-  color: #25543a;
+  color: #163a63;
 }
 
-.parchi-guide-card p {
+.hotel-guide-card p {
   margin: 0 0 1.4rem 0;
   font-size: 1.08rem;
   line-height: 1.65;
-  color: #64806f;
+  color: #587390;
 }
 
-.parchi-guide-button-link {
+.hotel-guide-button-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -380,45 +384,45 @@
   border: none;
   border-radius: 16px;
   text-decoration: none;
-  background: linear-gradient(135deg, #64c27b 0%, #8ddb9a 100%);
+  background: linear-gradient(135deg, #1f8fff 0%, #3ec7ff 100%);
   color: #ffffff;
   font-weight: 800;
-  box-shadow: 0 10px 24px rgba(100, 194, 123, 0.24);
+  box-shadow: 0 10px 24px rgba(31, 143, 255, 0.24);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.parchi-guide-button-link:hover {
+.hotel-guide-button-link:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(100, 194, 123, 0.3);
+  box-shadow: 0 14px 28px rgba(31, 143, 255, 0.3);
 }
 
-.parchi-guide-card.image-card {
+.hotel-guide-card.image-card {
   padding: 0;
 }
 
-.parchi-guide-card.image-card img {
+.hotel-guide-card.image-card img {
   width: 100%;
   height: 230px;
   object-fit: cover;
   display: block;
 }
 
-.parchi-guide-card.image-card h3,
-.parchi-guide-card.image-card p,
-.parchi-guide-card.image-card .parchi-guide-button-link {
+.hotel-guide-card.image-card h3,
+.hotel-guide-card.image-card p,
+.hotel-guide-card.image-card .hotel-guide-button-link {
   margin-left: 1.4rem;
   margin-right: 1.4rem;
 }
 
-.parchi-guide-card.image-card h3 {
+.hotel-guide-card.image-card h3 {
   margin-top: 1.35rem;
 }
 
-.parchi-guide-card.image-card .parchi-guide-button-link {
+.hotel-guide-card.image-card .hotel-guide-button-link {
   margin-bottom: 1.4rem;
 }
 
-.parchi-guide-button-link {
+.hotel-guide-button-link {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -429,72 +433,72 @@
   border: none;
   border-radius: 16px;
   text-decoration: none;
-  background: linear-gradient(135deg, #64c27b 0%, #8ddb9a 100%);
+  background: linear-gradient(135deg, #1f8fff 0%, #3ec7ff 100%);
   color: #ffffff;
   font-weight: 800;
-  box-shadow: 0 10px 24px rgba(100, 194, 123, 0.24);
+  box-shadow: 0 10px 24px rgba(31, 143, 255, 0.24);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.parchi-guide-button-link:hover {
+.hotel-guide-button-link:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(100, 194, 123, 0.3);
+  box-shadow: 0 14px 28px rgba(31, 143, 255, 0.3);
 }
 
 /* POPULAR */
 
-.parchi-popular-section {
+.hotel-popular-section {
   max-width: 1360px;
   margin: 0 auto;
   padding: 0.8rem 1.5rem 4rem;
 }
 
-.parchi-popular-section h2 {
+.hotel-popular-section h2 {
   margin: 0 0 1.7rem 0;
   font-size: 2.2rem;
   line-height: 1.2;
   font-weight: 800;
-  color: #25543a;
+  color: #163a63;
 }
 
-.parchi-popular-section h2 span {
-  color: #709782;
+.hotel-popular-section h2 span {
+  color: #5e8dbf;
 }
 
-.parchi-popular-grid {
+.hotel-popular-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
-.parchi-small-card img {
+.hotel-small-card img {
   width: 100%;
   height: 220px;
   object-fit: cover;
   display: block;
 }
 
-.parchi-small-card-body {
+.hotel-small-card-body {
   padding: 1.2rem 1.25rem 1.3rem;
 }
 
-.parchi-small-card-body h3 {
+.hotel-small-card-body h3 {
   margin: 0 0 0.35rem 0;
   font-size: 1.12rem;
   line-height: 1.3;
   font-weight: 800;
-  color: #25543a;
+  color: #163a63;
 }
 
-.parchi-small-card-body p {
+.hotel-small-card-body p {
   margin: 0 0 0.9rem 0;
-  color: #769381;
+  color: #6a86a4;
 }
 
 /* CHAT */
 
-.parchi-page .chat-button {
+.hotel-page .chat-button {
   position: fixed;
   right: 24px;
   bottom: 24px;
@@ -502,49 +506,118 @@
   border: none;
   border-radius: 999px;
   padding: 0.95rem 1.35rem;
-  background: linear-gradient(135deg, #64c27b 0%, #8ddb9a 100%);
+  background: linear-gradient(135deg, #1f8fff 0%, #39c8ff 100%);
   color: #ffffff;
   font-size: 0.98rem;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 14px 28px rgba(100, 194, 123, 0.28);
+  box-shadow: 0 14px 28px rgba(31, 143, 255, 0.28);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.parchi-page .chat-button:hover {
+.hotel-page .chat-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 18px 32px rgba(100, 194, 123, 0.35);
+  box-shadow: 0 18px 32px rgba(31, 143, 255, 0.35);
+}
+
+.hotel-feedback-message {
+  font-size: 1rem;
+  color: #5b6c81;
+  margin: 14px 0 24px;
+}
+
+.hotel-rating-number {
+  margin-left: 6px;
+  font-weight: 600;
+  color: #4f6c7f;
+  font-size: 0.95rem;
+}
+
+.hotel-filters-pill {
+  position: relative;
+}
+
+.hotel-filters-pill button {
+  border: none;
+  background: transparent;
+  color: #4d6787;
+  font-size: 0.96rem;
+  font-weight: 600;
+  padding: 0.82rem 1.2rem;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.hotel-filters-pill button:hover {
+  background: rgba(31, 143, 255, 0.08);
+}
+
+.hotel-filters-pill button:first-child {
+  background: #eaf4ff;
+  color: #1f8fff;
+}
+
+.hotel-filters-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 240px;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+  padding: 0.6rem;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.hotel-filters-dropdown button {
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 0.75rem 0.8rem;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #355170;
+}
+
+.hotel-filters-dropdown button:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 /* TABLET */
 
 @media (min-width: 768px) {
-  .parchi-hero {
+  .hotel-hero {
     min-height: 670px;
   }
 
-  .parchi-hero-overlay {
+  .hotel-hero-overlay {
     min-height: 670px;
     padding: 176px 20px 70px;
   }
 
-  .parchi-hero-content h1 {
+  .hotel-hero-content h1 {
     font-size: 4rem;
   }
 
-  .parchi-search-bar {
+  .hotel-search-bar {
     flex-direction: row;
   }
 
-  .parchi-search-bar button {
+  .hotel-search-bar button {
     width: 150px;
   }
 
-  .parchi-grid {
+  .hotel-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .parchi-popular-grid {
+  .hotel-popular-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -552,42 +625,42 @@
 /* DESKTOP */
 
 @media (min-width: 992px) {
-  .parchi-hero {
+  .hotel-hero {
     min-height: 640px;
   }
 
-  .parchi-hero-overlay {
+  .hotel-hero-overlay {
     min-height: 640px;
     padding: 168px 24px 64px;
   }
 
-  .parchi-hero-content {
+  .hotel-hero-content {
     max-width: 1000px;
   }
 
-  .parchi-hero-content h1 {
+  .hotel-hero-content h1 {
     font-size: 4.1rem;
   }
 
-  .parchi-main-layout {
+  .hotel-main-layout {
     grid-template-columns: minmax(0, 2.15fr) minmax(290px, 0.95fr);
   }
 
-  .parchi-popular-grid {
+  .hotel-popular-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1200px) {
-  .parchi-main-section,
-  .parchi-popular-section {
+  .hotel-main-section,
+  .hotel-popular-section {
     padding-left: 2rem;
     padding-right: 2rem;
   }
 }
 
 @media (max-width: 1199px) {
-  .parchi-scroll-area {
+  .hotel-scroll-area {
     max-height: none;
     overflow-y: visible;
     padding-right: 0;
@@ -597,103 +670,103 @@
 /* MOBILE */
 
 @media (max-width: 991px) {
-  .parchi-main-header h2 {
+  .hotel-main-header h2 {
     font-size: 2.35rem;
   }
 
-  .parchi-guide-card h3 {
+  .hotel-guide-card h3 {
     font-size: 1.7rem;
   }
 }
 
 @media (max-width: 767px) {
-  .parchi-hero {
+  .hotel-hero {
     min-height: 620px;
   }
 
-  .parchi-hero-overlay {
+  .hotel-hero-overlay {
     min-height: 620px;
     padding: 145px 16px 54px;
   }
 
-  .parchi-hero-content h1 {
+  .hotel-hero-content h1 {
     font-size: 2.5rem;
     line-height: 1.12;
   }
 
-  .parchi-hero-content p {
+  .hotel-hero-content p {
     font-size: 1.03rem;
     margin-bottom: 1.6rem;
   }
 
-  .parchi-search-bar {
+  .hotel-search-bar {
     flex-direction: column;
     padding: 8px;
     border-radius: 18px;
   }
 
-  .parchi-search-input {
+  .hotel-search-input {
     min-height: 56px;
     padding: 0 14px;
   }
 
-  .parchi-search-input i {
+  .hotel-search-input i {
     font-size: 1.2rem;
   }
 
-  .parchi-search-input input {
+  .hotel-search-input input {
     font-size: 0.98rem;
   }
 
-  .parchi-search-bar button {
+  .hotel-search-bar button {
     width: 100%;
     min-width: 100%;
     min-height: 54px;
     font-size: 0.98rem;
   }
 
-  .parchi-filters-pill {
+  .hotel-filters-pill {
     width: 100%;
     border-radius: 22px;
   }
 
-  .parchi-main-section,
-  .parchi-popular-section {
+  .hotel-main-section,
+  .hotel-popular-section {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
-  .parchi-main-header h2 {
+  .hotel-main-header h2 {
     font-size: 2rem;
   }
 
-  .parchi-popular-section h2 {
+  .hotel-popular-section h2 {
     font-size: 1.8rem;
   }
 
-  .parchi-toolbar {
+  .hotel-toolbar {
     align-items: stretch;
   }
 
-  .parchi-page .toolbar-button {
+  .hotel-page .toolbar-button {
     width: 100%;
   }
 
-  .parchi-page .toolbar-dropdowns {
+  .hotel-page .toolbar-dropdowns {
     width: 100%;
     flex-direction: column;
   }
 
-  .parchi-page .toolbar-dropdowns button {
+  .hotel-page .toolbar-dropdowns button {
     width: 100%;
   }
 
-  .parchi-card img,
-  .parchi-small-card img {
+  .hotel-card img,
+  .hotel-small-card img {
     height: 210px;
   }
 
-  .parchi-page .chat-button {
+  .hotel-page .chat-button {
     right: 16px;
     bottom: 16px;
     padding: 0.82rem 1.15rem;

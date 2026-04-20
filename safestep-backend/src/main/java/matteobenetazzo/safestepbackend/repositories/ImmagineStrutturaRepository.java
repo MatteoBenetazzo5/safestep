@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface ImmagineStrutturaRepository extends JpaRepository<ImmagineStruttura, UUID> {
 
     List<ImmagineStruttura> findByStruttura_IdStruttura(UUID idStruttura);
+
+    void deleteByStruttura_IdStruttura(UUID idStruttura);
 }

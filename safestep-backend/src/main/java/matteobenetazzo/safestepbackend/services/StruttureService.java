@@ -5,10 +5,10 @@ import matteobenetazzo.safestepbackend.entities.Utente;
 import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
 import matteobenetazzo.safestepbackend.payloads.StrutturaCreateDTO;
 import matteobenetazzo.safestepbackend.payloads.StrutturaUpdateDTO;
-import matteobenetazzo.safestepbackend.repositories.StrutturaRepository;
-import matteobenetazzo.safestepbackend.security.SecurityUtils;
+import matteobenetazzo.safestepbackend.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +23,16 @@ public class StruttureService {
     private UtentiService utentiService;
 
     @Autowired
-    private SecurityUtils securityUtils;
+    private AccessibilitaRepository accessibilitaRepository;
+
+    @Autowired
+    private ImmagineStrutturaRepository immagineStrutturaRepository;
+
+    @Autowired
+    private StrutturaSalvataRepository strutturaSalvataRepository;
+
+    @Autowired
+    private RecensioneRepository recensioneRepository;
 
     public List<Struttura> findAll() {
         return this.strutturaRepository.findAll();
@@ -51,7 +60,7 @@ public class StruttureService {
             throw new IllegalArgumentException("Esiste gia una struttura con questo nome e indirizzo");
         }
 
-        Utente creatore = this.securityUtils.getCurrentAuthenticatedUser();
+        Utente creatore = this.utentiService.findById(body.creataDaId());
 
         Struttura nuovaStruttura = new Struttura(
                 body.categoria(),
@@ -92,8 +101,15 @@ public class StruttureService {
         return this.strutturaRepository.save(found);
     }
 
+    @Transactional
     public void findByIdAndDelete(UUID idStruttura) {
         Struttura found = this.findById(idStruttura);
+
+        accessibilitaRepository.deleteByStruttura_IdStruttura(idStruttura);
+        immagineStrutturaRepository.deleteByStruttura_IdStruttura(idStruttura);
+        strutturaSalvataRepository.deleteByStruttura_IdStruttura(idStruttura);
+        recensioneRepository.deleteByStruttura_IdStruttura(idStruttura);
+
         this.strutturaRepository.delete(found);
     }
 }

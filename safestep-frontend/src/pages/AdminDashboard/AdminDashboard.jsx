@@ -78,6 +78,7 @@ function AdminDashboard() {
     accessibilitaForm,
     resetForm,
     handleChange,
+    handleCategorySelect,
     handleImageChange,
     handleRemoveImage,
     handleAccessibilitaChange,
@@ -268,8 +269,8 @@ function AdminDashboard() {
                 <option value="">Categorie</option>
                 <option value="TERME">Terme</option>
                 <option value="HOTEL">Hotel</option>
-                <option value="RISTORANTE">Ristorante</option>
-                <option value="PARCO">Parco</option>
+                <option value="RISTORANTI">Ristoranti</option>
+                <option value="PARCHI">Parchi</option>
               </select>
 
               <select
@@ -333,6 +334,7 @@ function AdminDashboard() {
                       editingId={editingId}
                       formData={formData}
                       handleChange={handleChange}
+                      handleCategorySelect={handleCategorySelect}
                       handleImageChange={handleImageChange}
                       handleRemoveImage={handleRemoveImage}
                       caratteristiche={caratteristiche}

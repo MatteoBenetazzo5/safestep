@@ -1,9 +1,10 @@
-import { useState } from "react"
 import "../styles/AdminStructureForm.css"
+
 function AdminStructureForm({
   editingId,
   formData,
   handleChange,
+  handleCategorySelect,
   handleImageChange,
   handleRemoveImage,
   caratteristiche,
@@ -16,21 +17,31 @@ function AdminStructureForm({
   resetForm,
   selectedImages = [],
 }) {
-  const [previewUrls, setPreviewUrls] = useState(selectedImages || [])
-
   const handleImageSelect = (e) => {
     if (e.target.files) {
       const newImages = Array.from(e.target.files)
-      setPreviewUrls((prev) => [...prev, ...newImages])
       handleImageChange(newImages)
     }
   }
 
   const removeImage = (index) => {
-    const updatedPreviews = previewUrls.filter((_, i) => i !== index)
-    setPreviewUrls(updatedPreviews)
     if (handleRemoveImage) {
       handleRemoveImage(index)
+    }
+  }
+
+  const getCategoryLabel = (categoria) => {
+    switch (categoria) {
+      case "TERME":
+        return "terma"
+      case "HOTEL":
+        return "hotel"
+      case "RISTORANTI":
+        return "ristorante"
+      case "PARCHI":
+        return "parco"
+      default:
+        return "struttura"
     }
   }
 
@@ -39,7 +50,57 @@ function AdminStructureForm({
       className="admin-side-card admin-structure-form"
       onSubmit={handleCreateOrUpdateStructure}
     >
-      <h3>{editingId ? "Modifica struttura" : "Crea nuova struttura"}</h3>
+      <h3>
+        {editingId
+          ? `Modifica ${getCategoryLabel(formData.categoria)}`
+          : `Crea nuova ${getCategoryLabel(formData.categoria)}`}
+      </h3>
+
+      <div className="mb-3">
+        <label>Categoria</label>
+
+        <div className="admin-category-buttons">
+          <button
+            type="button"
+            className={`btn btn-sm ${
+              formData.categoria === "TERME" ? "active-category" : ""
+            }`}
+            onClick={() => handleCategorySelect("TERME")}
+          >
+            Terme
+          </button>
+
+          <button
+            type="button"
+            className={`btn btn-sm ${
+              formData.categoria === "HOTEL" ? "active-category" : ""
+            }`}
+            onClick={() => handleCategorySelect("HOTEL")}
+          >
+            Hotel
+          </button>
+
+          <button
+            type="button"
+            className={`btn btn-sm ${
+              formData.categoria === "RISTORANTI" ? "active-category" : ""
+            }`}
+            onClick={() => handleCategorySelect("RISTORANTI")}
+          >
+            Ristoranti
+          </button>
+
+          <button
+            type="button"
+            className={`btn btn-sm ${
+              formData.categoria === "PARCHI" ? "active-category" : ""
+            }`}
+            onClick={() => handleCategorySelect("PARCHI")}
+          >
+            Parchi
+          </button>
+        </div>
+      </div>
 
       <div className="mb-3">
         <label>Nome</label>
@@ -174,15 +235,17 @@ function AdminStructureForm({
         </div>
       </div>
 
-      {previewUrls.length > 0 && (
+      {selectedImages.length > 0 && (
         <div className="mb-3">
           <div className="admin-images-grid">
             <h5 style={{ marginBottom: "12px", gridColumn: "1/-1" }}>
-              Anteprima immagini ({previewUrls.length})
+              Anteprima immagini ({selectedImages.length})
             </h5>
-            {previewUrls.map((image, index) => {
+
+            {selectedImages.map((image, index) => {
               const imageUrl =
                 typeof image === "string" ? image : URL.createObjectURL(image)
+
               return (
                 <div key={index} className="admin-image-preview-item">
                   <img src={imageUrl} alt={`Anteprima ${index + 1}`} />

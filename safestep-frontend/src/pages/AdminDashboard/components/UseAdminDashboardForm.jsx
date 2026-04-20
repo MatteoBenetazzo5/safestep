@@ -52,6 +52,13 @@ function UseAdminDashboardForm({
     }))
   }
 
+  const handleCategorySelect = (categoria) => {
+    setFormData((prev) => ({
+      ...prev,
+      categoria,
+    }))
+  }
+
   const handleImageChange = (files) => {
     if (Array.isArray(files)) {
       setSelectedImages((prev) => [...prev, ...files])
@@ -354,6 +361,7 @@ function UseAdminDashboardForm({
     accessibilitaForm,
     resetForm,
     handleChange,
+    handleCategorySelect,
     handleImageChange,
     handleRemoveImage,
     handleAccessibilitaChange,

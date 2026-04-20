@@ -13,4 +13,6 @@ public interface StrutturaSalvataRepository extends JpaRepository<StrutturaSalva
     boolean existsByUtente_IdUtenteAndStruttura_IdStruttura(UUID idUtente, UUID idStruttura);
 
     void deleteByUtente_IdUtenteAndStruttura_IdStruttura(UUID idUtente, UUID idStruttura);
+
+    void deleteByStruttura_IdStruttura(UUID idStruttura);
 }

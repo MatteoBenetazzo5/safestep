@@ -13,4 +13,6 @@ public interface RecensioneRepository extends JpaRepository<Recensione, UUID> {
     List<Recensione> findByUtente_IdUtente(UUID idUtente);
 
     boolean existsByUtente_IdUtenteAndStruttura_IdStruttura(UUID idUtente, UUID idStruttura);
+
+    void deleteByStruttura_IdStruttura(UUID idStruttura);
 }

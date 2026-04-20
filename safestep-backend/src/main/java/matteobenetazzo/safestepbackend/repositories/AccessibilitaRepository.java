@@ -11,4 +11,6 @@ public interface AccessibilitaRepository extends JpaRepository<Accessibilita, UU
     List<Accessibilita> findByStruttura_IdStruttura(UUID idStruttura);
 
     boolean existsByStruttura_IdStrutturaAndCaratteristica_IdCaratteristiche(UUID idStruttura, UUID idCaratteristica);
+
+    void deleteByStruttura_IdStruttura(UUID idStruttura);
 }

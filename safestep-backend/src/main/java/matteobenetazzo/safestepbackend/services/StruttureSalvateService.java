@@ -31,6 +31,9 @@ public class StruttureSalvateService {
     private SecurityUtils securityUtils;
 
     public List<StrutturaSalvata> findAll() {
+        if (!this.securityUtils.isAdmin()) {
+            throw new org.springframework.security.access.AccessDeniedException("Solo admin possono vedere tutte le strutture salvate");
+        }
         return this.strutturaSalvataRepository.findAll();
     }
 

@@ -4,6 +4,7 @@ import matteobenetazzo.safestepbackend.entities.Utente;
 import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
 import matteobenetazzo.safestepbackend.repositories.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -17,8 +18,13 @@ public class SecurityUtils {
     public Utente getCurrentAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null || authentication.getName() == null) {
-            throw new NotFoundException("Utente autenticato non trovato");
+        if (
+                authentication == null ||
+                        !authentication.isAuthenticated() ||
+                        authentication.getName() == null ||
+                        "anonymousUser".equals(authentication.getName())
+        ) {
+            throw new AccessDeniedException("Autenticazione richiesta");
         }
 
         String emailUtente = authentication.getName();
@@ -33,13 +39,23 @@ public class SecurityUtils {
     }
 
     public boolean isAdmin() {
-        Utente currentUser = this.getCurrentAuthenticatedUser();
-        return "ADMIN".equals(currentUser.getRuolo());
+        try {
+            Utente currentUser = this.getCurrentAuthenticatedUser();
+            return "ADMIN".equals(currentUser.getRuolo());
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public void checkOwnerOrAdmin(Utente utente) {
         if (!isOwner(utente) && !isAdmin()) {
-            throw new IllegalArgumentException("Non autorizzato a questa operazione");
+            throw new AccessDeniedException("Non autorizzato a questa operazione");
+        }
+    }
+
+    public void checkAdmin() {
+        if (!isAdmin()) {
+            throw new AccessDeniedException("Solo admin possono eseguire questa operazione");
         }
     }
 }

@@ -6,10 +6,10 @@ import java.util.UUID;
 
 public record StrutturaSalvataCreateDTO(
 
-        @NotNull
+        @NotNull(message = "Id utente obbligatorio")
         UUID utenteId,
 
-        @NotNull
+        @NotNull(message = "Id struttura obbligatorio")
         UUID strutturaId
 ) {
 }

@@ -26,6 +26,7 @@ public class ProfiliService {
     private SecurityUtils securityUtils;
 
     public List<Profilo> findAll() {
+        this.securityUtils.checkAdmin();
         return this.profiloRepository.findAll();
     }
 

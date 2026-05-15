@@ -30,6 +30,9 @@ public class RecensioniService {
     private SecurityUtils securityUtils;
 
     public List<Recensione> findAll() {
+        if (!this.securityUtils.isAdmin()) {
+            throw new org.springframework.security.access.AccessDeniedException("Solo admin possono vedere tutte le recensioni");
+        }
         return this.recensioneRepository.findAll();
     }
 

@@ -1,5 +1,6 @@
 package matteobenetazzo.safestepbackend.controllers;
 
+import jakarta.validation.Valid;
 import matteobenetazzo.safestepbackend.entities.Caratteristica;
 import matteobenetazzo.safestepbackend.services.CaratteristicheService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,12 @@ public class CaratteristicheController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Caratteristica create(@RequestBody Caratteristica body) {
+    public Caratteristica create(@RequestBody @Valid Caratteristica body) {
         return this.caratteristicheService.save(body);
     }
 
     @PutMapping("/{id}")
-    public Caratteristica update(@PathVariable UUID id, @RequestBody Caratteristica body) {
+    public Caratteristica update(@PathVariable UUID id, @RequestBody @Valid Caratteristica body) {
         return this.caratteristicheService.findByIdAndUpdate(id, body);
     }
 

@@ -6,7 +6,9 @@ import matteobenetazzo.safestepbackend.exceptions.NotFoundException;
 import matteobenetazzo.safestepbackend.payloads.StrutturaCreateDTO;
 import matteobenetazzo.safestepbackend.payloads.StrutturaUpdateDTO;
 import matteobenetazzo.safestepbackend.repositories.*;
+import matteobenetazzo.safestepbackend.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,24 +36,49 @@ public class StruttureService {
     @Autowired
     private RecensioneRepository recensioneRepository;
 
+    @Autowired
+    private SecurityUtils securityUtils;
+
     public List<Struttura> findAll() {
-        return this.strutturaRepository.findAll();
+        if (this.securityUtils.isAdmin()) {
+            return this.strutturaRepository.findAll();
+        }
+
+        return this.strutturaRepository.findByStato("APPROVATA");
     }
 
     public Struttura findById(UUID idStruttura) {
-        return this.strutturaRepository.findById(idStruttura)
+        Struttura found = this.strutturaRepository.findById(idStruttura)
                 .orElseThrow(() -> new NotFoundException("Struttura con id " + idStruttura + " non trovata"));
+
+        if (!"APPROVATA".equals(found.getStato()) && !this.securityUtils.isAdmin()) {
+            throw new AccessDeniedException("Struttura non disponibile");
+        }
+
+        return found;
     }
 
     public List<Struttura> findByCategoria(String categoria) {
-        return this.strutturaRepository.findByCategoria(categoria);
+        List<Struttura> strutture = this.strutturaRepository.findByCategoria(categoria);
+
+        if (this.securityUtils.isAdmin()) {
+            return strutture;
+        }
+
+        return strutture.stream()
+                .filter(struttura -> "APPROVATA".equals(struttura.getStato()))
+                .toList();
     }
 
     public List<Struttura> findByStato(String stato) {
+        this.securityUtils.checkAdmin();
         return this.strutturaRepository.findByStato(stato);
     }
 
     public List<Struttura> findByCreatore(UUID idUtente) {
+        Utente utente = this.utentiService.findById(idUtente);
+        this.securityUtils.checkOwnerOrAdmin(utente);
+
         return this.strutturaRepository.findByCreataDa_IdUtente(idUtente);
     }
 
@@ -60,7 +87,7 @@ public class StruttureService {
             throw new IllegalArgumentException("Esiste gia una struttura con questo nome e indirizzo");
         }
 
-        Utente creatore = this.utentiService.findById(body.creataDaId());
+        Utente creatore = this.securityUtils.getCurrentAuthenticatedUser();
 
         Struttura nuovaStruttura = new Struttura(
                 body.categoria(),
@@ -105,10 +132,10 @@ public class StruttureService {
     public void findByIdAndDelete(UUID idStruttura) {
         Struttura found = this.findById(idStruttura);
 
-        accessibilitaRepository.deleteByStruttura_IdStruttura(idStruttura);
-        immagineStrutturaRepository.deleteByStruttura_IdStruttura(idStruttura);
-        strutturaSalvataRepository.deleteByStruttura_IdStruttura(idStruttura);
-        recensioneRepository.deleteByStruttura_IdStruttura(idStruttura);
+        this.accessibilitaRepository.deleteByStruttura_IdStruttura(idStruttura);
+        this.immagineStrutturaRepository.deleteByStruttura_IdStruttura(idStruttura);
+        this.strutturaSalvataRepository.deleteByStruttura_IdStruttura(idStruttura);
+        this.recensioneRepository.deleteByStruttura_IdStruttura(idStruttura);
 
         this.strutturaRepository.delete(found);
     }

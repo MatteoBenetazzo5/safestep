@@ -31,6 +31,9 @@ public class PreferenzeService {
     private SecurityUtils securityUtils;
 
     public List<Preferenza> findAll() {
+        if (!this.securityUtils.isAdmin()) {
+            throw new org.springframework.security.access.AccessDeniedException("Solo admin possono vedere tutte le preferenze");
+        }
         return this.preferenzaRepository.findAll();
     }
 

@@ -1,9 +1,6 @@
 package matteobenetazzo.safestepbackend.payloads;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 import java.util.UUID;
 
@@ -20,6 +17,7 @@ public record RecensioneCreateDTO(
         int voto,
 
         @NotBlank(message = "Testo obbligatorio")
+        @Size(min = 5, max = 2000, message = "La recensione deve avere tra 5 e 2000 caratteri")
         String testo
 ) {
 }
